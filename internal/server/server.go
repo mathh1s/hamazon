@@ -18,6 +18,7 @@ type Deps struct {
 	Catalog  *catalog.Store
 	Orders   *orders.Service
 	Access   *auth.Access
+	Admins   *auth.Admins
 	Frontend fs.FS
 }
 
@@ -28,6 +29,7 @@ type Server struct {
 	catalog *catalog.Store
 	orders  *orders.Service
 	access  *auth.Access
+	admins  *auth.Admins
 
 	loginLimit   *ratelimit.Limiter
 	orderLimit   *ratelimit.Limiter
@@ -37,7 +39,7 @@ type Server struct {
 func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s := &Server{
 		cfg: cfg, log: log, mux: http.NewServeMux(),
-		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access,
+		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins,
 		loginLimit:   ratelimit.New(12*time.Second, 5),
 		orderLimit:   ratelimit.New(2*time.Minute, 4),
 		receiptLimit: ratelimit.New(2*time.Second, 30),
@@ -52,6 +54,18 @@ func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s.mux.HandleFunc("GET /api/catalog", s.requireAccess(s.handleCatalog))
 	s.mux.HandleFunc("POST /api/orders", s.requireAccess(s.handleCreateOrder))
 	s.mux.HandleFunc("GET /api/receipts/{token}", s.requireAccess(s.handleReceipt))
+	s.mux.HandleFunc("POST /api/admin/login", s.handleAdminLogin)
+	s.mux.HandleFunc("POST /api/admin/logout", s.handleAdminLogout)
+	s.mux.HandleFunc("GET /api/admin/overview", s.requireAdmin(s.handleAdminOverview))
+	s.mux.HandleFunc("GET /api/admin/orders", s.requireAdmin(s.handleAdminOrders))
+	s.mux.HandleFunc("GET /api/admin/orders/{id}", s.requireAdmin(s.handleAdminOrder))
+	s.mux.HandleFunc("PATCH /api/admin/orders/{id}", s.requireAdmin(s.handleAdminUpdateOrder))
+	s.mux.HandleFunc("POST /api/admin/orders/{id}/retry", s.requireAdmin(s.handleAdminRetry))
+	s.mux.HandleFunc("GET /api/admin/items", s.requireAdmin(s.handleAdminItems))
+	s.mux.HandleFunc("POST /api/admin/items", s.requireAdmin(s.handleAdminCreateItem))
+	s.mux.HandleFunc("PUT /api/admin/items/{id}", s.requireAdmin(s.handleAdminUpdateItem))
+	s.mux.HandleFunc("DELETE /api/admin/items/{id}", s.requireAdmin(s.handleAdminDeleteItem))
+
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "not_found", "Unknown API endpoint")
 	})

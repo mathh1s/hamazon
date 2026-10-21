@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"database/sql"
 	"errors"
@@ -10,8 +11,11 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
+
+	"golang.org/x/term"
 
 	"github.com/mathh1s/hamazon/internal/assets"
 	"github.com/mathh1s/hamazon/internal/auth"
@@ -30,6 +34,10 @@ usage:
   hamazon serve                       run the web server (default)
   hamazon extract --jar client.jar    render item icons, GUI sprites and the
                                       font from a Minecraft client jar
+  hamazon admin add <name>            create an admin (asks for a password)
+  hamazon admin passwd <name>         change an admin password
+  hamazon admin remove <name>         delete an admin
+  hamazon admin list                  list admins
 `
 
 func main() {
@@ -46,6 +54,8 @@ func main() {
 		err = serve(log)
 	case "extract":
 		err = extract(log, os.Args[2:])
+	case "admin":
+		err = adminCommand(os.Args[2:])
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
@@ -90,6 +100,7 @@ func serve(log *slog.Logger) error {
 		Catalog:  items,
 		Orders:   orderService,
 		Access:   auth.NewAccess(cfg.ShopPassword, cfg.SessionSecret),
+		Admins:   auth.NewAdmins(conn),
 		Frontend: web.Dist(),
 	})
 	httpServer := &http.Server{
@@ -171,4 +182,89 @@ func extract(log *slog.Logger, args []string) error {
 		}
 	}
 	return nil
+}
+
+func adminCommand(args []string) error {
+	if len(args) == 0 {
+		return errors.New("usage: hamazon admin add|passwd|remove|list [name]")
+	}
+	ctx := context.Background()
+	conn, err := openDatabase(ctx, config.LoadBase())
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	admins := auth.NewAdmins(conn)
+
+	if args[0] == "list" {
+		names, err := admins.List(ctx)
+		if err != nil {
+			return err
+		}
+		if len(names) == 0 {
+			fmt.Println("no admins yet, create one with: hamazon admin add <name>")
+		}
+		for _, n := range names {
+			fmt.Println(n)
+		}
+		return nil
+	}
+	if len(args) != 2 {
+		return errors.New("usage: hamazon admin " + args[0] + " <name>")
+	}
+	name := args[1]
+
+	switch args[0] {
+	case "add", "passwd":
+		password, err := readPassword()
+		if err != nil {
+			return err
+		}
+		if args[0] == "add" {
+			err = admins.Create(ctx, name, password)
+		} else {
+			err = admins.SetPassword(ctx, name, password)
+		}
+		if err != nil {
+			return err
+		}
+		fmt.Println("saved admin", name)
+	case "remove":
+		if err := admins.Remove(ctx, name); err != nil {
+			return err
+		}
+		fmt.Println("removed admin", name)
+	default:
+		return errors.New("unknown admin command " + args[0])
+	}
+	return nil
+}
+
+// readPassword prompts twice without echo on a terminal, or reads one line
+// from stdin when piped (for scripted setups).
+func readPassword() (string, error) {
+	fd := int(os.Stdin.Fd())
+	if !term.IsTerminal(fd) {
+		line, err := bufio.NewReader(os.Stdin).ReadString('\n')
+		if err != nil && line == "" {
+			return "", errors.New("no password on stdin")
+		}
+		return strings.TrimRight(line, "\r\n"), nil
+	}
+	fmt.Fprint(os.Stderr, "Password: ")
+	first, err := term.ReadPassword(fd)
+	fmt.Fprintln(os.Stderr)
+	if err != nil {
+		return "", err
+	}
+	fmt.Fprint(os.Stderr, "Repeat password: ")
+	second, err := term.ReadPassword(fd)
+	fmt.Fprintln(os.Stderr)
+	if err != nil {
+		return "", err
+	}
+	if string(first) != string(second) {
+		return "", errors.New("passwords do not match")
+	}
+	return string(first), nil
 }

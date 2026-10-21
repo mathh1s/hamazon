@@ -3,6 +3,8 @@ module github.com/mathh1s/hamazon
 go 1.26.0
 
 require (
+	golang.org/x/crypto v0.58.0
+	golang.org/x/term v0.47.0
 	golang.org/x/time v0.16.0
 	gopkg.in/yaml.v3 v3.0.1
 	modernc.org/sqlite v1.61.0

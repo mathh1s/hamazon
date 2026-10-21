@@ -128,3 +128,56 @@ func TestFailedSendIsRetriedLater(t *testing.T) {
 		t.Fatal("retry must wait for its backoff")
 	}
 }
+
+func TestStatusChangeEditsTheMessage(t *testing.T) {
+	fake := &fakeDiscord{}
+	n, svc, iron := setup(t, fake)
+	ctx := context.Background()
+	order, _, err := svc.Create(ctx, orders.CreateInput{
+		IdempotencyKey: "key-cccccccccccccccc", Username: "Steve",
+		Lines: []orders.CreateLine{{ItemID: iron.ID, Quantity: 1, UnitPrice: iron.Price}},
+	}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	n.drain(ctx)
+	if _, err := svc.UpdateStatus(ctx, order.ID, orders.StatusFulfilled, "mathis", "handed over at spawn"); err != nil {
+		t.Fatal(err)
+	}
+	n.drain(ctx)
+
+	if len(fake.requests) != 2 || !strings.HasPrefix(fake.requests[1], "PATCH /api/webhooks/1/token/messages/123456") {
+		t.Fatalf("expected an edit of the first message, got %v", fake.requests)
+	}
+	all, _ := json.Marshal(fake.bodies[1])
+	for _, want := range []string{"Fulfilled", "mathis", "handed over at spawn", `"color":5635925`} {
+		if !strings.Contains(string(all), want) {
+			t.Errorf("edit is missing %q: %s", want, all)
+		}
+	}
+}
+
+func TestUpdateBeforeFirstSendIsFolded(t *testing.T) {
+	fake := &fakeDiscord{}
+	n, svc, iron := setup(t, fake)
+	ctx := context.Background()
+	order, _, _ := svc.Create(ctx, orders.CreateInput{
+		IdempotencyKey: "key-dddddddddddddddd", Username: "Steve",
+		Lines: []orders.CreateLine{{ItemID: iron.ID, Quantity: 1, UnitPrice: iron.Price}},
+	}, "")
+	if _, err := svc.UpdateStatus(ctx, order.ID, orders.StatusApproved, "mathis", ""); err != nil {
+		t.Fatal(err)
+	}
+	n.drain(ctx)
+	if len(fake.requests) != 1 {
+		t.Fatalf("one message with the current status is enough, got %v", fake.requests)
+	}
+	if !strings.Contains(string(mustJSON(fake.bodies[0])), "Approved") {
+		t.Fatal("first message must show the current status")
+	}
+}
+
+func mustJSON(v any) []byte {
+	b, _ := json.Marshal(v)
+	return b
+}

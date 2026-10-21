@@ -87,6 +87,14 @@ func (s *Service) MarkSent(ctx context.Context, n Notification, messageID string
 			now, n.ID); err != nil {
 			return err
 		}
+		if n.Kind == NotifyCreated {
+			// The first message already shows the current status, so updates
+			// queued before it went out have nothing left to say.
+			if _, err := tx.ExecContext(ctx, `UPDATE notifications SET state = 'sent', updated_at = ? WHERE order_id = ? AND kind = ? AND state = 'pending'`,
+				now, n.OrderID, NotifyUpdated); err != nil {
+				return err
+			}
+		}
 		if messageID == "" {
 			return nil
 		}
@@ -134,4 +142,10 @@ func (s *Service) ClearMessageID(ctx context.Context, orderID int64) error {
 
 func (s *Service) ByID(ctx context.Context, id int64) (Order, error) {
 	return Load(ctx, s.db, "id = ?", id)
+}
+
+func (s *Service) StillPending(ctx context.Context, id int64) bool {
+	var state string
+	err := s.db.QueryRowContext(ctx, `SELECT state FROM notifications WHERE id = ?`, id).Scan(&state)
+	return err == nil && state == "pending"
 }

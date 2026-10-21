@@ -13,8 +13,10 @@ import (
 func (s *Server) requireAccess(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if !s.access.Valid(r) {
-			writeError(w, http.StatusUnauthorized, "access_required", "Enter the server password first")
-			return
+			if _, ok := s.adminFromRequest(r); !ok {
+				writeError(w, http.StatusUnauthorized, "access_required", "Enter the server password first")
+				return
+			}
 		}
 		next(w, r)
 	}
@@ -47,6 +49,10 @@ func (s *Server) handleSession(w http.ResponseWriter, r *http.Request) {
 		"access":          s.access.Valid(r),
 		"floodgatePrefix": s.cfg.FloodgatePrefix,
 		"admin":           nil,
+	}
+	if admin, ok := s.adminFromRequest(r); ok {
+		resp["access"] = true
+		resp["admin"] = map[string]any{"name": admin.Name, "csrfToken": admin.CSRFToken}
 	}
 	writeJSON(w, http.StatusOK, resp)
 }

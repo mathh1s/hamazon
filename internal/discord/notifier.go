@@ -97,6 +97,9 @@ type sendError struct {
 func (e *sendError) Error() string { return e.err.Error() }
 
 func (n *Notifier) process(ctx context.Context, item orders.Notification) {
+	if !n.orders.StillPending(ctx, item.ID) {
+		return
+	}
 	if n.webhookURL == "" {
 		n.fail(ctx, item, &sendError{err: errors.New("HAMAZON_DISCORD_WEBHOOK_URL is not set"), permanent: true})
 		return

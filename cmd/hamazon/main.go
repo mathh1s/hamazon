@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -11,7 +12,9 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mathh1s/hamazon/internal/catalog"
 	"github.com/mathh1s/hamazon/internal/config"
+	"github.com/mathh1s/hamazon/internal/db"
 	"github.com/mathh1s/hamazon/internal/server"
 	"github.com/mathh1s/hamazon/web"
 )
@@ -55,6 +58,17 @@ func serve(log *slog.Logger) error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
+	conn, err := openDatabase(ctx, cfg)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+
+	items := catalog.NewStore(conn)
+	if err := seedCatalog(ctx, cfg, items); err != nil {
+		return err
+	}
+
 	srv := server.New(cfg, log, web.Dist())
 	httpServer := &http.Server{
 		Addr:              cfg.Addr,
@@ -83,4 +97,28 @@ func serve(log *slog.Logger) error {
 		return err
 	}
 	return nil
+}
+
+func openDatabase(ctx context.Context, cfg config.Config) (*sql.DB, error) {
+	conn, err := db.Open(cfg.DatabasePath())
+	if err != nil {
+		return nil, fmt.Errorf("open database: %w", err)
+	}
+	if err := db.Migrate(ctx, conn); err != nil {
+		conn.Close()
+		return nil, err
+	}
+	return conn, nil
+}
+
+func seedCatalog(ctx context.Context, cfg config.Config, items *catalog.Store) error {
+	seed := catalog.DefaultSeed
+	if cfg.SeedFile != "" {
+		custom, err := os.ReadFile(cfg.SeedFile)
+		if err != nil {
+			return fmt.Errorf("read seed file: %w", err)
+		}
+		seed = custom
+	}
+	return items.Seed(ctx, seed)
 }

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"time"
@@ -163,6 +164,9 @@ func (s *Server) handleReceipt(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) internalError(w http.ResponseWriter, err error) {
+	if errors.Is(err, context.Canceled) {
+		return
+	}
 	s.log.Error("request failed", "err", err)
 	writeError(w, http.StatusInternalServerError, "internal", "Something went wrong on the server, try again")
 }

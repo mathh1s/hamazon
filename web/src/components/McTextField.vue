@@ -33,7 +33,7 @@ defineProps<{ invalid?: boolean }>()
 }
 
 .mc-field.invalid {
-  border-image: none;
+  border-image-source: none;
   border-color: var(--red);
   background: #000;
 }

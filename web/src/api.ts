@@ -77,6 +77,7 @@ export class ApiError extends Error {
 
 let csrfToken = ''
 let onAccessRequired: () => void = () => {}
+let onAdminRequired: () => void = () => {}
 
 export function setCsrfToken(token: string) {
   csrfToken = token
@@ -84,6 +85,10 @@ export function setCsrfToken(token: string) {
 
 export function setAccessRequiredHandler(fn: () => void) {
   onAccessRequired = fn
+}
+
+export function setAdminRequiredHandler(fn: () => void) {
+  onAdminRequired = fn
 }
 
 export async function api<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -120,6 +125,7 @@ export async function api<T>(method: string, path: string, body?: unknown): Prom
       err?.details ?? null,
     )
     if (apiErr.code === 'access_required') onAccessRequired()
+    if (apiErr.code === 'admin_required') onAdminRequired()
     throw apiErr
   }
   return data as T
@@ -128,4 +134,48 @@ export async function api<T>(method: string, path: string, body?: unknown): Prom
 export function errorMessage(e: unknown): string {
   if (e instanceof ApiError) return e.message
   return 'Something went wrong. Try again.'
+}
+
+export interface OrderEvent {
+  status: OrderStatus
+  adminName: string
+  note: string
+  createdAt: string
+}
+
+export interface DiscordNotification {
+  id: number
+  kind: 'order_created' | 'order_updated'
+  state: 'pending' | 'sent' | 'failed'
+  attempts: number
+  lastError: string
+  nextAttemptAt: string
+  createdAt: string
+}
+
+export interface AdminOrderSummary extends Receipt {
+  id: number
+  failedNotifications: number
+}
+
+export interface AdminOrder extends Receipt {
+  id: number
+  clientIp: string
+  discordSent: boolean
+  events: OrderEvent[]
+  notifications: DiscordNotification[]
+}
+
+export interface ItemInput {
+  name: string
+  texture: string
+  categoryId: string
+  count: number
+  description: string
+  maxPerOrder: number
+  playerLimit: number | null
+  playerLimitDays: number | null
+  enabled: boolean
+  sort: number
+  price: Price
 }

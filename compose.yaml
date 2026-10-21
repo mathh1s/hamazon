@@ -3,9 +3,16 @@ services:
     build: .
     image: hamazon:latest
     restart: unless-stopped
-    env_file: .env
+    environment:
+      HAMAZON_SHOP_PASSWORD: ${HAMAZON_SHOP_PASSWORD:?set HAMAZON_SHOP_PASSWORD}
+      HAMAZON_SESSION_SECRET: ${HAMAZON_SESSION_SECRET:?set HAMAZON_SESSION_SECRET}
+      HAMAZON_DISCORD_WEBHOOK_URL: ${HAMAZON_DISCORD_WEBHOOK_URL:-}
+      HAMAZON_PUBLIC_URL: ${HAMAZON_PUBLIC_URL:-}
+      HAMAZON_TRUST_PROXY: ${HAMAZON_TRUST_PROXY:-false}
+      HAMAZON_FLOODGATE_PREFIX: ${HAMAZON_FLOODGATE_PREFIX:-.}
+      HAMAZON_SEED_FILE: ${HAMAZON_SEED_FILE:-}
     ports:
-      - "${HAMAZON_PORT:?set HAMAZON_PORT in .env}:8080"
+      - "${HAMAZON_PORT:?set HAMAZON_PORT}:8080"
     volumes:
       - hamazon-data:/data
 

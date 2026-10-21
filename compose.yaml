@@ -1,0 +1,13 @@
+services:
+  hamazon:
+    build: .
+    image: hamazon:latest
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "${HAMAZON_PORT:?set HAMAZON_PORT in .env}:8080"
+    volumes:
+      - hamazon-data:/data
+
+volumes:
+  hamazon-data:

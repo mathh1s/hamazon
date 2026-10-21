@@ -34,7 +34,7 @@ Fill in `.env`:
 | `HAMAZON_SHOP_PASSWORD` | Password players enter once per device. Changing it logs everyone out. |
 | `HAMAZON_SESSION_SECRET` | At least 32 random characters, e.g. `openssl rand -hex 32`. Signs cookies and receipt links, keep it stable. |
 | `HAMAZON_DISCORD_WEBHOOK_URL` | Discord channel webhook (Server Settings > Integrations > Webhooks). Only used by the server, never sent to browsers. |
-| `HAMAZON_PUBLIC_URL` | Public URL of the shop, e.g. `https://shop.example.com`. Optional. Enables the admin link and item thumbnail in Discord messages. |
+| `HAMAZON_PUBLIC_URL` | Public URL of the shop, e.g. `https://shop.example.com` (a bare host name means https). Optional. Enables the admin link and item thumbnail in Discord messages. |
 | `HAMAZON_TRUST_PROXY` | `true` when running behind a reverse proxy that sets `X-Forwarded-For` and `X-Forwarded-Proto`. Needed for correct rate limits and secure cookies. |
 | `HAMAZON_FLOODGATE_PREFIX` | Username prefix of Bedrock players, `.` by default. Empty disables Bedrock names. |
 

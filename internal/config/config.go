@@ -50,6 +50,9 @@ func Load() (Config, error) {
 	}
 
 	c.PublicURL = strings.TrimRight(cleanEnv("HAMAZON_PUBLIC_URL"), "/")
+	if c.PublicURL != "" && !strings.Contains(c.PublicURL, "://") {
+		c.PublicURL = "https://" + c.PublicURL
+	}
 	if c.PublicURL != "" {
 		if u, err := url.Parse(c.PublicURL); err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			errs = append(errs, fmt.Errorf("HAMAZON_PUBLIC_URL must start with http:// or https://, got %q (leave it empty to disable)", c.PublicURL))

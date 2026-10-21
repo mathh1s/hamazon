@@ -237,7 +237,7 @@ load()
   display: inline-flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--u);
+  gap: calc(var(--u) * 2);
   color: var(--dark-gray);
 }
 

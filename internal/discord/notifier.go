@@ -149,6 +149,7 @@ func (n *Notifier) process(ctx context.Context, item orders.Notification) {
 			return
 		}
 		_ = n.orders.MarkSent(ctx, item, "")
+		n.log.Info("discord message updated", "order", order.Code, "status", order.Status)
 		return
 	}
 

@@ -212,7 +212,7 @@ h2 {
 .each {
   display: inline-flex;
   align-items: center;
-  gap: var(--u);
+  gap: calc(var(--u) * 2);
   color: #555;
 }
 

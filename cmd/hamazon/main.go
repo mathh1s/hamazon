@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"flag"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -12,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/mathh1s/hamazon/internal/assets"
 	"github.com/mathh1s/hamazon/internal/catalog"
 	"github.com/mathh1s/hamazon/internal/config"
 	"github.com/mathh1s/hamazon/internal/db"
@@ -22,7 +24,9 @@ import (
 const usage = `hamazon, a private Minecraft item shop
 
 usage:
-  hamazon serve       run the web server (default)
+  hamazon serve                       run the web server (default)
+  hamazon extract --jar client.jar    render item icons, GUI sprites and the
+                                      font from a Minecraft client jar
 `
 
 func main() {
@@ -37,6 +41,8 @@ func main() {
 	switch cmd {
 	case "serve":
 		err = serve(log)
+	case "extract":
+		err = extract(log, os.Args[2:])
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
@@ -121,4 +127,32 @@ func seedCatalog(ctx context.Context, cfg config.Config, items *catalog.Store) e
 		seed = custom
 	}
 	return items.Seed(ctx, seed)
+}
+
+func extract(log *slog.Logger, args []string) error {
+	cfg := config.LoadBase()
+	fs := flag.NewFlagSet("extract", flag.ContinueOnError)
+	jar := fs.String("jar", "", "path to the Minecraft client jar, e.g. versions/26.2/26.2.jar")
+	out := fs.String("out", cfg.AssetsDir(), "output directory")
+	verbose := fs.Bool("v", false, "list every item that could not be rendered")
+	if err := fs.Parse(args); err != nil {
+		return err
+	}
+	if *jar == "" {
+		return errors.New("--jar is required")
+	}
+
+	start := time.Now()
+	report, err := assets.Extract(*jar, *out)
+	if err != nil {
+		return err
+	}
+	log.Info("assets extracted", "version", report.Manifest.Version, "items", len(report.Manifest.Items),
+		"skipped", len(report.Skipped), "font", report.Manifest.Font, "took", time.Since(start).Round(time.Millisecond))
+	if *verbose {
+		for id, reason := range report.Skipped {
+			log.Info("skipped", "item", id, "reason", reason)
+		}
+	}
+	return nil
 }

@@ -20,6 +20,7 @@ func New(cfg config.Config, log *slog.Logger, frontend fs.FS) *Server {
 	s.mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
+	s.mux.Handle("GET /mc/", http.StripPrefix("/mc/", assetHandler(cfg.AssetsDir())))
 	s.mux.Handle("/", spaHandler(frontend))
 	return s
 }

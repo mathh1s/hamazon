@@ -5,28 +5,64 @@ import (
 	"io/fs"
 	"log/slog"
 	"net/http"
+	"time"
 
+	"github.com/mathh1s/hamazon/internal/auth"
+	"github.com/mathh1s/hamazon/internal/catalog"
 	"github.com/mathh1s/hamazon/internal/config"
+	"github.com/mathh1s/hamazon/internal/orders"
+	"github.com/mathh1s/hamazon/internal/ratelimit"
 )
 
-type Server struct {
-	cfg config.Config
-	log *slog.Logger
-	mux *http.ServeMux
+type Deps struct {
+	Catalog  *catalog.Store
+	Orders   *orders.Service
+	Access   *auth.Access
+	Frontend fs.FS
 }
 
-func New(cfg config.Config, log *slog.Logger, frontend fs.FS) *Server {
-	s := &Server{cfg: cfg, log: log, mux: http.NewServeMux()}
+type Server struct {
+	cfg     config.Config
+	log     *slog.Logger
+	mux     *http.ServeMux
+	catalog *catalog.Store
+	orders  *orders.Service
+	access  *auth.Access
+
+	loginLimit   *ratelimit.Limiter
+	orderLimit   *ratelimit.Limiter
+	receiptLimit *ratelimit.Limiter
+}
+
+func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
+	s := &Server{
+		cfg: cfg, log: log, mux: http.NewServeMux(),
+		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access,
+		loginLimit:   ratelimit.New(12*time.Second, 5),
+		orderLimit:   ratelimit.New(2*time.Minute, 4),
+		receiptLimit: ratelimit.New(2*time.Second, 30),
+	}
+
 	s.mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
 		writeJSON(w, http.StatusOK, map[string]string{"status": "ok"})
 	})
+
+	s.mux.HandleFunc("POST /api/access", s.handleAccess)
+	s.mux.HandleFunc("GET /api/session", s.handleSession)
+	s.mux.HandleFunc("GET /api/catalog", s.requireAccess(s.handleCatalog))
+	s.mux.HandleFunc("POST /api/orders", s.requireAccess(s.handleCreateOrder))
+	s.mux.HandleFunc("GET /api/receipts/{token}", s.requireAccess(s.handleReceipt))
+	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
+		writeError(w, http.StatusNotFound, "not_found", "Unknown API endpoint")
+	})
+
 	s.mux.Handle("GET /mc/", http.StripPrefix("/mc/", assetHandler(cfg.AssetsDir())))
-	s.mux.Handle("/", spaHandler(frontend))
+	s.mux.Handle("/", spaHandler(deps.Frontend))
 	return s
 }
 
 func (s *Server) Handler() http.Handler {
-	return securityHeaders(s.mux)
+	return securityHeaders(sameOrigin(s.mux))
 }
 
 func securityHeaders(next http.Handler) http.Handler {

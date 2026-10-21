@@ -14,9 +14,12 @@ import (
 	"time"
 
 	"github.com/mathh1s/hamazon/internal/assets"
+	"github.com/mathh1s/hamazon/internal/auth"
 	"github.com/mathh1s/hamazon/internal/catalog"
 	"github.com/mathh1s/hamazon/internal/config"
 	"github.com/mathh1s/hamazon/internal/db"
+	"github.com/mathh1s/hamazon/internal/discord"
+	"github.com/mathh1s/hamazon/internal/orders"
 	"github.com/mathh1s/hamazon/internal/server"
 	"github.com/mathh1s/hamazon/web"
 )
@@ -75,7 +78,20 @@ func serve(log *slog.Logger) error {
 		return err
 	}
 
-	srv := server.New(cfg, log, web.Dist())
+	var notifier *discord.Notifier
+	orderService := orders.NewService(conn, items, cfg.SessionSecret, cfg.FloodgatePrefix, func() { notifier.Wake() })
+	notifier = discord.NewNotifier(cfg.WebhookURL, cfg.PublicURL, orderService, items, log)
+	if cfg.WebhookURL == "" {
+		log.Warn("HAMAZON_DISCORD_WEBHOOK_URL is not set, orders are saved but no Discord messages are sent")
+	}
+	go notifier.Run(ctx)
+
+	srv := server.New(cfg, log, server.Deps{
+		Catalog:  items,
+		Orders:   orderService,
+		Access:   auth.NewAccess(cfg.ShopPassword, cfg.SessionSecret),
+		Frontend: web.Dist(),
+	})
 	httpServer := &http.Server{
 		Addr:              cfg.Addr,
 		Handler:           srv.Handler(),

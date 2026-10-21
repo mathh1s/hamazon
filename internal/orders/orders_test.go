@@ -1,0 +1,157 @@
+package orders
+
+import (
+	"context"
+	"errors"
+	"path/filepath"
+	"testing"
+
+	"github.com/mathh1s/hamazon/internal/catalog"
+	"github.com/mathh1s/hamazon/internal/db"
+	"github.com/mathh1s/hamazon/internal/validate"
+)
+
+type fixture struct {
+	svc   *Service
+	items map[string]catalog.Item
+	woken int
+}
+
+func setup(t *testing.T) *fixture {
+	t.Helper()
+	ctx := context.Background()
+	conn, err := db.Open(filepath.Join(t.TempDir(), "test.db"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { conn.Close() })
+	if err := db.Migrate(ctx, conn); err != nil {
+		t.Fatal(err)
+	}
+	store := catalog.NewStore(conn)
+	if err := store.Seed(ctx, catalog.DefaultSeed); err != nil {
+		t.Fatal(err)
+	}
+	f := &fixture{items: map[string]catalog.Item{}}
+	f.svc = NewService(conn, store, []byte("0123456789abcdef0123456789abcdef"), ".", func() { f.woken++ })
+	all, _ := store.Items(ctx, true)
+	for _, it := range all {
+		f.items[it.Texture] = it
+	}
+	return f
+}
+
+func (f *fixture) line(texture string, qty int) CreateLine {
+	it := f.items[texture]
+	return CreateLine{ItemID: it.ID, Quantity: qty, UnitPrice: it.Price}
+}
+
+func TestCreateComputesTotalsAndQueuesNotification(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	order, token, err := f.svc.Create(ctx, CreateInput{
+		IdempotencyKey: "key-aaaaaaaaaaaaaaaa", Username: "Steve",
+		Lines: []CreateLine{f.line("iron_ingot", 2), f.line("diamond_pickaxe", 1)},
+	}, "127.0.0.1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if order.Totals["diamond"] != 2+4 || order.Totals["gold_ingot"] != 16 {
+		t.Fatalf("unexpected totals %v", order.Totals)
+	}
+	if order.Status != StatusPending || f.woken != 1 {
+		t.Fatalf("status %s, woken %d", order.Status, f.woken)
+	}
+	due, _ := f.svc.DueNotifications(ctx, 10)
+	if len(due) != 1 || due[0].Kind != NotifyCreated {
+		t.Fatalf("expected one queued notification, got %+v", due)
+	}
+
+	again, err := f.svc.ByReceipt(ctx, token)
+	if err != nil || again.Code != order.Code {
+		t.Fatalf("receipt lookup failed: %v", err)
+	}
+	if _, err := f.svc.ByReceipt(ctx, token[:len(token)-1]+"x"); !errors.Is(err, ErrNotFound) {
+		t.Fatalf("tampered token must not resolve, got %v", err)
+	}
+}
+
+func TestRetriedSubmitReturnsSameOrder(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	in := CreateInput{IdempotencyKey: "key-bbbbbbbbbbbbbbbb", Username: "Alex", Lines: []CreateLine{f.line("bread", 1)}}
+	first, token1, err := f.svc.Create(ctx, in, "1.1.1.1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	second, token2, err := f.svc.Create(ctx, in, "1.1.1.1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if first.ID != second.ID || token1 != token2 || f.woken != 1 {
+		t.Fatalf("retry created a second order: %d vs %d", first.ID, second.ID)
+	}
+
+	in.IdempotencyKey = "key-cccccccccccccccc"
+	if _, _, err := f.svc.Create(ctx, in, "1.1.1.1"); !errors.Is(err, ErrDuplicate) {
+		t.Fatalf("expected duplicate protection, got %v", err)
+	}
+}
+
+func TestStalePriceIsRejected(t *testing.T) {
+	f := setup(t)
+	l := f.line("elytra", 1)
+	l.UnitPrice = catalog.Price{"diamond": 1}
+	_, _, err := f.svc.Create(context.Background(), CreateInput{IdempotencyKey: "key-dddddddddddddddd", Username: "Steve", Lines: []CreateLine{l}}, "")
+	var changed *PriceChangedError
+	if !errors.As(err, &changed) {
+		t.Fatalf("expected price change error, got %v", err)
+	}
+}
+
+func TestLimits(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+
+	_, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-eeeeeeeeeeeeeeee", Username: "Steve",
+		Lines: []CreateLine{f.line("diamond_chestplate", 2)}}, "")
+	var fields validate.Errors
+	if !errors.As(err, &fields) || fields["lines.0"] == "" {
+		t.Fatalf("expected max per order error, got %v", err)
+	}
+
+	if _, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-ffffffffffffffff", Username: "Steve",
+		Lines: []CreateLine{f.line("elytra", 1)}}, ""); err != nil {
+		t.Fatal(err)
+	}
+	_, _, err = f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-gggggggggggggggg", Username: "STEVE",
+		Lines: []CreateLine{f.line("elytra", 1), f.line("bread", 1)}}, "")
+	var limit *LimitError
+	if !errors.As(err, &limit) || limit.Remaining != 0 {
+		t.Fatalf("expected per player limit across name casing, got %v", err)
+	}
+	if _, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-hhhhhhhhhhhhhhhh", Username: "Alex",
+		Lines: []CreateLine{f.line("elytra", 1)}}, ""); err != nil {
+		t.Fatalf("other players are not affected: %v", err)
+	}
+}
+
+func TestNormalizeUsername(t *testing.T) {
+	cases := map[string]string{
+		"Steve":             "Steve",
+		" Notch ":           "Notch",
+		"ab":                "",
+		"has space":         "",
+		"way_too_long_name": "",
+		".BedrockGuy":       ".BedrockGuy",
+		".Cool Gamer":       ".Cool_Gamer",
+		".":                 "",
+		"bad-char":          "",
+	}
+	for in, want := range cases {
+		got, ok := NormalizeUsername(in, ".")
+		if got != want || ok != (want != "") {
+			t.Errorf("%q: got %q %v, want %q", in, got, ok, want)
+		}
+	}
+}

@@ -42,21 +42,21 @@ func Load() (Config, error) {
 	}
 	c.SessionSecret = []byte(secret)
 
-	c.WebhookURL = strings.TrimSpace(os.Getenv("HAMAZON_DISCORD_WEBHOOK_URL"))
+	c.WebhookURL = cleanEnv("HAMAZON_DISCORD_WEBHOOK_URL")
 	if c.WebhookURL != "" {
 		if err := validateWebhookURL(c.WebhookURL); err != nil {
 			errs = append(errs, err)
 		}
 	}
 
-	c.PublicURL = strings.TrimRight(os.Getenv("HAMAZON_PUBLIC_URL"), "/")
+	c.PublicURL = strings.TrimRight(cleanEnv("HAMAZON_PUBLIC_URL"), "/")
 	if c.PublicURL != "" {
 		if u, err := url.Parse(c.PublicURL); err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-			errs = append(errs, errors.New("HAMAZON_PUBLIC_URL must be an absolute http(s) URL"))
+			errs = append(errs, fmt.Errorf("HAMAZON_PUBLIC_URL must start with http:// or https://, got %q (leave it empty to disable)", c.PublicURL))
 		}
 	}
 
-	if v := os.Getenv("HAMAZON_TRUST_PROXY"); v != "" {
+	if v := cleanEnv("HAMAZON_TRUST_PROXY"); v != "" {
 		b, err := strconv.ParseBool(v)
 		if err != nil {
 			errs = append(errs, fmt.Errorf("HAMAZON_TRUST_PROXY: %w", err))
@@ -90,6 +90,16 @@ func validateWebhookURL(raw string) error {
 		return errors.New("HAMAZON_DISCORD_WEBHOOK_URL must be a https://discord.com/api/webhooks/... URL")
 	}
 	return nil
+}
+
+// cleanEnv drops whitespace and a pair of surrounding quotes, which panels
+// like Portainer keep as part of the value when they are typed in.
+func cleanEnv(key string) string {
+	v := strings.TrimSpace(os.Getenv(key))
+	if len(v) >= 2 && (v[0] == '"' || v[0] == '\'') && v[len(v)-1] == v[0] {
+		v = strings.TrimSpace(v[1 : len(v)-1])
+	}
+	return v
 }
 
 func envOr(key, fallback string) string {

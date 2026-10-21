@@ -18,10 +18,13 @@ var guiSprites = map[string]string{
 	"slot":                 "minecraft:gui/sprites/container/slot",
 	"tab":                  "minecraft:gui/sprites/container/creative_inventory/tab_top_unselected_2",
 	"tab_selected":         "minecraft:gui/sprites/container/creative_inventory/tab_top_selected_2",
+	"tab_bottom":           "minecraft:gui/sprites/container/creative_inventory/tab_bottom_unselected_2",
+	"tab_bottom_selected":  "minecraft:gui/sprites/container/creative_inventory/tab_bottom_selected_2",
 	"scroller":             "minecraft:gui/sprites/container/creative_inventory/scroller",
 	"tooltip_background":   "minecraft:gui/sprites/tooltip/background",
 	"tooltip_frame":        "minecraft:gui/sprites/tooltip/frame",
 	"dirt":                 "minecraft:block/dirt",
+	"stone":                "minecraft:block/stone",
 }
 
 // guiCrops cut a region out of a larger GUI sheet.

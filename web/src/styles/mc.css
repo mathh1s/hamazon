@@ -1,0 +1,139 @@
+@font-face {
+  font-family: 'Hamazon Minecraft';
+  src: url('/mc/font/minecraft.ttf') format('truetype');
+  font-display: block;
+}
+
+:root {
+  /* One GUI pixel. Everything is sized in multiples of it, like the game's GUI
+     scale. Very narrow phones shrink it so a 176 pixel container still fits. */
+  --u: min(2px, calc((100vw - 16px) / 176));
+  --font-size: calc(var(--u) * 8);
+
+  --panel: #c6c6c6;
+  --panel-light: #ffffff;
+  --panel-dark: #555555;
+  --slot: #8b8b8b;
+  --slot-dark: #373737;
+  --title: #404040;
+  --text: #ffffff;
+  --text-shadow: #3f3f3f;
+  --gray: #aaaaaa;
+  --dark-gray: #555555;
+  --gold: #ffaa00;
+  --yellow: #ffff55;
+  --green: #55ff55;
+  --aqua: #55ffff;
+  --red: #ff5555;
+  --tooltip-bg: rgba(16, 0, 16, 0.94);
+
+  color-scheme: dark;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --u: 3px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Hamazon Minecraft', 'Courier New', monospace;
+  font-size: var(--font-size);
+  line-height: calc(var(--u) * 10);
+  color: var(--text);
+  background-color: #404040;
+  background-image: url('/mc/gui/dirt.png');
+  background-size: calc(var(--u) * 16 * 2);
+  background-blend-mode: multiply;
+  image-rendering: pixelated;
+  -webkit-font-smoothing: none;
+  font-smooth: never;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--aqua);
+}
+
+.shadow {
+  text-shadow: var(--u) var(--u) 0 var(--text-shadow);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+:focus-visible {
+  outline: var(--u) solid var(--yellow);
+  outline-offset: var(--u);
+}
+
+/* Container panel: the chest screen border, nine-sliced. */
+.mc-panel {
+  border: calc(var(--u) * 4) solid transparent;
+  border-image: url('/mc/gui/panel.png') 4 fill / calc(var(--u) * 4) stretch;
+  background-color: transparent;
+  color: var(--title);
+  padding: calc(var(--u) * 3);
+}
+
+.mc-title {
+  color: var(--title);
+  margin: 0;
+  font-size: var(--font-size);
+  font-weight: normal;
+  line-height: calc(var(--u) * 10);
+}
+
+.mc-text-gray {
+  color: var(--gray);
+}
+
+.mc-text-dark {
+  color: var(--dark-gray);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #000;
+  }
+}

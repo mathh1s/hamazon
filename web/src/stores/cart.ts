@@ -31,6 +31,7 @@ export interface CartLine {
   item: Item | undefined
   priceChanged: boolean
   overLimit: boolean
+  outOfStock: boolean
 }
 
 export const cartLines = computed<CartLine[]>(() =>
@@ -41,6 +42,7 @@ export const cartLines = computed<CartLine[]>(() =>
       item,
       priceChanged: !!item && !samePrice(item.price, entry.acceptedPrice),
       overLimit: !!item && entry.quantity > item.maxPerOrder,
+      outOfStock: !!item && !item.inStock,
     }
   }),
 )
@@ -57,6 +59,7 @@ export const cartProblems = computed(() => {
   if (cartLines.value.some((l) => !l.item)) out.push('unavailable')
   if (cartLines.value.some((l) => l.priceChanged)) out.push('price')
   if (cartLines.value.some((l) => l.overLimit)) out.push('limit')
+  if (cartLines.value.some((l) => l.outOfStock)) out.push('stock')
   return out
 })
 
@@ -83,6 +86,10 @@ export function setQuantity(itemId: number, quantity: number) {
 
 export function removeFromCart(itemId: number) {
   cart.entries = cart.entries.filter((e) => e.itemId !== itemId)
+}
+
+export function removeOutOfStock() {
+  cart.entries = cart.entries.filter((e) => itemsById.value.get(e.itemId)?.inStock !== false)
 }
 
 export function acceptCurrentPrices() {

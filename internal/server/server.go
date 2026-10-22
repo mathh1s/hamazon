@@ -68,6 +68,7 @@ func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s.mux.HandleFunc("POST /api/admin/items", s.requireAdmin(s.handleAdminCreateItem))
 	s.mux.HandleFunc("PUT /api/admin/items/{id}", s.requireAdmin(s.handleAdminUpdateItem))
 	s.mux.HandleFunc("DELETE /api/admin/items/{id}", s.requireAdmin(s.handleAdminDeleteItem))
+	s.mux.HandleFunc("PUT /api/admin/items/{id}/stock", s.requireAdmin(s.handleAdminItemStock))
 
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "not_found", "Unknown API endpoint")

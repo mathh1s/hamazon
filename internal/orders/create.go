@@ -70,6 +70,20 @@ type UnavailableError struct{ ItemIDs []int64 }
 
 func (e *UnavailableError) Error() string { return "some items are no longer available" }
 
+// OutOfStockError lists cart items an admin marked as out of stock.
+type OutOfStockError struct {
+	ItemIDs []int64
+	Names   []string
+}
+
+func (e *OutOfStockError) Error() string {
+	verb := "are"
+	if len(e.Names) == 1 {
+		verb = "is"
+	}
+	return strings.Join(e.Names, ", ") + " " + verb + " out of stock right now"
+}
+
 // LimitError reports a per player limit that this order would exceed.
 type LimitError struct {
 	ItemID    int64  `json:"itemId"`
@@ -195,6 +209,7 @@ func (s *Service) buildLines(ctx context.Context, tx *sql.Tx, in []CreateLine) (
 	}
 
 	var unavailable, changed []int64
+	soldOut := &OutOfStockError{}
 	errs := validate.Errors{}
 	lines := make([]Line, 0, len(in))
 	for i, l := range in {
@@ -202,6 +217,10 @@ func (s *Service) buildLines(ctx context.Context, tx *sql.Tx, in []CreateLine) (
 		if !ok || !it.Enabled {
 			unavailable = append(unavailable, l.ItemID)
 			continue
+		}
+		if !it.InStock {
+			soldOut.ItemIDs = append(soldOut.ItemIDs, it.ID)
+			soldOut.Names = append(soldOut.Names, it.Name)
 		}
 		if !maps.Equal(it.Price, l.UnitPrice) {
 			changed = append(changed, l.ItemID)
@@ -214,6 +233,9 @@ func (s *Service) buildLines(ctx context.Context, tx *sql.Tx, in []CreateLine) (
 	}
 	if len(unavailable) > 0 {
 		return nil, &UnavailableError{ItemIDs: unavailable}
+	}
+	if len(soldOut.ItemIDs) > 0 {
+		return nil, soldOut
 	}
 	if len(changed) > 0 {
 		return nil, &PriceChangedError{ItemIDs: changed}

@@ -7,8 +7,6 @@ const SPLASHES = [
   'No creepers in stock!',
   'Delivery by hand!',
   'Mined fresh daily!',
-  '100% survival friendly!',
-  'Not affiliated with any villager!',
   'Hrmm!',
   'Free shipping*!',
   'Stacks of 64!',

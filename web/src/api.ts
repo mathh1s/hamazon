@@ -25,6 +25,7 @@ export interface Item {
   playerLimit: number | null
   playerLimitDays: number | null
   enabled: boolean
+  inStock: boolean
   sort: number
   price: Price
 }
@@ -176,6 +177,7 @@ export interface ItemInput {
   playerLimit: number | null
   playerLimitDays: number | null
   enabled: boolean
+  inStock: boolean
   sort: number
   price: Price
 }

@@ -6,7 +6,16 @@ import PriceTag from '../components/PriceTag.vue'
 import McButton from '../components/McButton.vue'
 import QuantityStepper from '../components/QuantityStepper.vue'
 import { catalog, loadCatalog } from '../stores/catalog'
-import { acceptCurrentPrices, cart, cartLines, cartProblems, cartTotals, removeFromCart, setQuantity } from '../stores/cart'
+import {
+  acceptCurrentPrices,
+  cart,
+  cartLines,
+  cartProblems,
+  cartTotals,
+  removeFromCart,
+  removeOutOfStock,
+  setQuantity,
+} from '../stores/cart'
 import { scalePrice } from '../lib/price'
 import { usePageTitle } from '../lib/title'
 import { playChestClose, playChestOpen, playPop } from '../stores/sound'
@@ -44,17 +53,20 @@ const canCheckout = computed(() => catalog.loaded && cart.entries.length > 0 && 
           <p v-if="cartProblems.includes('price')">Some prices changed since you added the items. Check the marked lines.</p>
           <p v-if="cartProblems.includes('unavailable')">Some items are no longer sold and will be removed.</p>
           <p v-if="cartProblems.includes('limit')">Some quantities are above the current limit and will be lowered.</p>
-          <McButton @click="acceptCurrentPrices">Accept changes</McButton>
+          <McButton v-if="cartProblems.some((p) => p !== 'stock')" @click="acceptCurrentPrices">Accept changes</McButton>
+          <p v-if="cartProblems.includes('stock')">Some items are out of stock right now.</p>
+          <McButton v-if="cartProblems.includes('stock')" @click="removeOutOfStock">Remove out of stock items</McButton>
         </div>
 
         <ul class="lines">
-          <li v-for="line in cartLines" :key="line.entry.itemId" class="line" :class="{ flagged: line.priceChanged || !line.item || line.overLimit }">
-            <ItemSlot :texture="line.item?.texture" :count="line.item?.count" />
+          <li v-for="line in cartLines" :key="line.entry.itemId" class="line" :class="{ flagged: line.priceChanged || !line.item || line.overLimit || line.outOfStock }">
+            <ItemSlot :texture="line.item?.texture" :count="line.item?.count" :dimmed="line.outOfStock" />
             <div class="name">
               <span>{{ line.item?.name ?? 'No longer sold' }}</span>
               <span v-if="line.item" class="unit">
                 <PriceTag :price="line.entry.acceptedPrice" /> per {{ line.item.count === 1 ? 'item' : `set of ${line.item.count}` }}
               </span>
+              <span v-if="line.outOfStock" class="unit changed">Out of stock</span>
               <span v-if="line.priceChanged && line.item" class="unit changed">
                 Now <PriceTag :price="line.item.price" />
               </span>

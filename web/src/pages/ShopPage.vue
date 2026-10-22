@@ -98,6 +98,7 @@ function selectFromCart(id: number) {
 
 function tooltipLines(item: Item): TooltipLine[] {
   const lines: TooltipLine[] = []
+  if (!item.inStock) lines.push({ text: 'Out of stock', color: 'var(--red)' })
   if (item.description) lines.push({ text: item.description })
   if (item.count > 1) lines.push({ text: `Set of ${item.count}` })
   lines.push({ text: priceText(item.price, catalog.currencies), color: 'var(--gold)' })
@@ -147,7 +148,8 @@ function hover(e: PointerEvent, item: Item) {
                   :count="item.count"
                   interactive
                   :selected="item.id === selectedId"
-                  :label="`${item.name}, ${priceText(item.price, catalog.currencies)}`"
+                  :dimmed="!item.inStock"
+                  :label="`${item.name}, ${item.inStock ? priceText(item.price, catalog.currencies) : 'out of stock'}`"
                   @click="select(item)"
                   @pointerenter="hover($event, item)"
                   @pointermove="moveTooltip"

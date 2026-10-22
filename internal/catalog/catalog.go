@@ -44,6 +44,7 @@ type Item struct {
 	PlayerLimit     *int   `json:"playerLimit"`
 	PlayerLimitDays *int   `json:"playerLimitDays"`
 	Enabled         bool   `json:"enabled"`
+	InStock         bool   `json:"inStock"`
 	Sort            int    `json:"sort"`
 	Price           Price  `json:"price"`
 }
@@ -59,6 +60,7 @@ type ItemInput struct {
 	PlayerLimit     *int   `json:"playerLimit" yaml:"playerLimit"`
 	PlayerLimitDays *int   `json:"playerLimitDays" yaml:"playerLimitDays"`
 	Enabled         *bool  `json:"enabled" yaml:"enabled"`
+	InStock         *bool  `json:"inStock" yaml:"inStock"`
 	Sort            int    `json:"sort" yaml:"sort"`
 	Price           Price  `json:"price" yaml:"price"`
 }
@@ -103,13 +105,13 @@ func (s *Store) Categories(ctx context.Context) ([]Category, error) {
 	return out, rows.Err()
 }
 
-const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, sort`
+const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, sort`
 
 func scanItem(sc interface{ Scan(...any) error }) (Item, error) {
 	var it Item
 	var limit, days sql.NullInt64
 	err := sc.Scan(&it.ID, &it.Name, &it.Texture, &it.CategoryID, &it.Count, &it.Description,
-		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.Sort)
+		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.Sort)
 	if limit.Valid && days.Valid {
 		l, d := int(limit.Int64), int(days.Int64)
 		it.PlayerLimit, it.PlayerLimitDays = &l, &d
@@ -232,9 +234,9 @@ func (s *Store) Update(ctx context.Context, id int64, in ItemInput) (Item, error
 	}
 	err := db.InTx(ctx, s.db, func(tx *sql.Tx) error {
 		res, err := tx.ExecContext(ctx, `UPDATE items SET name = ?, texture = ?, category_id = ?, count = ?, description = ?,
-			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, sort = ?, updated_at = ? WHERE id = ?`,
+			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, sort = ?, updated_at = ? WHERE id = ?`,
 			in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, in.Sort, db.Now(), id)
+			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, in.Sort, db.Now(), id)
 		if err != nil {
 			return err
 		}
@@ -248,6 +250,19 @@ func (s *Store) Update(ctx context.Context, id int64, in ItemInput) (Item, error
 	})
 	if err != nil {
 		return Item{}, err
+	}
+	return s.Item(ctx, id)
+}
+
+// SetInStock is the quick toggle in the admin list, so it does not need the
+// whole item to be resent.
+func (s *Store) SetInStock(ctx context.Context, id int64, inStock bool) (Item, error) {
+	res, err := s.db.ExecContext(ctx, `UPDATE items SET in_stock = ?, updated_at = ? WHERE id = ?`, inStock, db.Now(), id)
+	if err != nil {
+		return Item{}, err
+	}
+	if n, _ := res.RowsAffected(); n == 0 {
+		return Item{}, ErrNotFound
 	}
 	return s.Item(ctx, id)
 }
@@ -266,9 +281,9 @@ func (s *Store) Delete(ctx context.Context, id int64) error {
 func insertItem(ctx context.Context, q db.Querier, in ItemInput) (int64, error) {
 	now := db.Now()
 	res, err := q.ExecContext(ctx, `INSERT INTO items (name, texture, category_id, count, description, max_per_order,
-		player_limit, player_limit_days, enabled, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		player_limit, player_limit_days, enabled, in_stock, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, in.Sort, now, now)
+		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, in.Sort, now, now)
 	if err != nil {
 		return 0, err
 	}
@@ -318,6 +333,10 @@ func validateItem(in *ItemInput, currencies []Currency, categories []Category) e
 	if in.Enabled == nil {
 		enabled := true
 		in.Enabled = &enabled
+	}
+	if in.InStock == nil {
+		inStock := true
+		in.InStock = &inStock
 	}
 
 	if in.Name == "" || len([]rune(in.Name)) > 64 {

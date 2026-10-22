@@ -28,6 +28,21 @@ onMounted(async () => {
   }
 })
 
+const toggling = ref<number | null>(null)
+
+async function toggleStock(item: Item) {
+  toggling.value = item.id
+  try {
+    const updated = await api<Item>('PUT', `/api/admin/items/${item.id}/stock`, { inStock: !item.inStock })
+    items.value = items.value.map((i) => (i.id === updated.id ? updated : i))
+    loadCatalog(true)
+  } catch (e) {
+    error.value = errorMessage(e)
+  } finally {
+    toggling.value = null
+  }
+}
+
 const groups = computed(() => {
   const q = search.value.trim().toLowerCase()
   return admin.categories
@@ -54,15 +69,26 @@ const groups = computed(() => {
         <h3 class="mc-title">{{ g.category.name }}</h3>
         <p v-if="g.items.length === 0" class="hint">No items in this category.</p>
         <ul class="list">
-          <li v-for="item in g.items" :key="item.id">
+          <li v-for="item in g.items" :key="item.id" class="entry">
             <RouterLink :to="`/admin/items/${item.id}`" class="row" :class="{ disabled: !item.enabled }">
-              <ItemSlot :texture="item.texture" :count="item.count" />
-              <span class="name">{{ item.name }}<span v-if="!item.enabled" class="off"> (hidden)</span></span>
+              <ItemSlot :texture="item.texture" :count="item.count" :dimmed="!item.inStock" />
+              <span class="name"
+                >{{ item.name }}<span v-if="!item.enabled" class="off"> (hidden)</span
+                ><span v-else-if="!item.inStock" class="soldout"> (out of stock)</span></span
+              >
               <PriceTag :price="item.price" />
               <span class="limit">
                 Max {{ item.maxPerOrder }} per order<template v-if="item.playerLimit">, {{ item.playerLimit }} per {{ item.playerLimitDays }} days</template>
               </span>
             </RouterLink>
+            <McButton
+              small
+              class="stock"
+              :disabled="toggling === item.id"
+              :aria-label="`${item.inStock ? 'Mark out of stock' : 'Mark in stock'}: ${item.name}`"
+              @click="toggleStock(item)"
+              >{{ item.inStock ? 'Sold out' : 'Restock' }}</McButton
+            >
           </li>
         </ul>
       </section>
@@ -106,6 +132,25 @@ const groups = computed(() => {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(calc(var(--u) * 160), 1fr));
   gap: var(--u);
+}
+
+.entry {
+  display: flex;
+  gap: var(--u);
+}
+
+.entry .row {
+  flex: 1;
+  min-width: 0;
+}
+
+.stock {
+  align-self: stretch;
+  min-width: calc(var(--u) * 44);
+}
+
+.soldout {
+  color: var(--red);
 }
 
 .row {

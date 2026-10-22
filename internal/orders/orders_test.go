@@ -155,3 +155,17 @@ func TestNormalizeUsername(t *testing.T) {
 		}
 	}
 }
+
+func TestOutOfStockBlocksOrder(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	if _, err := f.svc.catalog.SetInStock(ctx, f.items["bread"].ID, false); err != nil {
+		t.Fatal(err)
+	}
+	_, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-oooooooooooooooo", Username: "Steve",
+		Lines: []CreateLine{f.line("bread", 1), f.line("torch", 1)}}, "")
+	var soldOut *OutOfStockError
+	if !errors.As(err, &soldOut) || len(soldOut.ItemIDs) != 1 || soldOut.Error() != "Bread is out of stock right now" {
+		t.Fatalf("expected out of stock error, got %v", err)
+	}
+}

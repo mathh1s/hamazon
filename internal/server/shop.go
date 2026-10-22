@@ -122,6 +122,7 @@ func (s *Server) orderError(w http.ResponseWriter, err error) {
 	var changed *orders.PriceChangedError
 	var unavailable *orders.UnavailableError
 	var limit *orders.LimitError
+	var soldOut *orders.OutOfStockError
 	switch {
 	case errors.As(err, &fields):
 		f := map[string]any{}
@@ -137,6 +138,10 @@ func (s *Server) orderError(w http.ResponseWriter, err error) {
 		writeErrorDetails(w, http.StatusConflict, apiError{Code: "unavailable",
 			Message: "Some items in your cart are no longer sold and were removed.",
 			Details: map[string]any{"itemIds": unavailable.ItemIDs}})
+	case errors.As(err, &soldOut):
+		writeErrorDetails(w, http.StatusConflict, apiError{Code: "out_of_stock",
+			Message: soldOut.Error() + ". Remove it from your cart to order the rest.",
+			Details: map[string]any{"itemIds": soldOut.ItemIDs}})
 	case errors.As(err, &limit):
 		writeErrorDetails(w, http.StatusUnprocessableEntity, apiError{Code: "player_limit", Message: limit.Error(), Details: limit})
 	case errors.Is(err, orders.ErrDuplicate):

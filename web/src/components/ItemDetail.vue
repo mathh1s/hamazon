@@ -37,7 +37,7 @@ function add() {
 
 <template>
   <section class="detail" aria-live="polite">
-    <ItemSlot :texture="item.texture" :count="item.count" :size="26" />
+    <ItemSlot :texture="item.texture" :count="item.count" :size="26" :dimmed="!item.inStock" />
     <div class="info">
       <h3 class="mc-title">{{ item.name }}</h3>
       <p v-if="item.description" class="desc">{{ item.description }}</p>
@@ -52,7 +52,8 @@ function add() {
       </p>
     </div>
     <div class="buy">
-      <template v-if="room > 0">
+      <p v-if="!item.inStock" class="soldout">Out of stock right now. Check back later.</p>
+      <template v-else-if="room > 0">
         <QuantityStepper v-model="quantity" :max="room" label="Quantity" />
         <McButton @click="add">
           Add for
@@ -109,6 +110,10 @@ function add() {
 
 .buy p {
   margin: 0;
+}
+
+.soldout {
+  color: #aa0000;
 }
 
 .added {

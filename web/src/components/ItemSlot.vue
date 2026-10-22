@@ -2,7 +2,15 @@
 import ItemIcon from './ItemIcon.vue'
 
 withDefaults(
-  defineProps<{ texture?: string; count?: number; selected?: boolean; interactive?: boolean; label?: string; size?: number }>(),
+  defineProps<{
+    texture?: string
+    count?: number
+    selected?: boolean
+    interactive?: boolean
+    label?: string
+    size?: number
+    dimmed?: boolean
+  }>(),
   { size: 18 },
 )
 defineEmits<{ click: [MouseEvent] }>()
@@ -12,7 +20,7 @@ defineEmits<{ click: [MouseEvent] }>()
   <component
     :is="interactive ? 'button' : 'span'"
     class="slot"
-    :class="{ selected, interactive }"
+    :class="{ selected, interactive, dimmed }"
     :style="{ '--slot': size }"
     :type="interactive ? 'button' : undefined"
     :aria-label="label"
@@ -62,6 +70,15 @@ defineEmits<{ click: [MouseEvent] }>()
 .slot:focus-visible {
   outline: var(--u) solid var(--yellow);
   outline-offset: 0;
+}
+
+/* Like a locked slot: the item is greyed out and darkened. */
+.slot.dimmed :deep(.icon) {
+  filter: grayscale(1) brightness(0.55);
+}
+
+.slot.dimmed .count {
+  color: var(--gray);
 }
 
 .count {

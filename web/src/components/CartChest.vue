@@ -11,11 +11,18 @@ const emit = defineEmits<{ select: [number] }>()
 
 // Like a real chest, every purchase unit takes its own slot.
 const slots = computed(() => {
-  const out: { itemId: number; texture: string; count: number; name: string; quantity: number }[] = []
+  const out: { itemId: number; texture: string; count: number; name: string; quantity: number; inStock: boolean }[] = []
   for (const line of cartLines.value) {
     if (!line.item) continue
     for (let i = 0; i < line.entry.quantity; i++) {
-      out.push({ itemId: line.item.id, texture: line.item.texture, count: line.item.count, name: line.item.name, quantity: line.entry.quantity })
+      out.push({
+        itemId: line.item.id,
+        texture: line.item.texture,
+        count: line.item.count,
+        name: line.item.name,
+        quantity: line.entry.quantity,
+        inStock: line.item.inStock,
+      })
     }
   }
   return out
@@ -40,6 +47,7 @@ function hover(e: PointerEvent, s: { name: string; quantity: number; count: numb
         :texture="s.texture"
         :count="s.count"
         interactive
+        :dimmed="!s.inStock"
         :label="`${s.name}, ${s.quantity} in cart`"
         @click="emit('select', s.itemId)"
         @pointerenter="hover($event, s)"

@@ -30,6 +30,7 @@ const form = reactive({
   playerLimit: '1',
   playerLimitDays: '7',
   enabled: true,
+  inStock: true,
   sort: '0',
   price: {} as Record<string, string>,
 })
@@ -61,6 +62,7 @@ onMounted(async () => {
         playerLimit: String(item.playerLimit ?? 1),
         playerLimitDays: String(item.playerLimitDays ?? 7),
         enabled: item.enabled,
+        inStock: item.inStock,
         sort: String(item.sort),
         price: Object.fromEntries(Object.entries(item.price).map(([k, v]) => [k, String(v)])),
       })
@@ -94,6 +96,7 @@ function toInput(): ItemInput {
     playerLimit: form.limitOn ? Number(form.playerLimit) : null,
     playerLimitDays: form.limitOn ? Number(form.playerLimitDays) : null,
     enabled: form.enabled,
+    inStock: form.inStock,
     sort: Number(form.sort) || 0,
     price,
   }
@@ -147,7 +150,7 @@ async function remove() {
 
       <template v-else>
         <div class="preview">
-          <ItemSlot :texture="form.texture || undefined" :count="Number(form.count)" :size="26" />
+          <ItemSlot :texture="form.texture || undefined" :count="Number(form.count)" :size="26" :dimmed="!form.inStock" />
           <span>{{ form.name || 'Unnamed item' }}</span>
         </div>
 
@@ -239,6 +242,10 @@ async function remove() {
         <label class="check">
           <input v-model="form.enabled" type="checkbox" />
           <span>Show in the shop</span>
+        </label>
+        <label class="check">
+          <input v-model="form.inStock" type="checkbox" :disabled="!form.enabled" />
+          <span>In stock (when off, players see the item greyed out and cannot order it)</span>
         </label>
 
         <p v-if="error" class="error" role="alert">{{ error }}</p>

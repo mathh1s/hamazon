@@ -259,6 +259,27 @@ func (s *Server) handleAdminUpdateItem(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, item)
 }
 
+func (s *Server) handleAdminItemStock(w http.ResponseWriter, r *http.Request) {
+	id, ok := pathID(r)
+	if !ok {
+		writeError(w, http.StatusNotFound, "not_found", "Item not found")
+		return
+	}
+	var body struct {
+		InStock bool `json:"inStock"`
+	}
+	if !decodeJSON(w, r, &body) {
+		return
+	}
+	item, err := s.catalog.SetInStock(r.Context(), id, body.InStock)
+	if err != nil {
+		s.adminError(w, err)
+		return
+	}
+	s.log.Info("item stock changed", "item", item.Name, "in_stock", item.InStock, "admin", currentAdmin(r).Name)
+	writeJSON(w, http.StatusOK, item)
+}
+
 func (s *Server) handleAdminDeleteItem(w http.ResponseWriter, r *http.Request) {
 	id, ok := pathID(r)
 	if !ok {

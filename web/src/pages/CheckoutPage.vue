@@ -84,7 +84,7 @@ async function place() {
     router.replace({ path: `/receipt/${res.receiptToken}`, query: { placed: '1' } })
   } catch (e) {
     if (e instanceof ApiError) {
-      if (e.code === 'price_changed' || e.code === 'unavailable') {
+      if (e.code === 'price_changed' || e.code === 'unavailable' || e.code === 'out_of_stock') {
         await loadCatalog(true)
         router.replace('/cart')
         return

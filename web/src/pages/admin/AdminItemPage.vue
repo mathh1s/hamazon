@@ -33,6 +33,7 @@ const form = reactive({
   inStock: true,
   nether: false,
   end: false,
+  group: '',
   sort: '0',
   price: {} as Record<string, string>,
 })
@@ -46,8 +47,9 @@ onMounted(async () => {
   try {
     if (!admin.loaded) await loadOverview()
     form.categoryId = admin.categories[0]?.id ?? ''
+    const items = (await api<{ items: Item[] }>('GET', '/api/admin/items')).items
+    knownGroups.value = [...new Set(items.map((i) => i.group).filter(Boolean))].sort()
     if (!isNew.value) {
-      const items = (await api<{ items: Item[] }>('GET', '/api/admin/items')).items
       const item = items.find((i) => i.id === id.value)
       if (!item) {
         error.value = 'This item does not exist anymore.'
@@ -67,6 +69,7 @@ onMounted(async () => {
         inStock: item.inStock,
         nether: item.dimensions.includes('nether'),
         end: item.dimensions.includes('end'),
+        group: item.group,
         sort: String(item.sort),
         price: Object.fromEntries(Object.entries(item.price).map(([k, v]) => [k, String(v)])),
       })
@@ -77,6 +80,8 @@ onMounted(async () => {
     loading.value = false
   }
 })
+
+const knownGroups = ref<string[]>([])
 
 const usedCurrencies = computed(() => admin.currencies.filter((c) => Number(form.price[c.id]) > 0).length)
 
@@ -101,6 +106,7 @@ function toInput(): ItemInput {
     playerLimitDays: form.limitOn ? Number(form.playerLimitDays) : null,
     enabled: form.enabled,
     inStock: form.inStock,
+    group: form.group,
     dimensions: [...(form.nether ? (['nether'] as const) : []), ...(form.end ? (['end'] as const) : [])],
     sort: Number(form.sort) || 0,
     price,
@@ -179,6 +185,15 @@ async function remove() {
             </select>
             <p v-if="errors.categoryId" class="error">{{ errors.categoryId }}</p>
           </div>
+        </div>
+
+        <div class="field">
+          <label for="group" class="label">Variant group (optional, items with the same group share one shop slot)</label>
+          <McTextField id="group" v-model="form.group" maxlength="40" list="groups" placeholder="e.g. Shulker Boxes" :invalid="!!errors.group" />
+          <datalist id="groups">
+            <option v-for="g in knownGroups" :key="g" :value="g" />
+          </datalist>
+          <p v-if="errors.group" class="error">{{ errors.group }}</p>
         </div>
 
         <div class="field">

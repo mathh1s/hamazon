@@ -47,6 +47,7 @@ type Item struct {
 	InStock         bool     `json:"inStock"`
 	PriceLocked     bool     `json:"priceLocked"`
 	Dimensions      []string `json:"dimensions"`
+	Group           string   `json:"group"`
 	Sort            int      `json:"sort"`
 	Price           Price    `json:"price"`
 }
@@ -64,6 +65,7 @@ type ItemInput struct {
 	Enabled         *bool    `json:"enabled" yaml:"enabled"`
 	InStock         *bool    `json:"inStock" yaml:"inStock"`
 	Dimensions      []string `json:"dimensions" yaml:"dimensions"`
+	Group           string   `json:"group" yaml:"group"`
 	Sort            int      `json:"sort" yaml:"sort"`
 	Price           Price    `json:"price" yaml:"price"`
 }
@@ -108,14 +110,14 @@ func (s *Store) Categories(ctx context.Context) ([]Category, error) {
 	return out, rows.Err()
 }
 
-const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, price_locked, dimensions, sort`
+const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, price_locked, dimensions, variant_group, sort`
 
 func scanItem(sc interface{ Scan(...any) error }) (Item, error) {
 	var it Item
 	var limit, days sql.NullInt64
 	var dims string
 	err := sc.Scan(&it.ID, &it.Name, &it.Texture, &it.CategoryID, &it.Count, &it.Description,
-		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.PriceLocked, &dims, &it.Sort)
+		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.PriceLocked, &dims, &it.Group, &it.Sort)
 	it.Dimensions = splitDimensions(dims)
 	if limit.Valid && days.Valid {
 		l, d := int(limit.Int64), int(days.Int64)
@@ -245,10 +247,10 @@ func (s *Store) Update(ctx context.Context, id int64, in ItemInput) (Item, error
 	locked := before.PriceLocked || !sameTerms(termsOf(before), termsOfInput(in))
 	err = db.InTx(ctx, s.db, func(tx *sql.Tx) error {
 		res, err := tx.ExecContext(ctx, `UPDATE items SET name = ?, texture = ?, category_id = ?, count = ?, description = ?,
-			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, price_locked = ?, dimensions = ?, sort = ?,
-			updated_at = ? WHERE id = ?`,
+			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, price_locked = ?, dimensions = ?, variant_group = ?,
+			sort = ?, updated_at = ? WHERE id = ?`,
 			in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, locked, strings.Join(in.Dimensions, ","), in.Sort, db.Now(), id)
+			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, locked, strings.Join(in.Dimensions, ","), in.Group, in.Sort, db.Now(), id)
 		if err != nil {
 			return err
 		}
@@ -316,9 +318,10 @@ func (s *Store) SetEnabled(ctx context.Context, ids []int64, enabled bool) error
 func insertItem(ctx context.Context, q db.Querier, in ItemInput) (int64, error) {
 	now := db.Now()
 	res, err := q.ExecContext(ctx, `INSERT INTO items (name, texture, category_id, count, description, max_per_order,
-		player_limit, player_limit_days, enabled, in_stock, dimensions, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		player_limit, player_limit_days, enabled, in_stock, dimensions, variant_group, sort, created_at, updated_at)
+		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, strings.Join(in.Dimensions, ","), in.Sort, now, now)
+		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, strings.Join(in.Dimensions, ","), in.Group, in.Sort, now, now)
 	if err != nil {
 		return 0, err
 	}
@@ -365,6 +368,7 @@ func validateItem(in *ItemInput, currencies []Currency, categories []Category) e
 	in.Name = strings.TrimSpace(in.Name)
 	in.Texture = strings.TrimPrefix(strings.TrimSpace(in.Texture), "minecraft:")
 	in.Description = strings.TrimSpace(in.Description)
+	in.Group = strings.Join(strings.Fields(in.Group), " ")
 	if in.Enabled == nil {
 		enabled := true
 		in.Enabled = &enabled
@@ -379,6 +383,9 @@ func validateItem(in *ItemInput, currencies []Currency, categories []Category) e
 	}
 	if !texturePattern.MatchString(in.Texture) {
 		errs.Add("texture", "Texture must be a Minecraft item id like diamond_pickaxe")
+	}
+	if len([]rune(in.Group)) > 40 {
+		errs.Add("group", "Group names can be at most 40 characters")
 	}
 	if len([]rune(in.Description)) > 200 {
 		errs.Add("description", "Description can be at most 200 characters")

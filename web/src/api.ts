@@ -28,6 +28,7 @@ export interface Item {
   inStock: boolean
   priceLocked?: boolean
   dimensions: Dimension[]
+  group: string
   sort: number
   price: Price
 }
@@ -184,6 +185,7 @@ export interface ItemInput {
   enabled: boolean
   inStock: boolean
   dimensions: Dimension[]
+  group: string
   sort: number
   price: Price
 }

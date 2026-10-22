@@ -106,8 +106,51 @@ const visibleItems = computed(() => {
   return list
 })
 
-const rows = computed(() => Math.max(5, Math.ceil(visibleItems.value.length / 9)))
-const fillers = computed(() => rows.value * 9 - visibleItems.value.length)
+// In a category, the variants of a group (every shulker box color, every
+// wood type...) share one slot. Search lists everything on its own.
+type Entry = { kind: 'item'; item: Item } | { kind: 'group'; name: string; items: Item[] }
+
+const entries = computed<Entry[]>(() => {
+  if (tab.value === SEARCH) return visibleItems.value.map((item) => ({ kind: 'item' as const, item }))
+  const groups = new Map<string, Item[]>()
+  for (const item of visibleItems.value) {
+    if (!item.group) continue
+    const list = groups.get(item.group) ?? []
+    list.push(item)
+    groups.set(item.group, list)
+  }
+  const out: Entry[] = []
+  const emitted = new Set<string>()
+  for (const item of visibleItems.value) {
+    const members = item.group ? groups.get(item.group)! : undefined
+    if (!members || members.length < 2) {
+      out.push({ kind: 'item', item })
+    } else if (!emitted.has(item.group)) {
+      emitted.add(item.group)
+      out.push({ kind: 'group', name: item.group, items: members })
+    }
+  }
+  return out
+})
+
+const openGroup = ref<string | null>(null)
+const openGroupItems = computed(() => {
+  const e = entries.value.find((x) => x.kind === 'group' && x.name === openGroup.value)
+  return e && e.kind === 'group' ? e.items : []
+})
+watch([tab, dimIndex], () => (openGroup.value = null))
+
+function toggleGroup(name: string) {
+  openGroup.value = openGroup.value === name ? null : name
+}
+
+function groupHover(e: PointerEvent, name: string, items: Item[]) {
+  if (e.pointerType !== 'mouse') return
+  showTooltip(e, name, [{ text: `${items.length} variants, click to pick one` }])
+}
+
+const rows = computed(() => Math.max(5, Math.ceil(entries.value.length / 9)))
+const fillers = computed(() => rows.value * 9 - entries.value.length)
 const selected = computed(() => (selectedId.value !== null ? itemsById.value.get(selectedId.value) : undefined))
 
 function select(item: Item) {
@@ -121,6 +164,7 @@ async function selectFromCart(id: number) {
   if (!item) return
   tab.value = item.categoryId
   selectedId.value = id
+  openGroup.value = item.group || null
   await nextTick()
   gridEl.value?.querySelector('.slot.selected')?.scrollIntoView({ block: 'nearest' })
 }
@@ -177,8 +221,49 @@ function hover(e: PointerEvent, item: Item) {
           </div>
           <template v-else>
             <div ref="gridEl" class="grid mc-scroll" role="list">
-              <span v-for="item in visibleItems" :key="item.id" role="listitem">
+              <span
+                v-for="e in entries"
+                :key="e.kind === 'item' ? e.item.id : 'g:' + e.name"
+                role="listitem"
+              >
                 <ItemSlot
+                  v-if="e.kind === 'item'"
+                  :texture="e.item.texture"
+                  :count="e.item.count"
+                  interactive
+                  :selected="e.item.id === selectedId"
+                  :dimmed="!e.item.inStock"
+                  :label="`${e.item.name}, ${e.item.inStock ? priceText(e.item.price, catalog.currencies) : 'out of stock'}`"
+                  @click="select(e.item)"
+                  @pointerenter="hover($event, e.item)"
+                  @pointermove="moveTooltip"
+                  @pointerleave="hideTooltip"
+                />
+                <ItemSlot
+                  v-else
+                  class="group-slot"
+                  :texture="e.items[0]!.texture"
+                  interactive
+                  :selected="openGroup === e.name"
+                  :label="`${e.name}, ${e.items.length} variants`"
+                  :aria-expanded="openGroup === e.name"
+                  @click="toggleGroup(e.name)"
+                  @pointerenter="groupHover($event, e.name, e.items)"
+                  @pointermove="moveTooltip"
+                  @pointerleave="hideTooltip"
+                />
+              </span>
+              <ItemSlot v-for="i in fillers" :key="'f' + i" aria-hidden="true" />
+            </div>
+            <section v-if="openGroup && openGroupItems.length" class="drawer" :aria-label="openGroup">
+              <div class="drawer-head">
+                <span>{{ openGroup }}</span>
+                <button type="button" class="drawer-close" aria-label="Close" @click="openGroup = null">x</button>
+              </div>
+              <div class="drawer-grid">
+                <ItemSlot
+                  v-for="item in openGroupItems"
+                  :key="item.id"
                   :texture="item.texture"
                   :count="item.count"
                   interactive
@@ -190,9 +275,8 @@ function hover(e: PointerEvent, item: Item) {
                   @pointermove="moveTooltip"
                   @pointerleave="hideTooltip"
                 />
-              </span>
-              <ItemSlot v-for="i in fillers" :key="'f' + i" aria-hidden="true" />
-            </div>
+              </div>
+            </section>
             <p v-if="visibleItems.length === 0" class="state">
               {{ tab === SEARCH && query ? `Nothing matches "${query}". Try another name.` : 'Nothing for sale here yet.' }}
             </p>
@@ -257,6 +341,53 @@ function hover(e: PointerEvent, item: Item) {
 
 .grid > span {
   display: contents;
+}
+
+/* A small corner fold marks slots that open into several variants. */
+.grid :deep(.group-slot)::before {
+  content: '';
+  position: absolute;
+  top: var(--u);
+  left: var(--u);
+  z-index: 1;
+  border-style: solid;
+  border-width: calc(var(--u) * 4) calc(var(--u) * 4) 0 0;
+  border-color: var(--yellow) transparent transparent transparent;
+  pointer-events: none;
+}
+
+/* Styled after the bundle tooltip: a dark box with the contents. */
+.drawer {
+  margin-top: calc(var(--u) * 3);
+  padding: calc(var(--u) * 2) calc(var(--u) * 3) calc(var(--u) * 3);
+  background: var(--tooltip-bg);
+  border: var(--u) solid rgba(80, 0, 255, 0.6);
+  color: var(--text);
+  text-shadow: var(--u) var(--u) 0 var(--text-shadow);
+}
+
+.drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: calc(var(--u) * 2);
+}
+
+.drawer-close {
+  padding: 0 calc(var(--u) * 2);
+  border: 0;
+  background: none;
+  color: var(--gray);
+  cursor: pointer;
+}
+
+.drawer-close:hover {
+  color: var(--text);
+}
+
+.drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(9, calc(var(--u) * 18));
 }
 
 .state {

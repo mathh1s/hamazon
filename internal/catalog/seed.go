@@ -69,6 +69,14 @@ var backfills = []struct {
 			strings.Join(it.Dimensions, ","), it.Texture, it.Description)
 		return err
 	}},
+	{"backfill_groups", func(ctx context.Context, tx *sql.Tx, it ItemInput) error {
+		if it.Group == "" {
+			return nil
+		}
+		_, err := tx.ExecContext(ctx, `UPDATE items SET variant_group = ? WHERE texture = ? AND description = ? AND variant_group = ''`,
+			it.Group, it.Texture, it.Description)
+		return err
+	}},
 }
 
 func backfill(ctx context.Context, tx *sql.Tx, f seedFile) error {

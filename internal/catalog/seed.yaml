@@ -1,4 +1,10 @@
-# Default Hamazon catalog, loaded on the very first start only.
+# Default Hamazon catalog, loaded on the very first start only. Existing
+# shops pick up new entries through "Add missing defaults" in the admin area.
+#
+# Not included: creative only items, unique items like the dragon egg,
+# items whose identity lives in components (potions, written books, maps,
+# firework stars), waxed copper (wax it with honeycomb), and anything that
+# is or turns into a currency (diamonds, emeralds, gold and their ores).
 #
 # Prices are per purchase unit (count items). Rough baseline used while
 # balancing: 1 diamond is worth about 4 emeralds or 8 gold ingots, but the
@@ -14,6 +20,7 @@ currencies:
 
 categories:
   - { id: building, name: Building Blocks, icon: bricks }
+  - { id: nature, name: Natural Blocks, icon: grass_block }
   - { id: decoration, name: Decorative Blocks, icon: lantern }
   - { id: resources, name: Ores & Resources, icon: iron_ingot }
   - { id: tools, name: Tools & Weapons, icon: iron_pickaxe }
@@ -27,7 +34,7 @@ categories:
 
 items:
   # ==== building ====
-  - { name: Grass Block, texture: grass_block, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: Grass Block, texture: grass_block, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 4 } }
   - { name: Oak Log, texture: oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
   - { name: Oak Planks, texture: oak_planks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
   - { name: Spruce Planks, texture: spruce_planks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
@@ -97,8 +104,8 @@ items:
   - { name: Terracotta, texture: terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: Cyan Terracotta, texture: cyan_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
   - { name: Light Blue Glazed Terracotta, texture: light_blue_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { emerald: 4 } }
-  - { name: Oak Leaves, texture: oak_leaves, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
-  - { name: Moss Block, texture: moss_block, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: Oak Leaves, texture: oak_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: Moss Block, texture: moss_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: Bookshelf, texture: bookshelf, category: decoration, count: 16, maxPerOrder: 8, price: { emerald: 4 } }
   - { name: Lantern, texture: lantern, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
   - { name: Sea Lantern, texture: sea_lantern, category: decoration, count: 16, maxPerOrder: 8, price: { emerald: 5 } }
@@ -142,15 +149,15 @@ items:
   - { name: Campfire, texture: campfire, category: decoration, count: 4, maxPerOrder: 4, price: { gold_ingot: 2 } }
   - { name: Bell, texture: bell, category: decoration, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
   - { name: Armor Stand, texture: armor_stand, category: decoration, count: 4, maxPerOrder: 4, price: { gold_ingot: 2 } }
-  - { name: Poppy, texture: poppy, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
-  - { name: Dandelion, texture: dandelion, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
-  - { name: Cornflower, texture: cornflower, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
-  - { name: Sunflower, texture: sunflower, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
-  - { name: Lilac, texture: lilac, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
-  - { name: Vines, texture: vine, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: Poppy, texture: poppy, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: Dandelion, texture: dandelion, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: Cornflower, texture: cornflower, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: Sunflower, texture: sunflower, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: Lilac, texture: lilac, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: Vines, texture: vine, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: Ladder, texture: ladder, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: Scaffolding, texture: scaffolding, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
-  - { name: Sea Pickle, texture: sea_pickle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: Sea Pickle, texture: sea_pickle, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Glow Item Frame, texture: glow_item_frame, category: decoration, count: 8, maxPerOrder: 8, price: { emerald: 2 } }
   # ==== resources ====
   - { name: Iron Ingot, texture: iron_ingot, category: resources, count: 64, maxPerOrder: 8, price: { diamond: 1, gold_ingot: 8 } }
@@ -159,8 +166,8 @@ items:
   - { name: Lapis Lazuli, texture: lapis_lazuli, category: resources, count: 64, maxPerOrder: 8, price: { emerald: 4 } }
   - { name: Nether Quartz, texture: quartz, category: resources, count: 64, maxPerOrder: 8, price: { emerald: 2 } }
   - { name: Amethyst Shard, texture: amethyst_shard, category: resources, count: 64, maxPerOrder: 8, price: { emerald: 3 } }
-  - { name: Obsidian, texture: obsidian, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 4 } }
-  - { name: Crying Obsidian, texture: crying_obsidian, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 4 } }
+  - { name: Obsidian, texture: obsidian, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 4 } }
+  - { name: Crying Obsidian, texture: crying_obsidian, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 4 } }
   - { name: String, texture: string, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Leather, texture: leather, category: resources, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Gunpowder, texture: gunpowder, category: resources, count: 64, maxPerOrder: 4, price: { emerald: 4 } }
@@ -174,7 +181,6 @@ items:
 
   - { name: Raw Iron, texture: raw_iron, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 7 } }
   - { name: Raw Copper, texture: raw_copper, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
-  - { name: Raw Gold, texture: raw_gold, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: Glowstone Dust, texture: glowstone_dust, category: resources, count: 64, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: Prismarine Shard, texture: prismarine_shard, category: resources, count: 64, maxPerOrder: 4, price: { emerald: 5 } }
   - { name: Prismarine Crystals, texture: prismarine_crystals, category: resources, count: 64, maxPerOrder: 4, price: { emerald: 6 } }
@@ -253,7 +259,7 @@ items:
   - { name: Sugar Cane, texture: sugar_cane, category: food, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Cocoa Beans, texture: cocoa_beans, category: food, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Bamboo, texture: bamboo, category: food, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
-  - { name: Oak Sapling, texture: oak_sapling, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: Oak Sapling, texture: oak_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: Bone Meal, texture: bone_meal, category: food, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Nether Wart, texture: nether_wart, category: food, count: 64, maxPerOrder: 4, price: { emerald: 4 } }
 
@@ -421,3 +427,973 @@ items:
   - { name: Turtle Scute, texture: turtle_scute, category: enchanting, count: 4, maxPerOrder: 2, price: { emerald: 6 } }
   - { name: Magma Cream, texture: magma_cream, category: enchanting, count: 16, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: Dragon's Breath, texture: dragon_breath, category: enchanting, count: 4, maxPerOrder: 2, price: { emerald: 8 } }
+
+  # ==== everything else obtainable in survival, generated from the 26.2 item list ====
+  - { name: "Acacia Fence", texture: acacia_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Acacia Log", texture: acacia_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Acacia Slab", texture: acacia_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Acacia Stairs", texture: acacia_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Acacia Wood", texture: acacia_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Andesite Slab", texture: andesite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Andesite Stairs", texture: andesite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Andesite Wall", texture: andesite_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Block of Bamboo", texture: bamboo_block, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Birch Fence", texture: birch_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Birch Slab", texture: birch_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Birch Stairs", texture: birch_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Birch Wood", texture: birch_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Blackstone Slab", texture: blackstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Blackstone Stairs", texture: blackstone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Blackstone Wall", texture: blackstone_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Bowl", texture: bowl, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Brick Slab", texture: brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Brick Stairs", texture: brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Brick Wall", texture: brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Cherry Fence", texture: cherry_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Cherry Slab", texture: cherry_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Cherry Stairs", texture: cherry_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cherry Wood", texture: cherry_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Chiseled Cinnabar", texture: chiseled_cinnabar, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Chiseled Copper", texture: chiseled_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Chiseled Deepslate", texture: chiseled_deepslate, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Chiseled Nether Bricks", texture: chiseled_nether_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Chiseled Polished Blackstone", texture: chiseled_polished_blackstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Chiseled Quartz Block", texture: chiseled_quartz_block, category: building, count: 64, maxPerOrder: 8, price: { emerald: 10 } }
+  - { name: "Chiseled Red Sandstone", texture: chiseled_red_sandstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Chiseled Resin Bricks", texture: chiseled_resin_bricks, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 13 } }
+  - { name: "Chiseled Sandstone", texture: chiseled_sandstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Chiseled Sulfur", texture: chiseled_sulfur, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Chiseled Tuff", texture: chiseled_tuff, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Chiseled Tuff Bricks", texture: chiseled_tuff_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Cinnabar Brick Slab", texture: cinnabar_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cinnabar Brick Stairs", texture: cinnabar_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Cinnabar Brick Wall", texture: cinnabar_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Cinnabar Bricks", texture: cinnabar_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Cinnabar Slab", texture: cinnabar_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cinnabar Stairs", texture: cinnabar_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Cinnabar Wall", texture: cinnabar_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Block of Coal", texture: coal_block, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Cobbled Deepslate Slab", texture: cobbled_deepslate_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Cobbled Deepslate Stairs", texture: cobbled_deepslate_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Cobbled Deepslate Wall", texture: cobbled_deepslate_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Cobblestone Slab", texture: cobblestone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Cobblestone Stairs", texture: cobblestone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Cobblestone Wall", texture: cobblestone_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Copper Grate", texture: copper_grate, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Cracked Deepslate Bricks", texture: cracked_deepslate_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cracked Deepslate Tiles", texture: cracked_deepslate_tiles, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cracked Nether Bricks", texture: cracked_nether_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cracked Polished Blackstone Bricks", texture: cracked_polished_blackstone_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Cracked Stone Bricks", texture: cracked_stone_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Crimson Fence", texture: crimson_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Crimson Hyphae", texture: crimson_hyphae, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Crimson Slab", texture: crimson_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Crimson Stairs", texture: crimson_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Crimson Stem", texture: crimson_stem, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Cut Copper Slab", texture: cut_copper_slab, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Cut Copper Stairs", texture: cut_copper_stairs, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Cut Red Sandstone", texture: cut_red_sandstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Cut Red Sandstone Slab", texture: cut_red_sandstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Cut Sandstone Slab", texture: cut_sandstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Dark Oak Fence", texture: dark_oak_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Dark Oak Log", texture: dark_oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Dark Oak Slab", texture: dark_oak_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Dark Oak Stairs", texture: dark_oak_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Dark Oak Wood", texture: dark_oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Dark Prismarine Slab", texture: dark_prismarine_slab, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Dark Prismarine Stairs", texture: dark_prismarine_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 16 } }
+  - { name: "Deepslate Brick Slab", texture: deepslate_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Deepslate Brick Stairs", texture: deepslate_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Deepslate Brick Wall", texture: deepslate_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Deepslate Tile Slab", texture: deepslate_tile_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Deepslate Tile Stairs", texture: deepslate_tile_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Deepslate Tile Wall", texture: deepslate_tile_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Diorite Slab", texture: diorite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Diorite Stairs", texture: diorite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Diorite Wall", texture: diorite_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "End Stone Brick Slab", texture: end_stone_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "End Stone Brick Stairs", texture: end_stone_brick_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "End Stone Brick Wall", texture: end_stone_brick_wall, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Chiseled Copper", texture: exposed_chiseled_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Copper", texture: exposed_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Copper Grate", texture: exposed_copper_grate, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Cut Copper", texture: exposed_cut_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Cut Copper Slab", texture: exposed_cut_copper_slab, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Exposed Cut Copper Stairs", texture: exposed_cut_copper_stairs, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Granite Slab", texture: granite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Granite Stairs", texture: granite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Granite Wall", texture: granite_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Honeycomb Block", texture: honeycomb_block, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Block of Iron", texture: iron_block, category: building, count: 16, maxPerOrder: 4, price: { emerald: 18 } }
+  - { name: "Jungle Fence", texture: jungle_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Jungle Log", texture: jungle_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Jungle Slab", texture: jungle_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Jungle Stairs", texture: jungle_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Jungle Wood", texture: jungle_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Block of Lapis Lazuli", texture: lapis_block, category: building, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Mangrove Fence", texture: mangrove_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mangrove Log", texture: mangrove_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Mangrove Slab", texture: mangrove_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Mangrove Stairs", texture: mangrove_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Mangrove Wood", texture: mangrove_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Mossy Cobblestone Slab", texture: mossy_cobblestone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Mossy Cobblestone Stairs", texture: mossy_cobblestone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mossy Cobblestone Wall", texture: mossy_cobblestone_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mossy Stone Brick Slab", texture: mossy_stone_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Mossy Stone Brick Stairs", texture: mossy_stone_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mossy Stone Brick Wall", texture: mossy_stone_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mud Brick Slab", texture: mud_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Mud Brick Stairs", texture: mud_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Mud Brick Wall", texture: mud_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Nether Brick Fence", texture: nether_brick_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Nether Brick Slab", texture: nether_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Nether Brick Stairs", texture: nether_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Nether Brick Wall", texture: nether_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Nether Sprouts", texture: nether_sprouts, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Block of Netherite", texture: netherite_block, category: building, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 118 } }
+  - { name: "Oak Fence", texture: oak_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Oak Slab", texture: oak_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Oak Wood", texture: oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Oxidized Chiseled Copper", texture: oxidized_chiseled_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Oxidized Copper", texture: oxidized_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Oxidized Copper Grate", texture: oxidized_copper_grate, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Oxidized Cut Copper", texture: oxidized_cut_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Oxidized Cut Copper Slab", texture: oxidized_cut_copper_slab, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Oxidized Cut Copper Stairs", texture: oxidized_cut_copper_stairs, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Pale Oak Fence", texture: pale_oak_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Pale Oak Log", texture: pale_oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Pale Oak Slab", texture: pale_oak_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Pale Oak Stairs", texture: pale_oak_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pale Oak Wood", texture: pale_oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Polished Andesite Slab", texture: polished_andesite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Polished Andesite Stairs", texture: polished_andesite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Polished Blackstone Brick Slab", texture: polished_blackstone_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Blackstone Brick Stairs", texture: polished_blackstone_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Blackstone Brick Wall", texture: polished_blackstone_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Blackstone Slab", texture: polished_blackstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Blackstone Stairs", texture: polished_blackstone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Blackstone Wall", texture: polished_blackstone_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Cinnabar", texture: polished_cinnabar, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Cinnabar Slab", texture: polished_cinnabar_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Cinnabar Stairs", texture: polished_cinnabar_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Cinnabar Wall", texture: polished_cinnabar_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Deepslate", texture: polished_deepslate, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Polished Deepslate Slab", texture: polished_deepslate_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Polished Deepslate Stairs", texture: polished_deepslate_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Polished Deepslate Wall", texture: polished_deepslate_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Polished Diorite Slab", texture: polished_diorite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Polished Diorite Stairs", texture: polished_diorite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Polished Granite Slab", texture: polished_granite_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Polished Granite Stairs", texture: polished_granite_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Polished Sulfur", texture: polished_sulfur, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Sulfur Slab", texture: polished_sulfur_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Sulfur Stairs", texture: polished_sulfur_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Sulfur Wall", texture: polished_sulfur_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Polished Tuff", texture: polished_tuff, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Tuff Slab", texture: polished_tuff_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Polished Tuff Stairs", texture: polished_tuff_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Polished Tuff Wall", texture: polished_tuff_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Prismarine Brick Slab", texture: prismarine_brick_slab, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Prismarine Brick Stairs", texture: prismarine_brick_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 16 } }
+  - { name: "Prismarine Slab", texture: prismarine_slab, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Prismarine Stairs", texture: prismarine_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 16 } }
+  - { name: "Prismarine Wall", texture: prismarine_wall, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 16 } }
+  - { name: "Purpur Pillar", texture: purpur_pillar, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Purpur Slab", texture: purpur_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Purpur Stairs", texture: purpur_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Quartz Pillar", texture: quartz_pillar, category: building, count: 64, maxPerOrder: 8, price: { emerald: 9 } }
+  - { name: "Quartz Slab", texture: quartz_slab, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 9 } }
+  - { name: "Quartz Stairs", texture: quartz_stairs, category: building, count: 64, maxPerOrder: 8, price: { emerald: 9 } }
+  - { name: "Block of Resin", texture: resin_block, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Resin Brick Slab", texture: resin_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Resin Brick Stairs", texture: resin_brick_stairs, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Resin Brick Wall", texture: resin_brick_wall, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Resin Bricks", texture: resin_bricks, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 13 } }
+  - { name: "Sandstone Slab", texture: sandstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Sandstone Stairs", texture: sandstone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Sandstone Wall", texture: sandstone_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Smooth Basalt", texture: smooth_basalt, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Smooth Quartz Slab", texture: smooth_quartz_slab, category: building, count: 64, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Smooth Quartz Stairs", texture: smooth_quartz_stairs, category: building, count: 64, maxPerOrder: 8, price: { emerald: 10 } }
+  - { name: "Smooth Red Sandstone", texture: smooth_red_sandstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Smooth Red Sandstone Slab", texture: smooth_red_sandstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Smooth Red Sandstone Stairs", texture: smooth_red_sandstone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Smooth Sandstone", texture: smooth_sandstone, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Smooth Sandstone Slab", texture: smooth_sandstone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Smooth Sandstone Stairs", texture: smooth_sandstone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Smooth Stone Slab", texture: smooth_stone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Spruce Fence", texture: spruce_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Spruce Slab", texture: spruce_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Spruce Stairs", texture: spruce_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Spruce Wood", texture: spruce_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stone Brick Stairs", texture: stone_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stone Brick Wall", texture: stone_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stone Slab", texture: stone_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Stone Stairs", texture: stone_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Stripped Acacia Log", texture: stripped_acacia_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Acacia Wood", texture: stripped_acacia_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Block of Stripped Bamboo", texture: stripped_bamboo_block, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Stripped Birch Log", texture: stripped_birch_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Birch Wood", texture: stripped_birch_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Cherry Log", texture: stripped_cherry_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Cherry Wood", texture: stripped_cherry_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Crimson Hyphae", texture: stripped_crimson_hyphae, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Stripped Crimson Stem", texture: stripped_crimson_stem, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Stripped Dark Oak Log", texture: stripped_dark_oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Dark Oak Wood", texture: stripped_dark_oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Jungle Log", texture: stripped_jungle_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Jungle Wood", texture: stripped_jungle_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Mangrove Log", texture: stripped_mangrove_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Mangrove Wood", texture: stripped_mangrove_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Oak Log", texture: stripped_oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Oak Wood", texture: stripped_oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Pale Oak Log", texture: stripped_pale_oak_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Pale Oak Wood", texture: stripped_pale_oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Spruce Log", texture: stripped_spruce_log, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Spruce Wood", texture: stripped_spruce_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Stripped Warped Hyphae", texture: stripped_warped_hyphae, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Stripped Warped Stem", texture: stripped_warped_stem, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Sulfur Brick Slab", texture: sulfur_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Sulfur Brick Stairs", texture: sulfur_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Sulfur Brick Wall", texture: sulfur_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Sulfur Bricks", texture: sulfur_bricks, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Sulfur Slab", texture: sulfur_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Sulfur Stairs", texture: sulfur_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Sulfur Wall", texture: sulfur_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Tuff Brick Slab", texture: tuff_brick_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Tuff Brick Stairs", texture: tuff_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Tuff Brick Wall", texture: tuff_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Tuff Slab", texture: tuff_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Tuff Stairs", texture: tuff_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Tuff Wall", texture: tuff_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Warped Fence", texture: warped_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Warped Hyphae", texture: warped_hyphae, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Warped Slab", texture: warped_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Warped Stairs", texture: warped_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Warped Stem", texture: warped_stem, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 7 } }
+  - { name: "Weathered Chiseled Copper", texture: weathered_chiseled_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Weathered Copper", texture: weathered_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Weathered Copper Grate", texture: weathered_copper_grate, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Weathered Cut Copper", texture: weathered_cut_copper, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Weathered Cut Copper Slab", texture: weathered_cut_copper_slab, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Weathered Cut Copper Stairs", texture: weathered_cut_copper_stairs, category: building, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Acacia Leaves", texture: acacia_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Acacia Sapling", texture: acacia_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Allium", texture: allium, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Block of Amethyst", texture: amethyst_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Amethyst Cluster", texture: amethyst_cluster, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Ancient Debris", texture: ancient_debris, category: nature, count: 16, maxPerOrder: 2, playerLimit: 2, playerLimitDays: 14, price: { emerald: 32 } }
+  - { name: "Andesite", texture: andesite, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Azalea", texture: azalea, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Azalea Leaves", texture: azalea_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Azure Bluet", texture: azure_bluet, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Basalt", texture: basalt, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Big Dripleaf", texture: big_dripleaf, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Birch Leaves", texture: birch_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Birch Sapling", texture: birch_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Blackstone", texture: blackstone, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Bone Block", texture: bone_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Brain Coral", texture: brain_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Brain Coral Block", texture: brain_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Brain Coral Fan", texture: brain_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Bubble Coral", texture: bubble_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Bubble Coral Block", texture: bubble_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Bubble Coral Fan", texture: bubble_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Bush", texture: bush, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Cactus Flower", texture: cactus_flower, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cherry Leaves", texture: cherry_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cherry Sapling", texture: cherry_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Chorus Flower", texture: chorus_flower, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Cinnabar", texture: cinnabar, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Clay", texture: clay, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Closed Eyeblossom", texture: closed_eyeblossom, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Coal Ore", texture: coal_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Coarse Dirt", texture: coarse_dirt, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Cobweb", texture: cobweb, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Copper Ore", texture: copper_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Crimson Fungus", texture: crimson_fungus, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Crimson Nylium", texture: crimson_nylium, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Crimson Roots", texture: crimson_roots, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Dark Oak Leaves", texture: dark_oak_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Dark Oak Sapling", texture: dark_oak_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Dead Brain Coral", texture: dead_brain_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Brain Coral Block", texture: dead_brain_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dead Brain Coral Fan", texture: dead_brain_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Bubble Coral", texture: dead_bubble_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Bubble Coral Block", texture: dead_bubble_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dead Bubble Coral Fan", texture: dead_bubble_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Bush", texture: dead_bush, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Dead Fire Coral", texture: dead_fire_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Fire Coral Block", texture: dead_fire_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dead Fire Coral Fan", texture: dead_fire_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Horn Coral", texture: dead_horn_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Horn Coral Block", texture: dead_horn_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dead Horn Coral Fan", texture: dead_horn_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Tube Coral", texture: dead_tube_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Dead Tube Coral Block", texture: dead_tube_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dead Tube Coral Fan", texture: dead_tube_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Deepslate", texture: deepslate, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Deepslate Coal Ore", texture: deepslate_coal_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Deepslate Copper Ore", texture: deepslate_copper_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Deepslate Iron Ore", texture: deepslate_iron_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Deepslate Lapis Lazuli Ore", texture: deepslate_lapis_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Diorite", texture: diorite, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Dirt", texture: dirt, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Fern", texture: fern, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Fire Coral", texture: fire_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Fire Coral Block", texture: fire_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Fire Coral Fan", texture: fire_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Firefly Bush", texture: firefly_bush, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Flowering Azalea", texture: flowering_azalea, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Flowering Azalea Leaves", texture: flowering_azalea_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Gilded Blackstone", texture: gilded_blackstone, category: nature, count: 64, maxPerOrder: 8, price: { emerald: 12 } }
+  - { name: "Glow Lichen", texture: glow_lichen, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Golden Dandelion", texture: golden_dandelion, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Granite", texture: granite, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Gravel", texture: gravel, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Hanging Roots", texture: hanging_roots, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Horn Coral", texture: horn_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Horn Coral Block", texture: horn_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Horn Coral Fan", texture: horn_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Ice", texture: ice, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Iron Ore", texture: iron_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Jungle Leaves", texture: jungle_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Jungle Sapling", texture: jungle_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Lapis Lazuli Ore", texture: lapis_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Large Amethyst Bud", texture: large_amethyst_bud, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Large Fern", texture: large_fern, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Leaf Litter", texture: leaf_litter, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Lily of the Valley", texture: lily_of_the_valley, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Lily Pad", texture: lily_pad, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Magma Block", texture: magma_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Mangrove Leaves", texture: mangrove_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Mangrove Propagule", texture: mangrove_propagule, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Mangrove Roots", texture: mangrove_roots, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Medium Amethyst Bud", texture: medium_amethyst_bud, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Mud", texture: mud, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Muddy Mangrove Roots", texture: muddy_mangrove_roots, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Mushroom Stem", texture: mushroom_stem, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Mycelium", texture: mycelium, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Nether Quartz Ore", texture: nether_quartz_ore, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Nether Wart Block", texture: nether_wart_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Netherrack", texture: netherrack, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Open Eyeblossom", texture: open_eyeblossom, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Oxeye Daisy", texture: oxeye_daisy, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Packed Ice", texture: packed_ice, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Pale Hanging Moss", texture: pale_hanging_moss, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Pale Moss Block", texture: pale_moss_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Pale Oak Leaves", texture: pale_oak_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pale Oak Sapling", texture: pale_oak_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Peony", texture: peony, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Pitcher Plant", texture: pitcher_plant, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Podzol", texture: podzol, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pointed Dripstone", texture: pointed_dripstone, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Potent Sulfur", texture: potent_sulfur, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Rooted Dirt", texture: rooted_dirt, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Rose Bush", texture: rose_bush, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Sand", texture: sand, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Sculk", texture: sculk, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Sculk Catalyst", texture: sculk_catalyst, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Sculk Shrieker", texture: sculk_shrieker, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Sculk Vein", texture: sculk_vein, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Seagrass", texture: seagrass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Short Dry Grass", texture: short_dry_grass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Short Grass", texture: short_grass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Small Amethyst Bud", texture: small_amethyst_bud, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Small Dripleaf", texture: small_dripleaf, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Snow", texture: snow, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Snow Block", texture: snow_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Soul Sand", texture: soul_sand, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Soul Soil", texture: soul_soil, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Spore Blossom", texture: spore_blossom, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Spruce Leaves", texture: spruce_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Spruce Sapling", texture: spruce_sapling, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Sulfur", texture: sulfur, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Sulfur Spike", texture: sulfur_spike, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Tall Dry Grass", texture: tall_dry_grass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Tall Grass", texture: tall_grass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Torchflower", texture: torchflower, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Tube Coral", texture: tube_coral, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Tube Coral Block", texture: tube_coral_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Tube Coral Fan", texture: tube_coral_fan, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Twisting Vines", texture: twisting_vines, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Warped Fungus", texture: warped_fungus, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Warped Nylium", texture: warped_nylium, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Warped Roots", texture: warped_roots, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Warped Wart Block", texture: warped_wart_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Weeping Vines", texture: weeping_vines, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Wildflowers", texture: wildflowers, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Wither Rose", texture: wither_rose, category: nature, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Acacia Hanging Sign", texture: acacia_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Acacia Shelf", texture: acacia_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Acacia Sign", texture: acacia_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Birch Hanging Sign", texture: birch_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Birch Shelf", texture: birch_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Birch Sign", texture: birch_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Black Banner", texture: black_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Black Bed", texture: black_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Black Candle", texture: black_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Black Carpet", texture: black_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Black Glazed Terracotta", texture: black_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Black Stained Glass", texture: black_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Black Stained Glass Pane", texture: black_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Black Terracotta", texture: black_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Blue Bed", texture: blue_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Blue Candle", texture: blue_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Blue Carpet", texture: blue_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Blue Glazed Terracotta", texture: blue_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Blue Ice", texture: blue_ice, category: decoration, count: 64, maxPerOrder: 8, price: { emerald: 12 } }
+  - { name: "Blue Orchid", texture: blue_orchid, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Blue Stained Glass", texture: blue_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Blue Stained Glass Pane", texture: blue_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Blue Terracotta", texture: blue_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Brown Banner", texture: brown_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Brown Bed", texture: brown_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Brown Candle", texture: brown_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Brown Carpet", texture: brown_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Brown Glazed Terracotta", texture: brown_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Brown Mushroom", texture: brown_mushroom, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Brown Mushroom Block", texture: brown_mushroom_block, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Brown Stained Glass", texture: brown_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Brown Stained Glass Pane", texture: brown_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Brown Terracotta", texture: brown_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Brown Wool", texture: brown_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cherry Hanging Sign", texture: cherry_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Cherry Shelf", texture: cherry_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Cherry Sign", texture: cherry_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Copper Bars", texture: copper_bars, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Copper Chain", texture: copper_chain, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Copper Golem Statue", texture: copper_golem_statue, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Crimson Hanging Sign", texture: crimson_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Crimson Shelf", texture: crimson_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Crimson Sign", texture: crimson_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Cyan Banner", texture: cyan_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Cyan Bed", texture: cyan_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Cyan Candle", texture: cyan_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Cyan Carpet", texture: cyan_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cyan Glazed Terracotta", texture: cyan_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Cyan Stained Glass", texture: cyan_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cyan Stained Glass Pane", texture: cyan_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Cyan Wool", texture: cyan_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Dark Oak Hanging Sign", texture: dark_oak_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dark Oak Shelf", texture: dark_oak_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Dark Oak Sign", texture: dark_oak_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Exposed Copper Bars", texture: exposed_copper_bars, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Exposed Copper Chain", texture: exposed_copper_chain, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Exposed Copper Golem Statue", texture: exposed_copper_golem_statue, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Exposed Copper Lantern", texture: exposed_copper_lantern, category: decoration, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Gray Banner", texture: gray_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Gray Bed", texture: gray_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Gray Candle", texture: gray_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Gray Carpet", texture: gray_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Gray Glazed Terracotta", texture: gray_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Gray Stained Glass", texture: gray_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Gray Stained Glass Pane", texture: gray_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Gray Terracotta", texture: gray_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Green Banner", texture: green_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Green Bed", texture: green_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Green Candle", texture: green_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Green Carpet", texture: green_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Green Glazed Terracotta", texture: green_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Green Stained Glass", texture: green_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Green Stained Glass Pane", texture: green_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Green Terracotta", texture: green_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Green Wool", texture: green_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Iron Bars", texture: iron_bars, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Jungle Hanging Sign", texture: jungle_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Jungle Shelf", texture: jungle_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Jungle Sign", texture: jungle_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Banner", texture: light_blue_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Bed", texture: light_blue_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Candle", texture: light_blue_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Carpet", texture: light_blue_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Stained Glass", texture: light_blue_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Blue Stained Glass Pane", texture: light_blue_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Light Blue Terracotta", texture: light_blue_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Blue Wool", texture: light_blue_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Gray Banner", texture: light_gray_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Bed", texture: light_gray_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Candle", texture: light_gray_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Carpet", texture: light_gray_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Glazed Terracotta", texture: light_gray_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Light Gray Stained Glass", texture: light_gray_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Gray Stained Glass Pane", texture: light_gray_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Terracotta", texture: light_gray_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Gray Wool", texture: light_gray_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Lime Banner", texture: lime_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Lime Bed", texture: lime_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Lime Candle", texture: lime_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Lime Carpet", texture: lime_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Lime Glazed Terracotta", texture: lime_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Lime Stained Glass", texture: lime_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Lime Stained Glass Pane", texture: lime_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Lime Terracotta", texture: lime_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Magenta Banner", texture: magenta_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Magenta Bed", texture: magenta_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Magenta Candle", texture: magenta_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Magenta Carpet", texture: magenta_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Magenta Glazed Terracotta", texture: magenta_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Magenta Stained Glass", texture: magenta_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Magenta Stained Glass Pane", texture: magenta_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Magenta Terracotta", texture: magenta_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Magenta Wool", texture: magenta_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Mangrove Hanging Sign", texture: mangrove_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Mangrove Shelf", texture: mangrove_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Mangrove Sign", texture: mangrove_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Moss Carpet", texture: moss_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Oak Hanging Sign", texture: oak_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Oak Shelf", texture: oak_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Oak Sign", texture: oak_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Ochre Froglight", texture: ochre_froglight, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Orange Banner", texture: orange_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Orange Bed", texture: orange_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Orange Candle", texture: orange_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Orange Carpet", texture: orange_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Orange Glazed Terracotta", texture: orange_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Orange Stained Glass", texture: orange_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Orange Stained Glass Pane", texture: orange_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Orange Terracotta", texture: orange_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Orange Tulip", texture: orange_tulip, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Orange Wool", texture: orange_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Oxidized Copper Bars", texture: oxidized_copper_bars, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Oxidized Copper Chain", texture: oxidized_copper_chain, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Oxidized Copper Golem Statue", texture: oxidized_copper_golem_statue, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Oxidized Copper Lantern", texture: oxidized_copper_lantern, category: decoration, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Pale Moss Carpet", texture: pale_moss_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pale Oak Hanging Sign", texture: pale_oak_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Pale Oak Shelf", texture: pale_oak_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Pale Oak Sign", texture: pale_oak_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Pearlescent Froglight", texture: pearlescent_froglight, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Pink Banner", texture: pink_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Pink Bed", texture: pink_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Pink Candle", texture: pink_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Pink Carpet", texture: pink_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pink Glazed Terracotta", texture: pink_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Pink Petals", texture: pink_petals, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Pink Stained Glass", texture: pink_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Pink Stained Glass Pane", texture: pink_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pink Terracotta", texture: pink_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Pink Tulip", texture: pink_tulip, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Pink Wool", texture: pink_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Purple Banner", texture: purple_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Purple Bed", texture: purple_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Purple Candle", texture: purple_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Purple Carpet", texture: purple_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Purple Glazed Terracotta", texture: purple_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Purple Stained Glass", texture: purple_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Purple Stained Glass Pane", texture: purple_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Purple Terracotta", texture: purple_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Purple Wool", texture: purple_wool, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Red Candle", texture: red_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Red Carpet", texture: red_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Red Glazed Terracotta", texture: red_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Red Mushroom", texture: red_mushroom, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Red Mushroom Block", texture: red_mushroom_block, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Red Nether Brick Slab", texture: red_nether_brick_slab, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Red Nether Brick Stairs", texture: red_nether_brick_stairs, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Red Nether Brick Wall", texture: red_nether_brick_wall, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Red Sand", texture: red_sand, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Red Sandstone Slab", texture: red_sandstone_slab, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Red Sandstone Stairs", texture: red_sandstone_stairs, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Red Sandstone Wall", texture: red_sandstone_wall, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Red Stained Glass", texture: red_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Red Stained Glass Pane", texture: red_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Red Terracotta", texture: red_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Red Tulip", texture: red_tulip, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Soul Campfire", texture: soul_campfire, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Soul Torch", texture: soul_torch, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Spruce Hanging Sign", texture: spruce_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Spruce Shelf", texture: spruce_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Spruce Sign", texture: spruce_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Verdant Froglight", texture: verdant_froglight, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 12 } }
+  - { name: "Warped Hanging Sign", texture: warped_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Warped Shelf", texture: warped_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Warped Sign", texture: warped_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Weathered Copper Bars", texture: weathered_copper_bars, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Weathered Copper Chain", texture: weathered_copper_chain, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Weathered Copper Golem Statue", texture: weathered_copper_golem_statue, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Weathered Copper Lantern", texture: weathered_copper_lantern, category: decoration, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "White Candle", texture: white_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "White Carpet", texture: white_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "White Glazed Terracotta", texture: white_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "White Stained Glass Pane", texture: white_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "White Terracotta", texture: white_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "White Tulip", texture: white_tulip, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Yellow Banner", texture: yellow_banner, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Yellow Bed", texture: yellow_bed, category: decoration, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Yellow Candle", texture: yellow_candle, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Yellow Carpet", texture: yellow_carpet, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Yellow Glazed Terracotta", texture: yellow_glazed_terracotta, category: decoration, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Yellow Stained Glass", texture: yellow_stained_glass, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Yellow Stained Glass Pane", texture: yellow_stained_glass_pane, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Yellow Terracotta", texture: yellow_terracotta, category: decoration, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Armadillo Scute", texture: armadillo_scute, category: resources, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Black Concrete Powder", texture: black_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Black Dye", texture: black_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Blue Concrete Powder", texture: blue_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Blue Dye", texture: blue_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Brick", texture: brick, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Brown Concrete Powder", texture: brown_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Brown Dye", texture: brown_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Charcoal", texture: charcoal, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Copper Nugget", texture: copper_nugget, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Cyan Concrete Powder", texture: cyan_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Cyan Dye", texture: cyan_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Gray Concrete Powder", texture: gray_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Gray Dye", texture: gray_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Green Concrete Powder", texture: green_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Green Dye", texture: green_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Iron Nugget", texture: iron_nugget, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Light Blue Concrete Powder", texture: light_blue_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Blue Dye", texture: light_blue_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Light Gray Concrete Powder", texture: light_gray_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Light Gray Dye", texture: light_gray_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Lime Concrete Powder", texture: lime_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Lime Dye", texture: lime_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Magenta Concrete Powder", texture: magenta_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Magenta Dye", texture: magenta_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Nether Brick", texture: nether_brick, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Orange Concrete Powder", texture: orange_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Orange Dye", texture: orange_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Pink Concrete Powder", texture: pink_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Pink Dye", texture: pink_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Purple Concrete Powder", texture: purple_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Purple Dye", texture: purple_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Block of Raw Copper", texture: raw_copper_block, category: resources, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Block of Raw Iron", texture: raw_iron_block, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 16 } }
+  - { name: "Red Concrete Powder", texture: red_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Red Dye", texture: red_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Resin Brick", texture: resin_brick, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
+  - { name: "Resin Clump", texture: resin_clump, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Stick", texture: stick, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "White Concrete Powder", texture: white_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "White Dye", texture: white_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Yellow Concrete Powder", texture: yellow_concrete_powder, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 5 } }
+  - { name: "Yellow Dye", texture: yellow_dye, category: resources, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Arrow", texture: arrow, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Copper Axe", texture: copper_axe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Copper Hoe", texture: copper_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Copper Pickaxe", texture: copper_pickaxe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Copper Shovel", texture: copper_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Copper Spear", texture: copper_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Copper Sword", texture: copper_sword, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Diamond Spear", texture: diamond_spear, category: tools, count: 1, maxPerOrder: 2, price: { emerald: 10 } }
+  - { name: "Fire Charge", texture: fire_charge, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Golden Axe", texture: golden_axe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Golden Hoe", texture: golden_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Golden Pickaxe", texture: golden_pickaxe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Golden Shovel", texture: golden_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Golden Spear", texture: golden_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 5 } }
+  - { name: "Golden Sword", texture: golden_sword, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Iron Hoe", texture: iron_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Iron Shovel", texture: iron_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Iron Spear", texture: iron_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 5 } }
+  - { name: "Netherite Hoe", texture: netherite_hoe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 14 } }
+  - { name: "Netherite Spear", texture: netherite_spear, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 14 } }
+  - { name: "Snowball", texture: snowball, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Spectral Arrow", texture: spectral_arrow, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Stone Hoe", texture: stone_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Stone Shovel", texture: stone_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Stone Spear", texture: stone_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Wooden Axe", texture: wooden_axe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Wooden Hoe", texture: wooden_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Wooden Pickaxe", texture: wooden_pickaxe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Wooden Shovel", texture: wooden_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Wooden Spear", texture: wooden_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Wooden Sword", texture: wooden_sword, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Copper Boots", texture: copper_boots, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Copper Chestplate", texture: copper_chestplate, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Copper Helmet", texture: copper_helmet, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Copper Leggings", texture: copper_leggings, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Golden Boots", texture: golden_boots, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Golden Chestplate", texture: golden_chestplate, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 5 } }
+  - { name: "Golden Helmet", texture: golden_helmet, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Golden Leggings", texture: golden_leggings, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 5 } }
+  - { name: "Leather Boots", texture: leather_boots, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Leather Cap", texture: leather_helmet, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Leather Pants", texture: leather_leggings, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Bamboo Fence", texture: bamboo_fence, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Bamboo Hanging Sign", texture: bamboo_hanging_sign, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Bamboo Mosaic", texture: bamboo_mosaic, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Bamboo Mosaic Slab", texture: bamboo_mosaic_slab, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Bamboo Mosaic Stairs", texture: bamboo_mosaic_stairs, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Bamboo Shelf", texture: bamboo_shelf, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Bamboo Sign", texture: bamboo_sign, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Bamboo Slab", texture: bamboo_slab, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Bamboo Stairs", texture: bamboo_stairs, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Raw Beef", texture: beef, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Beetroot Soup", texture: beetroot_soup, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 1 } }
+  - { name: "Blue Egg", texture: blue_egg, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Brown Egg", texture: brown_egg, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Carved Pumpkin", texture: carved_pumpkin, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Raw Chicken", texture: chicken, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Raw Cod", texture: cod, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bucket of Cod", texture: cod_bucket, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Cooked Rabbit", texture: cooked_rabbit, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Dried Kelp Block", texture: dried_kelp_block, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
+  - { name: "Jack o'Lantern", texture: jack_o_lantern, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Raw Mutton", texture: mutton, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Pitcher Pod", texture: pitcher_pod, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Poisonous Potato", texture: poisonous_potato, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
+  - { name: "Popped Chorus Fruit", texture: popped_chorus_fruit, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Raw Porkchop", texture: porkchop, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Pufferfish", texture: pufferfish, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Bucket of Pufferfish", texture: pufferfish_bucket, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Raw Rabbit", texture: rabbit, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Rabbit Stew", texture: rabbit_stew, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Rotten Flesh", texture: rotten_flesh, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Raw Salmon", texture: salmon, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Bucket of Salmon", texture: salmon_bucket, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Sugar", texture: sugar, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Torchflower Seeds", texture: torchflower_seeds, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
+  - { name: "Tropical Fish", texture: tropical_fish, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Bucket of Tropical Fish", texture: tropical_fish_bucket, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Turtle Egg", texture: turtle_egg, category: food, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Wheat", texture: wheat, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
+  - { name: "Acacia Button", texture: acacia_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Acacia Door", texture: acacia_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Acacia Fence Gate", texture: acacia_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Acacia Pressure Plate", texture: acacia_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Acacia Trapdoor", texture: acacia_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bamboo Button", texture: bamboo_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bamboo Door", texture: bamboo_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bamboo Fence Gate", texture: bamboo_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bamboo Pressure Plate", texture: bamboo_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Bamboo Trapdoor", texture: bamboo_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Birch Button", texture: birch_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Birch Door", texture: birch_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Birch Fence Gate", texture: birch_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Birch Pressure Plate", texture: birch_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Birch Trapdoor", texture: birch_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Calibrated Sculk Sensor", texture: calibrated_sculk_sensor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Cherry Button", texture: cherry_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Cherry Door", texture: cherry_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Cherry Fence Gate", texture: cherry_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Cherry Pressure Plate", texture: cherry_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Cherry Trapdoor", texture: cherry_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Copper Bulb", texture: copper_bulb, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Copper Door", texture: copper_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Copper Trapdoor", texture: copper_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Crimson Button", texture: crimson_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Crimson Door", texture: crimson_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Crimson Fence Gate", texture: crimson_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Crimson Pressure Plate", texture: crimson_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Crimson Trapdoor", texture: crimson_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Dark Oak Button", texture: dark_oak_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Dark Oak Door", texture: dark_oak_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Dark Oak Fence Gate", texture: dark_oak_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Dark Oak Pressure Plate", texture: dark_oak_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Dark Oak Trapdoor", texture: dark_oak_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Deepslate Redstone Ore", texture: deepslate_redstone_ore, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Exposed Copper Bulb", texture: exposed_copper_bulb, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Exposed Copper Door", texture: exposed_copper_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Exposed Copper Trapdoor", texture: exposed_copper_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Exposed Lightning Rod", texture: exposed_lightning_rod, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Heavy Weighted Pressure Plate", texture: heavy_weighted_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Jukebox", texture: jukebox, category: redstone, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Jungle Button", texture: jungle_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Jungle Door", texture: jungle_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Jungle Fence Gate", texture: jungle_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Jungle Pressure Plate", texture: jungle_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Jungle Trapdoor", texture: jungle_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Light Weighted Pressure Plate", texture: light_weighted_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Mangrove Button", texture: mangrove_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Mangrove Door", texture: mangrove_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Mangrove Fence Gate", texture: mangrove_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Mangrove Pressure Plate", texture: mangrove_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Mangrove Trapdoor", texture: mangrove_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Oak Button", texture: oak_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Oak Fence Gate", texture: oak_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Oak Pressure Plate", texture: oak_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Oxidized Copper Bulb", texture: oxidized_copper_bulb, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Oxidized Copper Door", texture: oxidized_copper_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Oxidized Copper Trapdoor", texture: oxidized_copper_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Oxidized Lightning Rod", texture: oxidized_lightning_rod, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Pale Oak Button", texture: pale_oak_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Pale Oak Door", texture: pale_oak_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Pale Oak Fence Gate", texture: pale_oak_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Pale Oak Pressure Plate", texture: pale_oak_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Pale Oak Trapdoor", texture: pale_oak_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Polished Blackstone Button", texture: polished_blackstone_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Polished Blackstone Pressure Plate", texture: polished_blackstone_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Redstone Ore", texture: redstone_ore, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Spruce Button", texture: spruce_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Spruce Door", texture: spruce_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Spruce Fence Gate", texture: spruce_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Spruce Pressure Plate", texture: spruce_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Spruce Trapdoor", texture: spruce_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Trapped Chest", texture: trapped_chest, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Warped Button", texture: warped_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Warped Door", texture: warped_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Warped Fence Gate", texture: warped_fence_gate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Warped Pressure Plate", texture: warped_pressure_plate, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Warped Trapdoor", texture: warped_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Weathered Copper Bulb", texture: weathered_copper_bulb, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 10 } }
+  - { name: "Weathered Copper Door", texture: weathered_copper_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Weathered Copper Trapdoor", texture: weathered_copper_trapdoor, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Weathered Lightning Rod", texture: weathered_lightning_rod, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
+  - { name: "Acacia Boat", texture: acacia_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Acacia Boat with Chest", texture: acacia_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Bamboo Raft with Chest", texture: bamboo_chest_raft, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Birch Boat", texture: birch_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Birch Boat with Chest", texture: birch_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Black Harness", texture: black_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Blue Harness", texture: blue_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Brown Harness", texture: brown_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Cherry Boat", texture: cherry_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Cherry Boat with Chest", texture: cherry_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Copper Horse Armor", texture: copper_horse_armor, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Copper Nautilus Armor", texture: copper_nautilus_armor, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Cyan Harness", texture: cyan_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Dark Oak Boat", texture: dark_oak_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Dark Oak Boat with Chest", texture: dark_oak_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Diamond Nautilus Armor", texture: diamond_nautilus_armor, category: transport, count: 1, maxPerOrder: 2, price: { emerald: 12 } }
+  - { name: "Minecart with Furnace", texture: furnace_minecart, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Golden Nautilus Armor", texture: golden_nautilus_armor, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 12 } }
+  - { name: "Gray Harness", texture: gray_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Green Harness", texture: green_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Iron Nautilus Armor", texture: iron_nautilus_armor, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Jungle Boat", texture: jungle_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Jungle Boat with Chest", texture: jungle_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Leather Horse Armor", texture: leather_horse_armor, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Light Blue Harness", texture: light_blue_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Light Gray Harness", texture: light_gray_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Lime Harness", texture: lime_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Magenta Harness", texture: magenta_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Mangrove Boat", texture: mangrove_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Mangrove Boat with Chest", texture: mangrove_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Netherite Horse Armor", texture: netherite_horse_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 15 } }
+  - { name: "Netherite Nautilus Armor", texture: netherite_nautilus_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 15 } }
+  - { name: "Orange Harness", texture: orange_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Pale Oak Boat", texture: pale_oak_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Pale Oak Boat with Chest", texture: pale_oak_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Pink Harness", texture: pink_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Purple Harness", texture: purple_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Red Harness", texture: red_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Spruce Boat", texture: spruce_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
+  - { name: "Spruce Boat with Chest", texture: spruce_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
+  - { name: "Minecart with TNT", texture: tnt_minecart, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "White Harness", texture: white_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Yellow Harness", texture: yellow_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
+  - { name: "Angler Pottery Sherd", texture: angler_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Archer Pottery Sherd", texture: archer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Arms Up Pottery Sherd", texture: arms_up_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Black Shulker Box", texture: black_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Blade Pottery Sherd", texture: blade_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Blue Shulker Box", texture: blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Bolt Armor Trim", texture: bolt_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Bordure Indented Banner Pattern", texture: bordure_indented_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Brewer Pottery Sherd", texture: brewer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Brown Shulker Box", texture: brown_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Burn Pottery Sherd", texture: burn_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Coast Armor Trim", texture: coast_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Creaking Heart", texture: creaking_heart, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Creeper Charge Banner Pattern", texture: creeper_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Cyan Shulker Box", texture: cyan_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Danger Pottery Sherd", texture: danger_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Disc Fragment", texture: disc_fragment_5, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Dried Ghast", texture: dried_ghast, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 16 } }
+  - { name: "Dune Armor Trim", texture: dune_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "End Crystal", texture: end_crystal, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 16 } }
+  - { name: "Explorer Pottery Sherd", texture: explorer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Eye Armor Trim", texture: eye_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Field Masoned Banner Pattern", texture: field_masoned_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Flow Armor Trim", texture: flow_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Flow Banner Pattern", texture: flow_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Flow Pottery Sherd", texture: flow_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Flower Charge Banner Pattern", texture: flower_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Friend Pottery Sherd", texture: friend_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Globe Banner Pattern", texture: globe_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Gray Shulker Box", texture: gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Green Shulker Box", texture: green_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Guster Banner Pattern", texture: guster_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Guster Pottery Sherd", texture: guster_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Heart Pottery Sherd", texture: heart_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Heartbreak Pottery Sherd", texture: heartbreak_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Host Armor Trim", texture: host_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Howl Pottery Sherd", texture: howl_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Light Blue Shulker Box", texture: light_blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Light Gray Shulker Box", texture: light_gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Lime Shulker Box", texture: lime_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Magenta Shulker Box", texture: magenta_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Miner Pottery Sherd", texture: miner_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Thing Banner Pattern", texture: mojang_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Mourner Pottery Sherd", texture: mourner_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Music Disc (11)", texture: music_disc_11, description: "C418 - 11", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (13)", texture: music_disc_13, description: "C418 - 13", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (5)", texture: music_disc_5, description: "Samuel \u00c5berg - 5", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (blocks)", texture: music_disc_blocks, description: "C418 - blocks", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (Bounce)", texture: music_disc_bounce, description: "fingerspit - Bounce", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (chirp)", texture: music_disc_chirp, description: "C418 - chirp", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (Creator (Music Box))", texture: music_disc_creator_music_box, description: "Lena Raine - Creator (Music Box)", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (far)", texture: music_disc_far, description: "C418 - far", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (Lava Chicken)", texture: music_disc_lava_chicken, description: "Hyper Potions - Lava Chicken", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (mall)", texture: music_disc_mall, description: "C418 - mall", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (mellohi)", texture: music_disc_mellohi, description: "C418 - mellohi", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (Precipice)", texture: music_disc_precipice, description: "Aaron Cherof - Precipice", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (stal)", texture: music_disc_stal, description: "C418 - stal", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (strad)", texture: music_disc_strad, description: "C418 - strad", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (Tears)", texture: music_disc_tears, description: "Amos Roddy - Tears", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (wait)", texture: music_disc_wait, description: "C418 - wait", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Music Disc (ward)", texture: music_disc_ward, description: "C418 - ward", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Ominous Bottle", texture: ominous_bottle, category: rare, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Orange Shulker Box", texture: orange_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Snout Banner Pattern", texture: piglin_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Piglin Head", texture: piglin_head, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Pink Shulker Box", texture: pink_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Plenty Pottery Sherd", texture: plenty_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Prize Pottery Sherd", texture: prize_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Purple Shulker Box", texture: purple_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Raiser Armor Trim", texture: raiser_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Red Shulker Box", texture: red_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Rib Armor Trim", texture: rib_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Scrape Pottery Sherd", texture: scrape_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Sentry Armor Trim", texture: sentry_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Shaper Armor Trim", texture: shaper_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Sheaf Pottery Sherd", texture: sheaf_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Shelter Pottery Sherd", texture: shelter_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Skeleton Skull", texture: skeleton_skull, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Skull Charge Banner Pattern", texture: skull_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Skull Pottery Sherd", texture: skull_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Snort Pottery Sherd", texture: snort_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Snout Armor Trim", texture: snout_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Spire Armor Trim", texture: spire_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Tide Armor Trim", texture: tide_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Vex Armor Trim", texture: vex_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Ward Armor Trim", texture: ward_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Wayfinder Armor Trim", texture: wayfinder_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Wet Sponge", texture: wet_sponge, category: rare, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "White Shulker Box", texture: white_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Wild Armor Trim", texture: wild_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Yellow Shulker Box", texture: yellow_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: "Zombie Head", texture: zombie_head, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Chiseled Bookshelf", texture: chiseled_bookshelf, category: enchanting, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
+  - { name: "Bee Nest", texture: bee_nest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Beehive", texture: beehive, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Black Bundle", texture: black_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Blue Bundle", texture: blue_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Brown Bundle", texture: brown_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Cartography Table", texture: cartography_table, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Chipped Anvil", texture: chipped_anvil, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Composter", texture: composter, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
+  - { name: "Copper Chest", texture: copper_chest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Cyan Bundle", texture: cyan_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Damaged Anvil", texture: damaged_anvil, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
+  - { name: "Exposed Copper Chest", texture: exposed_copper_chest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Fletching Table", texture: fletching_table, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
+  - { name: "Gray Bundle", texture: gray_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Green Bundle", texture: green_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Light Blue Bundle", texture: light_blue_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Light Gray Bundle", texture: light_gray_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Lime Bundle", texture: lime_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Magenta Bundle", texture: magenta_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Orange Bundle", texture: orange_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Oxidized Copper Chest", texture: oxidized_copper_chest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Pink Bundle", texture: pink_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Purple Bundle", texture: purple_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Red Bundle", texture: red_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Bucket of Sulfur Cube", texture: sulfur_cube_bucket, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Bucket of Tadpole", texture: tadpole_bucket, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
+  - { name: "Weathered Copper Chest", texture: weathered_copper_chest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "White Bundle", texture: white_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
+  - { name: "Yellow Bundle", texture: yellow_bundle, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }

@@ -23,6 +23,7 @@ type ManifestItem struct {
 
 type Manifest struct {
 	Version     string         `json:"version"`
+	Format      int            `json:"format"`
 	GeneratedAt time.Time      `json:"generatedAt"`
 	Items       []ManifestItem `json:"items"`
 	Font        bool           `json:"font"`
@@ -60,6 +61,7 @@ func Extract(jarPath, dir string) (Report, error) {
 	report := Report{Skipped: map[string]string{}}
 	report.Manifest.GeneratedAt = time.Now().UTC()
 	report.Manifest.Version = p.version()
+	report.Manifest.Format = formatVersion
 	names := p.englishNames()
 
 	var ids []string
@@ -150,10 +152,10 @@ func (p *pack) version() string {
 	if err := p.readJSON("version.json", &v); err != nil {
 		return "unknown"
 	}
-	if v.Name != "" {
-		return v.Name
+	if v.ID != "" {
+		return v.ID
 	}
-	return v.ID
+	return v.Name
 }
 
 func (p *pack) englishNames() map[string]string {

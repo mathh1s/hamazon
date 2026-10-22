@@ -101,7 +101,7 @@ a {
 .mc-panel {
   border: calc(var(--u) * 4) solid transparent;
   border-image: url('/mc/gui/panel.png') 4 fill / calc(var(--u) * 4) stretch;
-  background-color: transparent;
+  background: var(--panel) padding-box;
   color: var(--title);
   padding: calc(var(--u) * 3);
 }

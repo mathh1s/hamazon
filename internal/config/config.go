@@ -20,6 +20,8 @@ type Config struct {
 	TrustProxy      bool
 	FloodgatePrefix string
 	SeedFile        string
+	MCVersion       string
+	AutoAssets      bool
 }
 
 func (c Config) DatabasePath() string { return filepath.Join(c.DataDir, "hamazon.db") }
@@ -59,6 +61,14 @@ func Load() (Config, error) {
 		}
 	}
 
+	if v := cleanEnv("HAMAZON_AUTO_ASSETS"); v != "" {
+		b, err := strconv.ParseBool(v)
+		if err != nil {
+			errs = append(errs, fmt.Errorf("HAMAZON_AUTO_ASSETS: %w", err))
+		}
+		c.AutoAssets = b
+	}
+
 	if v := cleanEnv("HAMAZON_TRUST_PROXY"); v != "" {
 		b, err := strconv.ParseBool(v)
 		if err != nil {
@@ -76,6 +86,11 @@ func LoadBase() Config {
 		DataDir:         envOr("HAMAZON_DATA_DIR", "/data"),
 		FloodgatePrefix: envOr("HAMAZON_FLOODGATE_PREFIX", "."),
 		SeedFile:        os.Getenv("HAMAZON_SEED_FILE"),
+		MCVersion:       "26.2",
+		AutoAssets:      true,
+	}
+	if v := cleanEnv("HAMAZON_MC_VERSION"); v != "" {
+		c.MCVersion = v
 	}
 	return c
 }

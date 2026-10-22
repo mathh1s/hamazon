@@ -37,28 +37,20 @@ Fill in `.env`:
 | `HAMAZON_PUBLIC_URL` | Public URL of the shop, e.g. `https://shop.example.com` (a bare host name means https). Optional. Enables the admin link and item thumbnail in Discord messages. |
 | `HAMAZON_TRUST_PROXY` | `true` when running behind a reverse proxy that sets `X-Forwarded-For` and `X-Forwarded-Proto`. Needed for correct rate limits and secure cookies. |
 | `HAMAZON_FLOODGATE_PREFIX` | Username prefix of Bedrock players, `.` by default. Empty disables Bedrock names. |
+| `HAMAZON_MC_VERSION` | Minecraft version the textures are taken from, `26.2` by default. Match your server. |
+| `HAMAZON_AUTO_ASSETS` | `false` stops the automatic download, see below. |
 
-### 2. Build and extract the game assets
+### 2. Game assets
 
-Mojang's textures and font cannot be shipped in this repository, so Hamazon renders them from your own client jar. Use the jar of the version your server runs, for example from PrismLauncher:
+Mojang's textures and font cannot be shipped in this repository. On the first start Hamazon downloads the official client jar of `HAMAZON_MC_VERSION` from Mojang, checks its checksum, renders every item icon (block items with their inventory angle and lighting), copies the GUI sprites and converts the bitmap font into a TrueType file. This takes about half a minute; the shop already runs meanwhile and open pages reload by themselves once the icons are ready.
 
-```sh
-docker compose build
-docker compose run --rm \
-  -v "$HOME/.local/share/PrismLauncher/libraries/com/mojang/minecraft/26.2/minecraft-26.2-client.jar:/client.jar:ro" \
-  hamazon extract --jar /client.jar
-```
+The assets live in the data volume and are only rebuilt when `HAMAZON_MC_VERSION` changes or a Hamazon update changes the extractor. After a Minecraft update, set the new version and redeploy.
 
-The jar path differs per launcher. The official launcher keeps it at `.minecraft/versions/<version>/<version>.jar`. If you do not have one at hand, download it from the version manifest:
+Without internet access, set `HAMAZON_AUTO_ASSETS=false` and extract from a jar you already have:
 
 ```sh
-curl -s https://piston-meta.mojang.com/mc/game/version_manifest_v2.json \
-  | jq -r '.versions[] | select(.id=="26.2") | .url' \
-  | xargs curl -s | jq -r '.downloads.client.url' \
-  | xargs curl -o client.jar
+docker compose run --rm -v /path/to/client.jar:/client.jar:ro hamazon extract --jar /client.jar
 ```
-
-The extract step renders every item icon (block items with their inventory angle and lighting), copies the GUI sprites and converts the bitmap font into a TrueType file. It takes about half a minute and writes into the data volume. Run it again after a Minecraft update.
 
 ### 3. Create an admin
 

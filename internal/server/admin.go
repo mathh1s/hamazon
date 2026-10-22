@@ -105,6 +105,7 @@ func (s *Server) handleAdminOverview(w http.ResponseWriter, r *http.Request) {
 		"categories":          categories,
 		"webhookConfigured":   s.cfg.WebhookURL != "",
 		"failedNotifications": failed,
+		"assets":              s.assets.Status(),
 	})
 }
 

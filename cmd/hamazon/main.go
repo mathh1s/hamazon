@@ -32,8 +32,9 @@ const usage = `hamazon, a private Minecraft item shop
 
 usage:
   hamazon serve                       run the web server (default)
-  hamazon extract --jar client.jar    render item icons, GUI sprites and the
-                                      font from a Minecraft client jar
+  hamazon extract [--jar client.jar]  render item icons, GUI sprites and the
+                                      font; downloads the client jar of
+                                      HAMAZON_MC_VERSION unless --jar is given
   hamazon admin add <name>            create an admin (asks for a password)
   hamazon admin passwd <name>         change an admin password
   hamazon admin remove <name>         delete an admin
@@ -96,11 +97,19 @@ func serve(log *slog.Logger) error {
 	}
 	go notifier.Run(ctx)
 
+	assetManager := assets.NewManager(cfg.AssetsDir(), cfg.MCVersion, log)
+	if cfg.AutoAssets {
+		go assetManager.Run(ctx)
+	} else {
+		assetManager.Disable()
+	}
+
 	srv := server.New(cfg, log, server.Deps{
 		Catalog:  items,
 		Orders:   orderService,
 		Access:   auth.NewAccess(cfg.ShopPassword, cfg.SessionSecret),
 		Admins:   auth.NewAdmins(conn),
+		Assets:   assetManager,
 		Frontend: web.Dist(),
 	})
 	httpServer := &http.Server{
@@ -159,17 +168,24 @@ func seedCatalog(ctx context.Context, cfg config.Config, items *catalog.Store) e
 func extract(log *slog.Logger, args []string) error {
 	cfg := config.LoadBase()
 	fs := flag.NewFlagSet("extract", flag.ContinueOnError)
-	jar := fs.String("jar", "", "path to the Minecraft client jar, e.g. versions/26.2/26.2.jar")
+	jar := fs.String("jar", "", "path to a Minecraft client jar, downloaded from Mojang when empty")
+	version := fs.String("version", cfg.MCVersion, "Minecraft version to download when --jar is empty")
 	out := fs.String("out", cfg.AssetsDir(), "output directory")
 	verbose := fs.Bool("v", false, "list every item that could not be rendered")
 	if err := fs.Parse(args); err != nil {
 		return err
 	}
+	start := time.Now()
 	if *jar == "" {
-		return errors.New("--jar is required")
+		log.Info("downloading client jar", "version", *version)
+		path, err := assets.DownloadClientJar(context.Background(), &http.Client{Timeout: 10 * time.Minute}, *version, os.TempDir())
+		if err != nil {
+			return err
+		}
+		defer os.Remove(path)
+		*jar = path
 	}
 
-	start := time.Now()
 	report, err := assets.Extract(*jar, *out)
 	if err != nil {
 		return err

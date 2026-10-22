@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/mathh1s/hamazon/internal/assets"
 	"github.com/mathh1s/hamazon/internal/auth"
 	"github.com/mathh1s/hamazon/internal/catalog"
 	"github.com/mathh1s/hamazon/internal/config"
@@ -19,6 +20,7 @@ type Deps struct {
 	Orders   *orders.Service
 	Access   *auth.Access
 	Admins   *auth.Admins
+	Assets   *assets.Manager
 	Frontend fs.FS
 }
 
@@ -30,6 +32,7 @@ type Server struct {
 	orders  *orders.Service
 	access  *auth.Access
 	admins  *auth.Admins
+	assets  *assets.Manager
 
 	loginLimit   *ratelimit.Limiter
 	orderLimit   *ratelimit.Limiter
@@ -39,7 +42,7 @@ type Server struct {
 func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s := &Server{
 		cfg: cfg, log: log, mux: http.NewServeMux(),
-		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins,
+		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins, assets: deps.Assets,
 		loginLimit:   ratelimit.New(12*time.Second, 5),
 		orderLimit:   ratelimit.New(2*time.Minute, 4),
 		receiptLimit: ratelimit.New(2*time.Second, 30),

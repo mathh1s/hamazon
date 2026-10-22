@@ -43,7 +43,9 @@ function onClick(e: MouseEvent) {
   padding: 0 calc(var(--u) * 8);
   border: calc(var(--u) * 3) solid transparent;
   border-image: url('/mc/gui/button.png') 3 fill / calc(var(--u) * 3) stretch;
-  background: none;
+  /* Plain fallback while the sprites are still downloading. */
+  border-color: #000;
+  background: #6f6f6f padding-box;
   color: var(--text);
   text-decoration: none;
   cursor: pointer;

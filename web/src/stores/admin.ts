@@ -8,10 +8,23 @@ export const admin = reactive({
   categories: [] as Category[],
   webhookConfigured: true,
   failedNotifications: 0,
+  assets: { state: 'ready', version: '', error: '' } as AssetStatus,
 })
 
+export interface AssetStatus {
+  state: 'ready' | 'downloading' | 'failed' | 'disabled'
+  version: string
+  error?: string
+}
+
 export async function loadOverview() {
-  const o = await api<{ currencies: Currency[]; categories: Category[]; webhookConfigured: boolean; failedNotifications: number }>(
+  const o = await api<{
+    currencies: Currency[]
+    categories: Category[]
+    webhookConfigured: boolean
+    failedNotifications: number
+    assets: AssetStatus
+  }>(
     'GET',
     '/api/admin/overview',
   )

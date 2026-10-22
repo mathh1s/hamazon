@@ -16,7 +16,8 @@ defineProps<{ invalid?: boolean }>()
   padding: 0 calc(var(--u) * 4);
   border: var(--u) solid transparent;
   border-image: url('/mc/gui/text_field.png') 1 fill / var(--u) stretch;
-  background: none;
+  border-color: #a0a0a0;
+  background: #000;
   color: #e0e0e0;
   caret-color: var(--text);
   outline: none;

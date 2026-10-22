@@ -38,8 +38,14 @@ async function logout() {
         {{ admin.failedNotifications }} Discord {{ admin.failedNotifications === 1 ? 'message' : 'messages' }} failed. Open the
         order to retry.
       </p>
-      <p v-if="assets.missing" class="warn shadow">
-        Item textures are missing. Run "hamazon extract --jar &lt;client.jar&gt;" as described in the README.
+      <p v-if="admin.loaded && admin.assets.state === 'downloading'" class="warn shadow">
+        Downloading the Minecraft {{ admin.assets.version }} textures. Icons appear in about a minute.
+      </p>
+      <p v-else-if="admin.loaded && admin.assets.state === 'failed'" class="warn shadow">
+        Could not download the Minecraft {{ admin.assets.version }} textures, retrying: {{ admin.assets.error }}
+      </p>
+      <p v-else-if="admin.loaded && admin.assets.state === 'disabled' && assets.missing" class="warn shadow">
+        Item textures are missing and automatic download is off. Run "hamazon extract" in the container.
       </p>
     </div>
 

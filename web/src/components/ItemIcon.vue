@@ -16,11 +16,15 @@ const MISSING =
 
 const broken = ref(false)
 watch(
-  () => props.texture,
+  () => [props.texture, assets.stamp],
   () => (broken.value = false),
 )
 
-const src = computed(() => (broken.value ? MISSING : `/mc/item/${props.texture}.png`))
+// The stamp changes with every extraction, so a new Minecraft version never
+// shows icons from the browser cache.
+const src = computed(() =>
+  broken.value ? MISSING : `/mc/item/${props.texture}.png${assets.stamp ? `?v=${encodeURIComponent(assets.stamp)}` : ''}`,
+)
 const kind = computed(() => assets.items.get(props.texture)?.kind ?? 'flat')
 const glint = computed(() => !broken.value && GLINT.has(props.texture))
 </script>

@@ -11,6 +11,7 @@ Orders are purchase requests: nothing is taken from or added to anyone's invento
 - The player gets a book-style receipt with a private link. It can be printed or saved as a PDF, and the receipt list remembers past orders on that device.
 - Admins log in at `/admin` to manage orders (Pending, Approved, Fulfilled, Cancelled) and items. Status changes edit the original Discord message.
 - Optional sounds use the real game sounds (button click, item pickup, chest, level up), downloaded with the textures. Browsers that cannot play Ogg get a simple synthesized version.
+- Players get an in-page toast (and, if they allow it, a browser notification) when one of their orders is approved, fulfilled or cancelled. Admins get one with a sound for every new order. Both work while Hamazon is open in a tab.
 - Items can be marked out of stock: they stay visible but greyed out and cannot be ordered until restocked.
 - Every item has a per order cap and can have a per player limit over a rolling number of days, for things that are hard to get.
 

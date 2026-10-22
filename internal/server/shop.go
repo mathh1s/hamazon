@@ -175,3 +175,25 @@ func (s *Server) internalError(w http.ResponseWriter, err error) {
 	s.log.Error("request failed", "err", err)
 	writeError(w, http.StatusInternalServerError, "internal", "Something went wrong on the server, try again")
 }
+
+func (s *Server) handleReceiptStatuses(w http.ResponseWriter, r *http.Request) {
+	if !s.receiptLimit.Allow(s.clientIP(r)) {
+		writeError(w, http.StatusTooManyRequests, "rate_limited", "Too many requests, slow down")
+		return
+	}
+	var body struct {
+		Tokens []string `json:"tokens"`
+	}
+	if !decodeJSON(w, r, &body) {
+		return
+	}
+	if len(body.Tokens) > 50 {
+		body.Tokens = body.Tokens[:50]
+	}
+	list, err := s.orders.StatusesByReceipt(r.Context(), body.Tokens)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"receipts": list})
+}

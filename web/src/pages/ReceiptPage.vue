@@ -28,7 +28,13 @@ async function load() {
   try {
     await loadCatalog()
     receipt.value = await api<Receipt>('GET', `/api/receipts/${encodeURIComponent(token.value)}`)
-    rememberReceipt({ token: token.value, code: receipt.value.code, username: receipt.value.username, createdAt: receipt.value.createdAt })
+    rememberReceipt({
+      token: token.value,
+      code: receipt.value.code,
+      username: receipt.value.username,
+      createdAt: receipt.value.createdAt,
+      status: receipt.value.status,
+    })
   } catch (e) {
     notFound.value = e instanceof ApiError && e.status === 404
     error.value = errorMessage(e)

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/mathh1s/hamazon/internal/catalog"
@@ -168,4 +169,85 @@ func loadEvents(ctx context.Context, q db.Querier, orderID int64) ([]Event, erro
 
 func (s *Service) Events(ctx context.Context, orderID int64) ([]Event, error) {
 	return loadEvents(ctx, s.db, orderID)
+}
+
+type ReceiptStatus struct {
+	Token     string    `json:"token"`
+	Code      string    `json:"code"`
+	Status    Status    `json:"status"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+// StatusesByReceipt lets a player's browser check all of its saved orders
+// in one request. Unknown tokens are left out.
+func (s *Service) StatusesByReceipt(ctx context.Context, tokens []string) ([]ReceiptStatus, error) {
+	byHash := map[string]string{}
+	var args []any
+	for _, t := range tokens {
+		if len(t) < 20 || len(t) > 64 {
+			continue
+		}
+		h := hashToken(t)
+		byHash[string(h)] = t
+		args = append(args, h)
+	}
+	out := []ReceiptStatus{}
+	if len(args) == 0 {
+		return out, nil
+	}
+	marks := strings.TrimSuffix(strings.Repeat("?,", len(args)), ",")
+	rows, err := s.db.QueryContext(ctx, `SELECT receipt_hash, code, status, updated_at FROM orders WHERE receipt_hash IN (`+marks+`)`, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var hash []byte
+		var r ReceiptStatus
+		var updated string
+		if err := rows.Scan(&hash, &r.Code, &r.Status, &updated); err != nil {
+			return nil, err
+		}
+		r.Token = byHash[string(hash)]
+		r.UpdatedAt, _ = db.ParseTime(updated)
+		out = append(out, r)
+	}
+	return out, rows.Err()
+}
+
+type NewOrder struct {
+	ID        int64     `json:"id"`
+	Code      string    `json:"code"`
+	Username  string    `json:"username"`
+	CreatedAt time.Time `json:"createdAt"`
+	Texture   string    `json:"texture"`
+}
+
+// OrdersAfter feeds the admin new order alerts.
+func (s *Service) OrdersAfter(ctx context.Context, after int64) (int64, []NewOrder, error) {
+	var latest int64
+	if err := s.db.QueryRowContext(ctx, `SELECT COALESCE(MAX(id), 0) FROM orders`).Scan(&latest); err != nil {
+		return 0, nil, err
+	}
+	out := []NewOrder{}
+	if after <= 0 {
+		return latest, out, nil
+	}
+	rows, err := s.db.QueryContext(ctx, `SELECT o.id, o.code, o.username, o.created_at,
+		COALESCE((SELECT texture FROM order_lines WHERE order_id = o.id ORDER BY position LIMIT 1), '')
+		FROM orders o WHERE o.id > ? ORDER BY o.id LIMIT 20`, after)
+	if err != nil {
+		return 0, nil, err
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var n NewOrder
+		var created string
+		if err := rows.Scan(&n.ID, &n.Code, &n.Username, &created, &n.Texture); err != nil {
+			return 0, nil, err
+		}
+		n.CreatedAt, _ = db.ParseTime(created)
+		out = append(out, n)
+	}
+	return latest, out, rows.Err()
 }

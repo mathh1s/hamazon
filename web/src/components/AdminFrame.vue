@@ -6,6 +6,8 @@ import McButton from './McButton.vue'
 import { admin, adminLogout, loadOverview } from '../stores/admin'
 import { assets } from '../stores/assets'
 import { session } from '../stores/session'
+import { alertSound, unseenOrders } from '../stores/adminWatch'
+import { notifyPermission, notifySupported, requestNotify } from '../lib/browserNotify'
 
 const route = useRoute()
 const router = useRouter()
@@ -23,7 +25,9 @@ async function logout() {
     <header class="header">
       <TitleLogo compact />
       <nav class="nav" aria-label="Admin">
-        <McButton to="/admin" :active="route.path === '/admin' || route.path.startsWith('/admin/orders')">Orders</McButton>
+        <McButton to="/admin" :active="route.path === '/admin' || route.path.startsWith('/admin/orders')"
+          >Orders{{ unseenOrders ? ` (${unseenOrders} new)` : '' }}</McButton
+        >
         <McButton to="/admin/items" :active="route.path.startsWith('/admin/items')">Items</McButton>
         <McButton to="/">Shop</McButton>
         <McButton @click="logout">Log out {{ session.admin?.name }}</McButton>
@@ -52,6 +56,13 @@ async function logout() {
     <main class="main">
       <slot />
     </main>
+
+    <footer class="alerts shadow">
+      <span>New order alerts</span>
+      <McButton small :aria-pressed="alertSound" @click="alertSound = !alertSound">Sound: {{ alertSound ? 'ON' : 'OFF' }}</McButton>
+      <McButton v-if="notifySupported && notifyPermission === 'default'" small @click="requestNotify">Allow desktop alerts</McButton>
+      <span v-else-if="notifyPermission === 'granted'" class="hint">Desktop alerts on while this tab is open</span>
+    </footer>
   </div>
 </template>
 
@@ -87,6 +98,19 @@ async function logout() {
   padding: calc(var(--u) * 3);
   background: rgba(0, 0, 0, 0.6);
   color: var(--gold);
+}
+
+.alerts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 2) 8px calc(var(--u) * 6);
+}
+
+.alerts .hint {
+  color: var(--gray);
 }
 
 .main {

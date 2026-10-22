@@ -169,3 +169,34 @@ func TestOutOfStockBlocksOrder(t *testing.T) {
 		t.Fatalf("expected out of stock error, got %v", err)
 	}
 }
+
+func TestStatusPollingAndNewOrders(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	first, token, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-pppppppppppppppp", Username: "Steve",
+		Lines: []CreateLine{f.line("torch", 1)}}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := f.svc.UpdateStatus(ctx, first.ID, StatusApproved, "mathis", ""); err != nil {
+		t.Fatal(err)
+	}
+	list, err := f.svc.StatusesByReceipt(ctx, []string{token, "unknown-token-unknown-token"})
+	if err != nil || len(list) != 1 || list[0].Status != StatusApproved || list[0].Token != token {
+		t.Fatalf("unexpected statuses %+v %v", list, err)
+	}
+
+	latest, none, err := f.svc.OrdersAfter(ctx, 0)
+	if err != nil || latest != first.ID || len(none) != 0 {
+		t.Fatalf("baseline should only report the latest id: %d %+v %v", latest, none, err)
+	}
+	second, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-qqqqqqqqqqqqqqqq", Username: "Alex",
+		Lines: []CreateLine{f.line("bread", 1)}}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	latest, fresh, err := f.svc.OrdersAfter(ctx, first.ID)
+	if err != nil || latest != second.ID || len(fresh) != 1 || fresh[0].Code != second.Code || fresh[0].Texture != "bread" {
+		t.Fatalf("new order not reported: %d %+v %v", latest, fresh, err)
+	}
+}

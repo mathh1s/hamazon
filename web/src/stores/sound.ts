@@ -78,8 +78,8 @@ const fallback: Record<SoundName, () => void> = {
 }
 
 // Pitch matches the game: pickups vary slightly, clicks are at 1.0.
-async function play(name: SoundName, volume = 0.5, pitch = 1) {
-  if (!soundOn.value) return
+async function play(name: SoundName, volume = 0.5, pitch = 1, force = false) {
+  if (!soundOn.value && !force) return
   const buf = await load(name)
   const a = audio()
   if (!a) return
@@ -95,6 +95,9 @@ async function play(name: SoundName, volume = 0.5, pitch = 1) {
   src.connect(gain).connect(a.destination)
   src.start()
 }
+
+// forcePlay ignores the shop sound toggle, for alerts an admin opted into.
+export const forcePlay = (name: SoundName) => play(name, 0.5, 1, true)
 
 export const playClick = () => play('click', 0.25)
 export const playPop = () => play('pop', 0.3, 1.4 + Math.random() * 0.6)

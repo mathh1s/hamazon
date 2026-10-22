@@ -25,6 +25,7 @@ var guiSprites = map[string]string{
 	"tooltip_frame":        "minecraft:gui/sprites/tooltip/frame",
 	"dirt":                 "minecraft:block/dirt",
 	"stone":                "minecraft:block/stone",
+	"toast":                "minecraft:gui/sprites/toast/advancement",
 }
 
 // guiCrops cut a region out of a larger GUI sheet.

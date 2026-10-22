@@ -356,3 +356,13 @@ func (s *Server) adminError(w http.ResponseWriter, err error) {
 		s.internalError(w, err)
 	}
 }
+
+func (s *Server) handleAdminOrdersSince(w http.ResponseWriter, r *http.Request) {
+	after, _ := strconv.ParseInt(r.URL.Query().Get("after"), 10, 64)
+	latest, list, err := s.orders.OrdersAfter(r.Context(), after)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"latestId": latest, "orders": list})
+}

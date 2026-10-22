@@ -78,6 +78,7 @@ async function place() {
       code: res.receipt.code,
       username: res.receipt.username,
       createdAt: res.receipt.createdAt,
+      status: res.receipt.status,
     })
     clearCart()
     playLevelUp()

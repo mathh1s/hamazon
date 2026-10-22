@@ -11,6 +11,7 @@ import { api, errorMessage, type AdminOrderSummary, type OrderStatus } from '../
 import { loadCatalog } from '../../stores/catalog'
 import { formatDate } from '../../lib/format'
 import { usePageTitle } from '../../lib/title'
+import { orderTick, unseenOrders } from '../../stores/adminWatch'
 
 usePageTitle(() => 'Orders')
 const route = useRoute()
@@ -58,6 +59,11 @@ async function load() {
 
 loadCatalog()
 load()
+unseenOrders.value = 0
+watch(orderTick, () => {
+  load()
+  unseenOrders.value = 0
+})
 watch(status, () => {
   page.value = 1
   load()

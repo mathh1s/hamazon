@@ -5,7 +5,8 @@ import SiteFrame from '../components/SiteFrame.vue'
 import McButton from '../components/McButton.vue'
 import McTextField from '../components/McTextField.vue'
 import { forgetReceipt, receipts } from '../stores/receipts'
-import { formatDate } from '../lib/format'
+import { formatDate, statusLabel } from '../lib/format'
+import { notifyPermission, notifySupported, requestNotify } from '../lib/browserNotify'
 import { usePageTitle } from '../lib/title'
 
 usePageTitle(() => 'Receipts')
@@ -36,10 +37,21 @@ function open() {
         <li v-for="r in receipts.list" :key="r.token">
           <RouterLink :to="`/receipt/${r.token}`" class="code">{{ r.code }}</RouterLink>
           <span>{{ r.username }}</span>
+          <span class="status" :class="r.status">{{ r.status ? statusLabel[r.status] : '' }}</span>
           <span class="date">{{ formatDate(r.createdAt) }}</span>
           <McButton small :aria-label="`Forget receipt ${r.code} on this device`" @click="forgetReceipt(r.token)">Forget</McButton>
         </li>
       </ul>
+
+      <div v-if="receipts.list.length && notifySupported" class="notify">
+        <p v-if="notifyPermission === 'granted'" class="hint">
+          You get a notification when an admin updates one of these orders, as long as Hamazon is open in a tab.
+        </p>
+        <template v-else-if="notifyPermission === 'default'">
+          <p class="hint">Get a notification when an admin approves or hands over your order.</p>
+          <McButton @click="requestNotify">Turn on notifications</McButton>
+        </template>
+      </div>
 
       <form class="open" @submit.prevent="open">
         <label for="link">Open a receipt link</label>
@@ -76,13 +88,40 @@ function open() {
 
 .list li {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: auto 1fr auto auto auto;
   align-items: center;
   gap: calc(var(--u) * 4);
 }
 
 .code {
   color: #0000aa;
+}
+
+.status.approved {
+  color: #00aaaa;
+}
+
+.status.fulfilled {
+  color: #00aa00;
+}
+
+.status.cancelled {
+  color: #aa0000;
+}
+
+.status.pending {
+  color: #aa5500;
+}
+
+.notify {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--u) * 3);
+}
+
+.notify .hint {
+  flex: 1 1 calc(var(--u) * 120);
 }
 
 .date {

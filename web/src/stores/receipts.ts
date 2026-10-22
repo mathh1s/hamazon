@@ -1,5 +1,6 @@
 import { reactive, watch } from 'vue'
 import { readJSON, writeJSON } from '../lib/storage'
+import type { OrderStatus } from '../api'
 
 const KEY = 'hamazon.receipts.v1'
 
@@ -8,6 +9,7 @@ export interface SavedReceipt {
   code: string
   username: string
   createdAt: string
+  status?: OrderStatus
 }
 
 export const receipts = reactive<{ list: SavedReceipt[] }>({ list: readJSON<SavedReceipt[]>(KEY, []) })
@@ -19,7 +21,8 @@ watch(
 )
 
 export function rememberReceipt(r: SavedReceipt) {
-  receipts.list = [r, ...receipts.list.filter((x) => x.token !== r.token)].slice(0, 50)
+  const old = receipts.list.find((x) => x.token === r.token)
+  receipts.list = [{ ...old, ...r }, ...receipts.list.filter((x) => x.token !== r.token)].slice(0, 50)
 }
 
 export function forgetReceipt(token: string) {

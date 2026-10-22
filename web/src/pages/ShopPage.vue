@@ -12,7 +12,8 @@ import McButton from '../components/McButton.vue'
 import McTextField from '../components/McTextField.vue'
 import type { Item } from '../api'
 import { catalog, itemsById, loadCatalog } from '../stores/catalog'
-import { quantityInCart } from '../stores/cart'
+import { addToCart, quantityInCart } from '../stores/cart'
+import { playPop } from '../stores/sound'
 import { hideTooltip, moveTooltip, showTooltip, type TooltipLine } from '../stores/tooltip'
 import { priceText } from '../lib/price'
 import { dimensionColor, dimensionLabel, needsText, plural } from '../lib/format'
@@ -26,6 +27,7 @@ const tab = ref(typeof route.query.c === 'string' ? route.query.c : '')
 const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const sortIndex = ref(0)
 const dimIndex = ref(0)
+const payIndex = ref(0)
 const selectedId = ref<number | null>(null)
 
 onMounted(() => loadCatalog())
@@ -75,6 +77,19 @@ const dimFilters = computed(() => [
 ])
 const dimFilter = computed(() => dimFilters.value[dimIndex.value % dimFilters.value.length]!)
 
+// Players often have just one kind of currency on them, so they can show
+// only what they can pay for with it.
+const payFilters = computed(() => [
+  { label: 'Any', id: null as string | null, icon: 'bundle' },
+  ...catalog.currencies.map((c) => ({ label: c.name + 's', id: c.id as string | null, icon: c.texture })),
+])
+const payFilter = computed(() => payFilters.value[payIndex.value % payFilters.value.length]!)
+
+function matchesPay(item: Item) {
+  const c = payFilter.value.id
+  return !c || Object.keys(item.price).every((k) => k === c)
+}
+
 function matchesDimension(item: Item) {
   const d = dimFilter.value.id
   if (!d) return true
@@ -90,7 +105,7 @@ const visibleItems = computed(() => {
   } else {
     list = catalog.items.filter((i) => i.categoryId === tab.value)
   }
-  list = list.filter(matchesDimension)
+  list = list.filter((i) => matchesDimension(i) && matchesPay(i))
   const key = sort.value.key
   if (key === '__name') return [...list].sort((a, b) => a.name.localeCompare(b.name))
   if (key) {
@@ -138,7 +153,7 @@ const openGroupItems = computed(() => {
   const e = entries.value.find((x) => x.kind === 'group' && x.name === openGroup.value)
   return e && e.kind === 'group' ? e.items : []
 })
-watch([tab, dimIndex], () => (openGroup.value = null))
+watch([tab, dimIndex, payIndex], () => (openGroup.value = null))
 
 function toggleGroup(name: string) {
   openGroup.value = openGroup.value === name ? null : name
@@ -152,6 +167,23 @@ function groupHover(e: PointerEvent, name: string, items: Item[]) {
 const rows = computed(() => Math.max(5, Math.ceil(entries.value.length / 9)))
 const fillers = computed(() => rows.value * 9 - entries.value.length)
 const selected = computed(() => (selectedId.value !== null ? itemsById.value.get(selectedId.value) : undefined))
+
+// Shift-click moves a stack in the game; here it puts one set straight
+// into the cart.
+function quickAdd(item: Item) {
+  if (!item.inStock || quantityInCart(item.id) >= item.maxPerOrder) {
+    selectedId.value = item.id
+    return
+  }
+  addToCart(item, 1)
+  playPop()
+  selectedId.value = item.id
+}
+
+function onSlotClick(e: MouseEvent, item: Item) {
+  if (e.shiftKey) quickAdd(item)
+  else select(item)
+}
 
 function select(item: Item) {
   selectedId.value = selectedId.value === item.id ? null : item.id
@@ -195,14 +227,15 @@ function hover(e: PointerEvent, item: Item) {
       <section class="inventory" aria-label="Items">
         <CategoryTabs :tabs="tabs.slice(0, half)" :selected="tab" position="top" @select="(id) => ((tab = id), (selectedId = null))" />
         <div class="mc-panel panel">
-          <div class="head">
-            <h2 class="mc-title">{{ currentTab?.name ?? 'Shop' }}</h2>
-            <span class="tools">
-              <McButton small :aria-label="`Dimension: ${dimFilter.label}`" @click="dimIndex++">
-                <ItemIcon :texture="dimFilter.icon" :size="8" />{{ dimFilter.label }}
-              </McButton>
-              <McButton small @click="sortIndex++">Sort: {{ sort.label }}</McButton>
-            </span>
+          <h2 class="mc-title head">{{ currentTab?.name ?? 'Shop' }}</h2>
+          <div class="tools">
+            <McButton small :aria-label="`Dimension: ${dimFilter.label}`" @click="dimIndex++">
+              <ItemIcon :texture="dimFilter.icon" :size="8" />{{ dimFilter.label }}
+            </McButton>
+            <McButton small :aria-label="`Pay with: ${payFilter.label}`" @click="payIndex++">
+              <ItemIcon :texture="payFilter.icon" :size="8" />{{ payFilter.id ? 'Only' : 'Any price' }}
+            </McButton>
+            <McButton small @click="sortIndex++">Sort: {{ sort.label }}</McButton>
           </div>
           <McTextField
             v-if="tab === SEARCH"
@@ -234,7 +267,7 @@ function hover(e: PointerEvent, item: Item) {
                   :selected="e.item.id === selectedId"
                   :dimmed="!e.item.inStock"
                   :label="`${e.item.name}, ${e.item.inStock ? priceText(e.item.price, catalog.currencies) : 'out of stock'}`"
-                  @click="select(e.item)"
+                  @click="onSlotClick($event, e.item)"
                   @pointerenter="hover($event, e.item)"
                   @pointermove="moveTooltip"
                   @pointerleave="hideTooltip"
@@ -270,7 +303,7 @@ function hover(e: PointerEvent, item: Item) {
                   :selected="item.id === selectedId"
                   :dimmed="!item.inStock"
                   :label="`${item.name}, ${item.inStock ? priceText(item.price, catalog.currencies) : 'out of stock'}`"
-                  @click="select(item)"
+                  @click="onSlotClick($event, item)"
                   @pointerenter="hover($event, item)"
                   @pointermove="moveTooltip"
                   @pointerleave="hideTooltip"
@@ -278,10 +311,18 @@ function hover(e: PointerEvent, item: Item) {
               </div>
             </section>
             <p v-if="visibleItems.length === 0" class="state">
-              {{ tab === SEARCH && query ? `Nothing matches "${query}". Try another name.` : 'Nothing for sale here yet.' }}
+              {{
+                tab === SEARCH && query
+                  ? `Nothing matches "${query}". Try another name.`
+                  : dimFilter.id || payFilter.id
+                    ? 'Nothing here matches these filters.'
+                    : 'Nothing for sale here yet.'
+              }}
             </p>
             <ItemDetail v-if="selected" :item="selected" />
-            <p v-else-if="visibleItems.length" class="state">Select an item to see its price and buy it.</p>
+            <p v-else-if="visibleItems.length" class="state">
+              Select an item to see its price and buy it. Shift-click adds a set straight to the cart.
+            </p>
           </template>
         </div>
         <CategoryTabs :tabs="tabs.slice(half)" :selected="tab" position="bottom" @select="(id) => ((tab = id), (selectedId = null))" />
@@ -313,16 +354,14 @@ function hover(e: PointerEvent, item: Item) {
 }
 
 .head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: calc(var(--u) * 2);
   margin-bottom: calc(var(--u) * 2);
 }
 
 .tools {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--u);
+  margin-bottom: calc(var(--u) * 2);
 }
 
 .search {

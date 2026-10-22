@@ -207,6 +207,10 @@ func (s *Service) buildLines(ctx context.Context, tx *sql.Tx, in []CreateLine) (
 	if err != nil {
 		return nil, err
 	}
+	disabledDims, err := s.catalog.DisabledDimensions(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	var unavailable, changed []int64
 	soldOut := &OutOfStockError{}
@@ -214,7 +218,7 @@ func (s *Service) buildLines(ctx context.Context, tx *sql.Tx, in []CreateLine) (
 	lines := make([]Line, 0, len(in))
 	for i, l := range in {
 		it, ok := items[l.ItemID]
-		if !ok || !it.Enabled {
+		if !ok || !it.Enabled || it.Blocked(disabledDims) {
 			unavailable = append(unavailable, l.ItemID)
 			continue
 		}

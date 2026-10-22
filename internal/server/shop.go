@@ -70,15 +70,23 @@ func (s *Server) handleCatalog(w http.ResponseWriter, r *http.Request) {
 		s.internalError(w, err)
 		return
 	}
-	items, err := s.catalog.Items(ctx, false)
+	all, err := s.catalog.Items(ctx, false)
 	if err != nil {
 		s.internalError(w, err)
 		return
 	}
-	if items == nil {
-		items = []catalog.Item{}
+	disabled, err := s.catalog.DisabledDimensions(ctx)
+	if err != nil {
+		s.internalError(w, err)
+		return
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"currencies": currencies, "categories": categories, "items": items})
+	items := []catalog.Item{}
+	for _, it := range all {
+		if !it.Blocked(disabled) {
+			items = append(items, it)
+		}
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"currencies": currencies, "categories": categories, "items": items, "disabledDimensions": disabled})
 }
 
 // receipt is what a player may see about their own order.

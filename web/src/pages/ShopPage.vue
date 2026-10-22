@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import SiteFrame from '../components/SiteFrame.vue'
 import CategoryTabs, { type Tab } from '../components/CategoryTabs.vue'
 import ItemSlot from '../components/ItemSlot.vue'
+import ItemIcon from '../components/ItemIcon.vue'
 import ItemDetail from '../components/ItemDetail.vue'
 import CartChest from '../components/CartChest.vue'
 import FavoritesHotbar from '../components/FavoritesHotbar.vue'
@@ -14,7 +15,7 @@ import { catalog, itemsById, loadCatalog } from '../stores/catalog'
 import { quantityInCart } from '../stores/cart'
 import { hideTooltip, moveTooltip, showTooltip, type TooltipLine } from '../stores/tooltip'
 import { priceText } from '../lib/price'
-import { plural } from '../lib/format'
+import { dimensionColor, dimensionLabel, needsText, plural } from '../lib/format'
 import { usePageTitle } from '../lib/title'
 
 const SEARCH = '__search'
@@ -24,6 +25,7 @@ const router = useRouter()
 const tab = ref(typeof route.query.c === 'string' ? route.query.c : '')
 const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const sortIndex = ref(0)
+const dimIndex = ref(0)
 const selectedId = ref<number | null>(null)
 
 onMounted(() => loadCatalog())
@@ -62,6 +64,24 @@ const sorts = computed(() => [
 ])
 const sort = computed(() => sorts.value[sortIndex.value % sorts.value.length]!)
 
+// Only dimensions the server has open are offered as filters.
+const DIM_ICONS = { overworld: 'grass_block', nether: 'netherrack', end: 'end_stone' } as const
+const dimFilters = computed(() => [
+  { label: 'All', id: null as string | null, icon: 'compass' },
+  { label: dimensionLabel.overworld, id: 'overworld', icon: DIM_ICONS.overworld },
+  ...(['nether', 'end'] as const)
+    .filter((d) => !catalog.disabledDimensions.includes(d))
+    .map((d) => ({ label: dimensionLabel[d], id: d as string, icon: DIM_ICONS[d] })),
+])
+const dimFilter = computed(() => dimFilters.value[dimIndex.value % dimFilters.value.length]!)
+
+function matchesDimension(item: Item) {
+  const d = dimFilter.value.id
+  if (!d) return true
+  if (d === 'overworld') return item.dimensions.length === 0
+  return item.dimensions.includes(d as 'nether' | 'end')
+}
+
 const visibleItems = computed(() => {
   let list: Item[]
   if (tab.value === SEARCH) {
@@ -70,6 +90,7 @@ const visibleItems = computed(() => {
   } else {
     list = catalog.items.filter((i) => i.categoryId === tab.value)
   }
+  list = list.filter(matchesDimension)
   const key = sort.value.key
   if (key === '__name') return [...list].sort((a, b) => a.name.localeCompare(b.name))
   if (key) {
@@ -109,6 +130,7 @@ function tooltipLines(item: Item): TooltipLine[] {
   if (!item.inStock) lines.push({ text: 'Out of stock', color: 'var(--red)' })
   if (item.description) lines.push({ text: item.description })
   if (item.count > 1) lines.push({ text: `Set of ${item.count}` })
+  if (item.dimensions.length) lines.push({ text: needsText(item.dimensions), color: dimensionColor[item.dimensions[item.dimensions.length - 1]!] })
   lines.push({ text: priceText(item.price, catalog.currencies), color: 'var(--gold)' })
   let limit = `Max ${item.maxPerOrder} per order`
   if (item.playerLimit) limit += `, ${item.playerLimit} per ${item.playerLimitDays} ${plural(item.playerLimitDays ?? 0, 'day', 'days')}`
@@ -131,7 +153,12 @@ function hover(e: PointerEvent, item: Item) {
         <div class="mc-panel panel">
           <div class="head">
             <h2 class="mc-title">{{ currentTab?.name ?? 'Shop' }}</h2>
-            <McButton small @click="sortIndex++">Sort: {{ sort.label }}</McButton>
+            <span class="tools">
+              <McButton small :aria-label="`Dimension: ${dimFilter.label}`" @click="dimIndex++">
+                <ItemIcon :texture="dimFilter.icon" :size="8" />{{ dimFilter.label }}
+              </McButton>
+              <McButton small @click="sortIndex++">Sort: {{ sort.label }}</McButton>
+            </span>
           </div>
           <McTextField
             v-if="tab === SEARCH"
@@ -207,6 +234,11 @@ function hover(e: PointerEvent, item: Item) {
   justify-content: space-between;
   gap: calc(var(--u) * 2);
   margin-bottom: calc(var(--u) * 2);
+}
+
+.tools {
+  display: flex;
+  gap: var(--u);
 }
 
 .search {

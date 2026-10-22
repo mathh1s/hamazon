@@ -200,3 +200,21 @@ func TestStatusPollingAndNewOrders(t *testing.T) {
 		t.Fatalf("new order not reported: %d %+v %v", latest, fresh, err)
 	}
 }
+
+func TestDisabledDimensionBlocksOrder(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	if err := f.svc.catalog.SetDimensionEnabled(ctx, "end", false); err != nil {
+		t.Fatal(err)
+	}
+	_, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-dimdimdimdimdimd", Username: "Steve",
+		Lines: []CreateLine{f.line("elytra", 1)}}, "")
+	var unavailable *UnavailableError
+	if !errors.As(err, &unavailable) {
+		t.Fatalf("end items must not be orderable while the end is off, got %v", err)
+	}
+	if _, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-dimokdimokdimok", Username: "Steve",
+		Lines: []CreateLine{f.line("blaze_rod", 1)}}, ""); err != nil {
+		t.Fatalf("nether items stay orderable: %v", err)
+	}
+}

@@ -15,3 +15,20 @@ export const statusLabel: Record<OrderStatus, string> = {
 export function plural(n: number, one: string, many: string) {
   return n === 1 ? one : many
 }
+
+export const dimensionLabel: Record<'overworld' | 'nether' | 'end', string> = {
+  overworld: 'Overworld',
+  nether: 'Nether',
+  end: 'End',
+}
+
+// Text colors that match each dimension's look in the game.
+export const dimensionColor: Record<'nether' | 'end', string> = {
+  nether: '#ff5555',
+  end: '#d78bff',
+}
+
+export function needsText(dims: ('nether' | 'end')[]) {
+  if (dims.length === 0) return ''
+  return 'Needs the ' + dims.map((d) => dimensionLabel[d]).join(' and the ')
+}

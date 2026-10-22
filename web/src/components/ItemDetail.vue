@@ -9,7 +9,7 @@ import { addToCart, quantityInCart } from '../stores/cart'
 import { playPop } from '../stores/sound'
 import { favorites, HOTBAR_SIZE, isFavorite, toggleFavorite } from '../stores/favorites'
 import { scalePrice } from '../lib/price'
-import { plural } from '../lib/format'
+import { dimensionColor, needsText, plural } from '../lib/format'
 
 const props = defineProps<{ item: Item }>()
 const quantity = ref(1)
@@ -42,6 +42,9 @@ function add() {
     <div class="info">
       <h3 class="mc-title">{{ item.name }}</h3>
       <p v-if="item.description" class="desc">{{ item.description }}</p>
+      <p v-if="item.dimensions.length" class="dims" :style="{ color: dimensionColor[item.dimensions[item.dimensions.length - 1]!] }">
+        {{ needsText(item.dimensions) }}
+      </p>
       <p class="meta">
         {{ item.count === 1 ? 'Sold individually' : `Sold in sets of ${item.count}` }}
       </p>
@@ -95,6 +98,10 @@ function add() {
 
 .info p {
   margin: 0;
+}
+
+.dims {
+  text-shadow: var(--u) var(--u) 0 #3f3f3f;
 }
 
 .desc {

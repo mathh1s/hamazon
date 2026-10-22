@@ -40,16 +40,65 @@ func (s *Store) Seed(ctx context.Context, data []byte) error {
 			return err
 		}
 		if seeded > 0 {
-			return nil
+			return backfill(ctx, tx, f)
 		}
 		for _, it := range f.Items {
 			if _, err := insertItem(ctx, tx, it); err != nil {
 				return fmt.Errorf("seed %s: %w", it.Name, err)
 			}
 		}
-		_, err := tx.ExecContext(ctx, `INSERT INTO meta (key, value) VALUES ('items_seeded', ?)`, db.Now())
-		return err
+		if _, err := tx.ExecContext(ctx, `INSERT INTO meta (key, value) VALUES ('items_seeded', ?)`, db.Now()); err != nil {
+			return err
+		}
+		return markBackfilled(ctx, tx)
 	})
+}
+
+// backfills fill new item fields from the defaults once, for shops that
+// were seeded before the field existed. Each runs a single time, so later
+// admin edits are never overwritten.
+var backfills = []struct {
+	key string
+	run func(ctx context.Context, tx *sql.Tx, it ItemInput) error
+}{
+	{"backfill_dimensions", func(ctx context.Context, tx *sql.Tx, it ItemInput) error {
+		if len(it.Dimensions) == 0 {
+			return nil
+		}
+		_, err := tx.ExecContext(ctx, `UPDATE items SET dimensions = ? WHERE texture = ? AND description = ? AND dimensions = ''`,
+			strings.Join(it.Dimensions, ","), it.Texture, it.Description)
+		return err
+	}},
+}
+
+func backfill(ctx context.Context, tx *sql.Tx, f seedFile) error {
+	for _, b := range backfills {
+		var done int
+		if err := tx.QueryRowContext(ctx, `SELECT COUNT(*) FROM meta WHERE key = ?`, b.key).Scan(&done); err != nil {
+			return err
+		}
+		if done > 0 {
+			continue
+		}
+		for _, it := range f.Items {
+			if err := b.run(ctx, tx, it); err != nil {
+				return err
+			}
+		}
+		if _, err := tx.ExecContext(ctx, `INSERT INTO meta (key, value) VALUES (?, ?)`, b.key, db.Now()); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func markBackfilled(ctx context.Context, tx *sql.Tx) error {
+	for _, b := range backfills {
+		if _, err := tx.ExecContext(ctx, `INSERT OR IGNORE INTO meta (key, value) VALUES (?, ?)`, b.key, db.Now()); err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func parseSeed(data []byte) (seedFile, error) {

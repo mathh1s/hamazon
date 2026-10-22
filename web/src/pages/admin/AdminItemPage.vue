@@ -31,6 +31,8 @@ const form = reactive({
   playerLimitDays: '7',
   enabled: true,
   inStock: true,
+  nether: false,
+  end: false,
   sort: '0',
   price: {} as Record<string, string>,
 })
@@ -63,6 +65,8 @@ onMounted(async () => {
         playerLimitDays: String(item.playerLimitDays ?? 7),
         enabled: item.enabled,
         inStock: item.inStock,
+        nether: item.dimensions.includes('nether'),
+        end: item.dimensions.includes('end'),
         sort: String(item.sort),
         price: Object.fromEntries(Object.entries(item.price).map(([k, v]) => [k, String(v)])),
       })
@@ -97,6 +101,7 @@ function toInput(): ItemInput {
     playerLimitDays: form.limitOn ? Number(form.playerLimitDays) : null,
     enabled: form.enabled,
     inStock: form.inStock,
+    dimensions: [...(form.nether ? (['nether'] as const) : []), ...(form.end ? (['end'] as const) : [])],
     sort: Number(form.sort) || 0,
     price,
   }
@@ -237,6 +242,18 @@ async function remove() {
               <p v-if="errors.playerLimitDays" class="error">{{ errors.playerLimitDays }}</p>
             </div>
           </div>
+        </fieldset>
+
+        <fieldset class="field">
+          <legend class="label">Dimensions needed to get it</legend>
+          <label class="check">
+            <input v-model="form.nether" type="checkbox" />
+            <span>Needs the Nether</span>
+          </label>
+          <label class="check">
+            <input v-model="form.end" type="checkbox" />
+            <span>Needs the End</span>
+          </label>
         </fieldset>
 
         <label class="check">

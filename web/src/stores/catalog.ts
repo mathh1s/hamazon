@@ -8,6 +8,7 @@ export const catalog = reactive<{ loaded: boolean; loading: boolean; error: stri
   currencies: [],
   categories: [],
   items: [],
+  disabledDimensions: [],
 })
 
 export const itemsById = computed(() => new Map<number, Item>(catalog.items.map((i) => [i.id, i])))
@@ -21,6 +22,7 @@ export async function loadCatalog(force = false) {
     catalog.currencies = data.currencies
     catalog.categories = data.categories
     catalog.items = data.items
+    catalog.disabledDimensions = data.disabledDimensions ?? []
     catalog.loaded = true
   } catch (e) {
     catalog.error = e instanceof Error ? e.message : 'Could not load the shop'

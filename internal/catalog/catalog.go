@@ -34,36 +34,38 @@ type Category struct {
 type Price map[string]int
 
 type Item struct {
-	ID              int64  `json:"id"`
-	Name            string `json:"name"`
-	Texture         string `json:"texture"`
-	CategoryID      string `json:"categoryId"`
-	Count           int    `json:"count"`
-	Description     string `json:"description"`
-	MaxPerOrder     int    `json:"maxPerOrder"`
-	PlayerLimit     *int   `json:"playerLimit"`
-	PlayerLimitDays *int   `json:"playerLimitDays"`
-	Enabled         bool   `json:"enabled"`
-	InStock         bool   `json:"inStock"`
-	PriceLocked     bool   `json:"priceLocked"`
-	Sort            int    `json:"sort"`
-	Price           Price  `json:"price"`
+	ID              int64    `json:"id"`
+	Name            string   `json:"name"`
+	Texture         string   `json:"texture"`
+	CategoryID      string   `json:"categoryId"`
+	Count           int      `json:"count"`
+	Description     string   `json:"description"`
+	MaxPerOrder     int      `json:"maxPerOrder"`
+	PlayerLimit     *int     `json:"playerLimit"`
+	PlayerLimitDays *int     `json:"playerLimitDays"`
+	Enabled         bool     `json:"enabled"`
+	InStock         bool     `json:"inStock"`
+	PriceLocked     bool     `json:"priceLocked"`
+	Dimensions      []string `json:"dimensions"`
+	Sort            int      `json:"sort"`
+	Price           Price    `json:"price"`
 }
 
 // ItemInput is the editable part of an item, shared by the admin API and the seed.
 type ItemInput struct {
-	Name            string `json:"name" yaml:"name"`
-	Texture         string `json:"texture" yaml:"texture"`
-	CategoryID      string `json:"categoryId" yaml:"category"`
-	Count           int    `json:"count" yaml:"count"`
-	Description     string `json:"description" yaml:"description"`
-	MaxPerOrder     int    `json:"maxPerOrder" yaml:"maxPerOrder"`
-	PlayerLimit     *int   `json:"playerLimit" yaml:"playerLimit"`
-	PlayerLimitDays *int   `json:"playerLimitDays" yaml:"playerLimitDays"`
-	Enabled         *bool  `json:"enabled" yaml:"enabled"`
-	InStock         *bool  `json:"inStock" yaml:"inStock"`
-	Sort            int    `json:"sort" yaml:"sort"`
-	Price           Price  `json:"price" yaml:"price"`
+	Name            string   `json:"name" yaml:"name"`
+	Texture         string   `json:"texture" yaml:"texture"`
+	CategoryID      string   `json:"categoryId" yaml:"category"`
+	Count           int      `json:"count" yaml:"count"`
+	Description     string   `json:"description" yaml:"description"`
+	MaxPerOrder     int      `json:"maxPerOrder" yaml:"maxPerOrder"`
+	PlayerLimit     *int     `json:"playerLimit" yaml:"playerLimit"`
+	PlayerLimitDays *int     `json:"playerLimitDays" yaml:"playerLimitDays"`
+	Enabled         *bool    `json:"enabled" yaml:"enabled"`
+	InStock         *bool    `json:"inStock" yaml:"inStock"`
+	Dimensions      []string `json:"dimensions" yaml:"dimensions"`
+	Sort            int      `json:"sort" yaml:"sort"`
+	Price           Price    `json:"price" yaml:"price"`
 }
 
 type Store struct {
@@ -106,13 +108,15 @@ func (s *Store) Categories(ctx context.Context) ([]Category, error) {
 	return out, rows.Err()
 }
 
-const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, price_locked, sort`
+const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, price_locked, dimensions, sort`
 
 func scanItem(sc interface{ Scan(...any) error }) (Item, error) {
 	var it Item
 	var limit, days sql.NullInt64
+	var dims string
 	err := sc.Scan(&it.ID, &it.Name, &it.Texture, &it.CategoryID, &it.Count, &it.Description,
-		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.PriceLocked, &it.Sort)
+		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.PriceLocked, &dims, &it.Sort)
+	it.Dimensions = splitDimensions(dims)
 	if limit.Valid && days.Valid {
 		l, d := int(limit.Int64), int(days.Int64)
 		it.PlayerLimit, it.PlayerLimitDays = &l, &d
@@ -241,9 +245,10 @@ func (s *Store) Update(ctx context.Context, id int64, in ItemInput) (Item, error
 	locked := before.PriceLocked || !sameTerms(termsOf(before), termsOfInput(in))
 	err = db.InTx(ctx, s.db, func(tx *sql.Tx) error {
 		res, err := tx.ExecContext(ctx, `UPDATE items SET name = ?, texture = ?, category_id = ?, count = ?, description = ?,
-			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, price_locked = ?, sort = ?, updated_at = ? WHERE id = ?`,
+			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, price_locked = ?, dimensions = ?, sort = ?,
+			updated_at = ? WHERE id = ?`,
 			in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, locked, in.Sort, db.Now(), id)
+			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, locked, strings.Join(in.Dimensions, ","), in.Sort, db.Now(), id)
 		if err != nil {
 			return err
 		}
@@ -311,9 +316,9 @@ func (s *Store) SetEnabled(ctx context.Context, ids []int64, enabled bool) error
 func insertItem(ctx context.Context, q db.Querier, in ItemInput) (int64, error) {
 	now := db.Now()
 	res, err := q.ExecContext(ctx, `INSERT INTO items (name, texture, category_id, count, description, max_per_order,
-		player_limit, player_limit_days, enabled, in_stock, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		player_limit, player_limit_days, enabled, in_stock, dimensions, sort, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
 		in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, in.Sort, now, now)
+		in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, strings.Join(in.Dimensions, ","), in.Sort, now, now)
 	if err != nil {
 		return 0, err
 	}
@@ -399,6 +404,12 @@ func validateItem(in *ItemInput, currencies []Currency, categories []Category) e
 			errs.Add("playerLimitDays", "Period must be between 1 and 365 days")
 		}
 	}
+
+	dims, ok := normalizeDimensions(in.Dimensions)
+	if !ok {
+		errs.Add("dimensions", "Dimensions can only be nether and end")
+	}
+	in.Dimensions = dims
 
 	if len(in.Price) == 0 {
 		errs.Add("price", "Set at least one currency")

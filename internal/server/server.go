@@ -74,6 +74,8 @@ func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s.mux.HandleFunc("DELETE /api/admin/items/{id}", s.requireAdmin(s.handleAdminDeleteItem))
 	s.mux.HandleFunc("PUT /api/admin/items/{id}/stock", s.requireAdmin(s.handleAdminItemStock))
 	s.mux.HandleFunc("POST /api/admin/items/visibility", s.requireAdmin(s.handleAdminItemVisibility))
+	s.mux.HandleFunc("GET /api/admin/dimensions", s.requireAdmin(s.handleAdminDimensions))
+	s.mux.HandleFunc("PUT /api/admin/dimensions/{id}", s.requireAdmin(s.handleAdminSetDimension))
 	s.mux.HandleFunc("GET /api/admin/price-updates", s.requireAdmin(s.handleAdminPriceUpdates))
 	s.mux.HandleFunc("POST /api/admin/price-updates", s.requireAdmin(s.handleAdminApplyPriceUpdates))
 	s.mux.HandleFunc("GET /api/admin/defaults", s.requireAdmin(s.handleAdminMissingDefaults))

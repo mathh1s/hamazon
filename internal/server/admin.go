@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"slices"
 	"strconv"
 	"time"
 
@@ -402,4 +403,49 @@ func (s *Server) handleAdminApplyPriceUpdates(w http.ResponseWriter, r *http.Req
 	}
 	s.log.Info("default prices applied", "count", n, "admin", currentAdmin(r).Name)
 	writeJSON(w, http.StatusOK, map[string]any{"applied": n})
+}
+
+func (s *Server) handleAdminDimensions(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	disabled, err := s.catalog.DisabledDimensions(ctx)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	items, err := s.catalog.Items(ctx, true)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	type dim struct {
+		ID      string `json:"id"`
+		Enabled bool   `json:"enabled"`
+		Items   int    `json:"items"`
+	}
+	out := []dim{}
+	for _, d := range catalog.Dimensions {
+		n := 0
+		for _, it := range items {
+			if slices.Contains(it.Dimensions, d) {
+				n++
+			}
+		}
+		out = append(out, dim{ID: d, Enabled: !slices.Contains(disabled, d), Items: n})
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"dimensions": out})
+}
+
+func (s *Server) handleAdminSetDimension(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		Enabled bool `json:"enabled"`
+	}
+	if !decodeJSON(w, r, &body) {
+		return
+	}
+	if err := s.catalog.SetDimensionEnabled(r.Context(), r.PathValue("id"), body.Enabled); err != nil {
+		s.adminError(w, err)
+		return
+	}
+	s.log.Info("dimension switched", "dimension", r.PathValue("id"), "enabled", body.Enabled, "admin", currentAdmin(r).Name)
+	s.handleAdminDimensions(w, r)
 }

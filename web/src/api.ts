@@ -27,14 +27,18 @@ export interface Item {
   enabled: boolean
   inStock: boolean
   priceLocked?: boolean
+  dimensions: Dimension[]
   sort: number
   price: Price
 }
+
+export type Dimension = 'nether' | 'end'
 
 export interface Catalog {
   currencies: Currency[]
   categories: Category[]
   items: Item[]
+  disabledDimensions: Dimension[]
 }
 
 export type OrderStatus = 'pending' | 'approved' | 'fulfilled' | 'cancelled'
@@ -179,6 +183,7 @@ export interface ItemInput {
   playerLimitDays: number | null
   enabled: boolean
   inStock: boolean
+  dimensions: Dimension[]
   sort: number
   price: Price
 }

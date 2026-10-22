@@ -5,7 +5,8 @@ import McButton from '../../components/McButton.vue'
 import McTextField from '../../components/McTextField.vue'
 import ItemSlot from '../../components/ItemSlot.vue'
 import PriceTag from '../../components/PriceTag.vue'
-import { api, errorMessage, type Item } from '../../api'
+import { api, errorMessage, type Dimension, type Item } from '../../api'
+import { dimensionLabel } from '../../lib/format'
 import { admin, loadOverview } from '../../stores/admin'
 import { loadCatalog } from '../../stores/catalog'
 import { usePageTitle } from '../../lib/title'
@@ -13,6 +14,7 @@ import { usePageTitle } from '../../lib/title'
 usePageTitle(() => 'Items')
 const items = ref<Item[]>([])
 const missingDefaults = ref(0)
+const dimensions = ref<{ id: Dimension; enabled: boolean; items: number }[]>([])
 const justAdded = ref<number[]>([])
 const adding = ref(false)
 const error = ref('')
@@ -25,12 +27,25 @@ onMounted(async () => {
     if (!admin.loaded) await loadOverview()
     await reload()
     missingDefaults.value = (await api<{ missing: unknown[] }>('GET', '/api/admin/defaults')).missing.length
+    dimensions.value = (await api<{ dimensions: typeof dimensions.value }>('GET', '/api/admin/dimensions')).dimensions
   } catch (e) {
     error.value = errorMessage(e)
   } finally {
     loading.value = false
   }
 })
+
+async function toggleDimension(d: { id: Dimension; enabled: boolean }) {
+  if (d.enabled && !confirm(`Hide every item that needs the ${dimensionLabel[d.id]} from the shop? Nothing is deleted.`)) return
+  try {
+    dimensions.value = (
+      await api<{ dimensions: typeof dimensions.value }>('PUT', `/api/admin/dimensions/${d.id}`, { enabled: !d.enabled })
+    ).dimensions
+    loadCatalog(true)
+  } catch (e) {
+    error.value = errorMessage(e)
+  }
+}
 
 async function reload() {
   items.value = (await api<{ items: Item[] }>('GET', '/api/admin/items')).items
@@ -119,6 +134,15 @@ const groups = computed(() => {
         <p>Added {{ justAdded.length }} hidden items. Edit their prices, or show them all at once.</p>
         <McButton @click="showAdded">Show all {{ justAdded.length }} in the shop</McButton>
       </div>
+      <div v-if="dimensions.length" class="dims">
+        <span class="dims-label">Dimensions open on the server</span>
+        <McButton v-for="d in dimensions" :key="d.id" small :aria-pressed="d.enabled" @click="toggleDimension(d)"
+          >{{ dimensionLabel[d.id] }}: {{ d.enabled ? 'ON' : 'OFF' }}</McButton
+        >
+        <span class="dims-hint">Items that need a dimension that is off ({{
+          dimensions.filter((d) => !d.enabled).reduce((n, d) => n + d.items, 0)
+        }}) are hidden from the shop.</span>
+      </div>
       <McTextField v-model="search" type="search" placeholder="Filter items" aria-label="Filter items" />
       <p v-if="loading" class="hint">Loading items...</p>
       <p v-else-if="error" class="error" role="alert">{{ error }}</p>
@@ -181,6 +205,22 @@ const groups = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.dims {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: calc(var(--u) * 2) calc(var(--u) * 3);
+}
+
+.dims-label {
+  color: var(--title);
+}
+
+.dims-hint {
+  flex-basis: 100%;
+  color: var(--dark-gray);
 }
 
 .notice {

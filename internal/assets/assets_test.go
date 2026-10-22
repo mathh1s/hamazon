@@ -38,3 +38,24 @@ func TestBuildTrueTypeChecksum(t *testing.T) {
 		t.Fatal("whole font checksum must equal the magic constant")
 	}
 }
+
+func TestSpecialItemsBuildModels(t *testing.T) {
+	cases := []string{
+		`{"type":"minecraft:special","base":"minecraft:item/chest","model":{"type":"minecraft:chest","texture":"minecraft:normal"}}`,
+		`{"type":"minecraft:special","base":"minecraft:item/template_banner","model":{"type":"minecraft:banner","color":"red"}}`,
+		`{"type":"minecraft:special","base":"minecraft:item/template_skull","model":{"type":"minecraft:head","kind":"creeper"}}`,
+	}
+	for _, c := range cases {
+		refs, err := resolveItem(json.RawMessage(c))
+		if err != nil || len(refs) != 1 || refs[0].special == nil {
+			t.Fatalf("%s: %v %+v", c, err, refs)
+		}
+		m, err := buildSpecial(refs[0].special)
+		if err != nil || len(m.boxes) == 0 {
+			t.Fatalf("%s: no geometry: %v", c, err)
+		}
+	}
+	if _, err := buildSpecial(&specialSpec{Type: "banner", Color: "rainbow"}); err == nil {
+		t.Fatal("unknown banner colors must be rejected")
+	}
+}

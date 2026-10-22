@@ -25,6 +25,15 @@ func (p *pack) renderItem(refs []modelRef) (*image.NRGBA, iconKind, error) {
 	out := image.NewNRGBA(image.Rect(0, 0, iconSize, iconSize))
 	kind := kindFlat
 	for _, ref := range refs {
+		if ref.special != nil {
+			layer, err := p.renderSpecial(ref.special)
+			if err != nil {
+				return nil, "", err
+			}
+			kind = kindBlock
+			over(out, layer)
+			continue
+		}
 		m, err := p.loadModel(ref.id)
 		if err != nil {
 			return nil, "", err

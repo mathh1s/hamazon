@@ -21,6 +21,7 @@ type itemDefinition struct {
 
 type itemModelNode struct {
 	Type     string            `json:"type"`
+	Base     string            `json:"base"`
 	Model    json.RawMessage   `json:"model"`
 	Tints    []tintSource      `json:"tints"`
 	Property string            `json:"property"`
@@ -50,8 +51,9 @@ type tintSource struct {
 
 // modelRef is one model to draw plus the tint colors its faces may ask for.
 type modelRef struct {
-	id    string
-	tints []tintSource
+	id      string
+	tints   []tintSource
+	special *specialSpec
 }
 
 // resolveItem walks an item definition down to plain models, picking the
@@ -91,6 +93,12 @@ func resolveItem(raw json.RawMessage) ([]modelRef, error) {
 		if len(n.Entries) > 0 {
 			return resolveItem(n.Entries[0].Model)
 		}
+	case "special":
+		spec, err := parseSpecial(n)
+		if err != nil {
+			return nil, err
+		}
+		return []modelRef{{special: spec}}, nil
 	case "composite":
 		var out []modelRef
 		for _, m := range n.Models {

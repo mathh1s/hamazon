@@ -79,6 +79,17 @@ async function toggleStock(item: Item) {
   }
 }
 
+// With well over a thousand items, categories start folded so the page
+// stays quick; a filter opens every category that has a match.
+const open = ref<Set<string>>(new Set())
+
+function toggleGroup(id: string) {
+  const next = new Set(open.value)
+  if (next.has(id)) next.delete(id)
+  else next.add(id)
+  open.value = next
+}
+
 const groups = computed(() => {
   const q = search.value.trim().toLowerCase()
   return admin.categories
@@ -113,32 +124,47 @@ const groups = computed(() => {
       <p v-else-if="error" class="error" role="alert">{{ error }}</p>
 
       <section v-for="g in groups" :key="g.category.id" class="group" :aria-label="g.category.name">
-        <h3 class="mc-title">{{ g.category.name }}</h3>
-        <p v-if="g.items.length === 0" class="hint">No items in this category.</p>
-        <ul class="list">
-          <li v-for="item in g.items" :key="item.id" class="entry">
-            <RouterLink :to="`/admin/items/${item.id}`" class="row" :class="{ disabled: !item.enabled }">
-              <ItemSlot :texture="item.texture" :count="item.count" :dimmed="!item.inStock" />
-              <span class="name"
-                >{{ item.name }}<span v-if="!item.enabled" class="off"> (hidden)</span
-                ><span v-else-if="!item.inStock" class="soldout"> (out of stock)</span></span
-              >
-              <PriceTag :price="item.price" />
-              <span class="limit">
-                Max {{ item.maxPerOrder }} per order<template v-if="item.playerLimit">, {{ item.playerLimit }} per {{ item.playerLimitDays }} days</template>
-              </span>
-            </RouterLink>
-            <McButton
-              small
-              class="stock"
-              :disabled="toggling === item.id"
-              :aria-label="`${item.inStock ? 'Mark out of stock' : 'Mark in stock'}: ${item.name}`"
-              :aria-pressed="item.inStock"
-              @click="toggleStock(item)"
-              >Stock: {{ item.inStock ? 'ON' : 'OFF' }}</McButton
+        <button
+          type="button"
+          class="group-head"
+          :aria-expanded="!!search || open.has(g.category.id)"
+          @click="toggleGroup(g.category.id)"
+        >
+          <span class="arrow" aria-hidden="true">{{ search || open.has(g.category.id) ? 'v' : '>' }}</span>
+          <span class="mc-title">{{ g.category.name }}</span>
+          <span class="count">
+            {{ g.items.length }} items<template v-if="g.items.some((i) => !i.enabled)">,
+              {{ g.items.filter((i) => !i.enabled).length }} hidden</template
             >
-          </li>
-        </ul>
+          </span>
+        </button>
+        <template v-if="search || open.has(g.category.id)">
+          <p v-if="g.items.length === 0" class="hint">No items in this category.</p>
+          <ul class="list">
+            <li v-for="item in g.items" :key="item.id" class="entry">
+              <RouterLink :to="`/admin/items/${item.id}`" class="row" :class="{ disabled: !item.enabled }">
+                <ItemSlot :texture="item.texture" :count="item.count" :dimmed="!item.inStock" />
+                <span class="name"
+                  >{{ item.name }}<span v-if="!item.enabled" class="off"> (hidden)</span
+                  ><span v-else-if="!item.inStock" class="soldout"> (out of stock)</span></span
+                >
+                <PriceTag :price="item.price" />
+                <span class="limit">
+                  Max {{ item.maxPerOrder }} per order<template v-if="item.playerLimit">, {{ item.playerLimit }} per {{ item.playerLimitDays }} days</template>
+                </span>
+              </RouterLink>
+              <McButton
+                small
+                class="stock"
+                :disabled="toggling === item.id"
+                :aria-label="`${item.inStock ? 'Mark out of stock' : 'Mark in stock'}: ${item.name}`"
+                :aria-pressed="item.inStock"
+                @click="toggleStock(item)"
+                >Stock: {{ item.inStock ? 'ON' : 'OFF' }}</McButton
+              >
+            </li>
+          </ul>
+        </template>
       </section>
     </section>
   </AdminFrame>
@@ -182,6 +208,27 @@ const groups = computed(() => {
 .error {
   margin: 0;
   color: #aa0000;
+}
+
+.group-head {
+  display: flex;
+  align-items: baseline;
+  gap: calc(var(--u) * 3);
+  width: 100%;
+  padding: var(--u) 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.group-head:hover .mc-title {
+  color: #000;
+}
+
+.arrow,
+.count {
+  color: var(--dark-gray);
 }
 
 .group {

@@ -6,8 +6,9 @@
 
 :root {
   /* One GUI pixel. Everything is sized in multiples of it, like the game's GUI
-     scale. Very narrow phones shrink it so a 176 pixel container still fits. */
-  --u: min(2px, calc((100vw - 16px) / 176));
+     scale. Very narrow phones shrink it so the 195 pixel creative inventory
+     still fits. */
+  --u: min(2px, calc((100vw - 16px) / 195));
   --font-size: calc(var(--u) * 8);
 
   --panel: #c6c6c6;
@@ -120,6 +121,29 @@ a {
 
 .mc-text-dark {
   color: var(--dark-gray);
+}
+
+/* Scrollbars look like the creative inventory scroller: a raised grey
+   handle in a dark sunken track. */
+.mc-scroll {
+  overflow-y: auto;
+  scrollbar-color: #c6c6c6 #8b8b8b;
+}
+
+.mc-scroll::-webkit-scrollbar {
+  width: calc(var(--u) * 12);
+}
+
+.mc-scroll::-webkit-scrollbar-track {
+  background: #8b8b8b;
+  box-shadow: inset var(--u) var(--u) 0 var(--slot-dark), inset calc(var(--u) * -1) calc(var(--u) * -1) 0 var(--panel-light);
+}
+
+.mc-scroll::-webkit-scrollbar-thumb {
+  background: #c6c6c6;
+  border: var(--u) solid;
+  border-color: var(--panel-light) var(--panel-dark) var(--panel-dark) var(--panel-light);
+  min-height: calc(var(--u) * 15);
 }
 
 @media (prefers-reduced-motion: reduce) {

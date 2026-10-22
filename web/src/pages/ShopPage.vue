@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SiteFrame from '../components/SiteFrame.vue'
 import CategoryTabs, { type Tab } from '../components/CategoryTabs.vue'
@@ -85,7 +85,7 @@ const visibleItems = computed(() => {
   return list
 })
 
-const rows = computed(() => Math.max(3, Math.ceil(visibleItems.value.length / 9)))
+const rows = computed(() => Math.max(5, Math.ceil(visibleItems.value.length / 9)))
 const fillers = computed(() => rows.value * 9 - visibleItems.value.length)
 const selected = computed(() => (selectedId.value !== null ? itemsById.value.get(selectedId.value) : undefined))
 
@@ -93,11 +93,15 @@ function select(item: Item) {
   selectedId.value = selectedId.value === item.id ? null : item.id
 }
 
-function selectFromCart(id: number) {
+const gridEl = ref<HTMLElement | null>(null)
+
+async function selectFromCart(id: number) {
   const item = itemsById.value.get(id)
   if (!item) return
   tab.value = item.categoryId
   selectedId.value = id
+  await nextTick()
+  gridEl.value?.querySelector('.slot.selected')?.scrollIntoView({ block: 'nearest' })
 }
 
 function tooltipLines(item: Item): TooltipLine[] {
@@ -145,7 +149,7 @@ function hover(e: PointerEvent, item: Item) {
             <McButton @click="loadCatalog(true)">Try again</McButton>
           </div>
           <template v-else>
-            <div class="grid" role="list">
+            <div ref="gridEl" class="grid mc-scroll" role="list">
               <span v-for="item in visibleItems" :key="item.id" role="listitem">
                 <ItemSlot
                   :texture="item.texture"
@@ -188,7 +192,7 @@ function hover(e: PointerEvent, item: Item) {
 }
 
 .inventory {
-  width: calc(var(--u) * 176);
+  width: calc(var(--u) * 195);
   max-width: 100%;
 }
 
@@ -209,9 +213,14 @@ function hover(e: PointerEvent, item: Item) {
   margin-bottom: calc(var(--u) * 2);
 }
 
+/* Nine rows at a time, the rest scrolls, like the creative inventory. */
 .grid {
   display: grid;
   grid-template-columns: repeat(9, calc(var(--u) * 18));
+  grid-auto-rows: calc(var(--u) * 18);
+  max-height: calc(var(--u) * 18 * 9);
+  width: fit-content;
+  padding-right: calc(var(--u) * 2);
 }
 
 .grid > span {

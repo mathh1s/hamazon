@@ -20,7 +20,7 @@ const versionManifestURL = "https://piston-meta.mojang.com/mc/game/version_manif
 
 // formatVersion is bumped whenever the extractor output changes, so existing
 // installs re-extract on the next start without anyone running a command.
-const formatVersion = 4
+const formatVersion = 5
 
 type State string
 

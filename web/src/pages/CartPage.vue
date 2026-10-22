@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import SiteFrame from '../components/SiteFrame.vue'
 import ItemSlot from '../components/ItemSlot.vue'
 import PriceTag from '../components/PriceTag.vue'
@@ -21,6 +22,8 @@ import { usePageTitle } from '../lib/title'
 import { playChestClose, playChestOpen, playPop } from '../stores/sound'
 
 usePageTitle(() => 'Cart')
+const route = useRoute()
+const skipped = computed(() => (typeof route.query.skipped === 'string' ? route.query.skipped : ''))
 onMounted(() => {
   playChestOpen()
   loadCatalog(true)
@@ -40,6 +43,7 @@ const canCheckout = computed(() => catalog.loaded && cart.entries.length > 0 && 
     <section class="mc-panel" aria-labelledby="cart-title">
       <h2 id="cart-title" class="mc-title">Cart</h2>
 
+      <p v-if="skipped" class="note">Not added because they are no longer sold or out of stock: {{ skipped }}</p>
       <p v-if="!catalog.loaded && catalog.loading" class="note">Checking prices...</p>
       <p v-else-if="catalog.error" class="note error">{{ catalog.error }}</p>
 

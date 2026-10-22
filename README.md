@@ -8,6 +8,7 @@ Orders are purchase requests: nothing is taken from or added to anyone's invento
 
 - Players open the shop with a shared server password, then browse a creative-inventory style catalog, fill a chest-style cart and check out with their Minecraft username (Bedrock players via Floodgate use the `.` prefix).
 - Each order is saved first, then posted to Discord as an embed. If Discord is down the message is retried with backoff; admins can retry by hand after that.
+- Up to 9 items can be pinned to a hotbar under the inventory (keys 1 to 9 select them), and a receipt can refill the cart with "Order again".
 - The player gets a book-style receipt with a private link. It can be printed or saved as a PDF, and the receipt list remembers past orders on that device.
 - Admins log in at `/admin` to manage orders (Pending, Approved, Fulfilled, Cancelled) and items. Status changes edit the original Discord message.
 - Optional sounds use the real game sounds (button click, item pickup, chest, level up), downloaded with the textures. Browsers that cannot play Ogg get a simple synthesized version.

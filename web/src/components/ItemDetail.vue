@@ -7,6 +7,7 @@ import McButton from './McButton.vue'
 import QuantityStepper from './QuantityStepper.vue'
 import { addToCart, quantityInCart } from '../stores/cart'
 import { playPop } from '../stores/sound'
+import { favorites, HOTBAR_SIZE, isFavorite, toggleFavorite } from '../stores/favorites'
 import { scalePrice } from '../lib/price'
 import { plural } from '../lib/format'
 
@@ -61,6 +62,14 @@ function add() {
         </McButton>
       </template>
       <p v-else class="meta">You have the most you can order of this in your cart.</p>
+      <McButton
+        small
+        class="pin"
+        :disabled="!isFavorite(item.id) && favorites.ids.length >= HOTBAR_SIZE"
+        :aria-pressed="isFavorite(item.id)"
+        @click="toggleFavorite(item.id)"
+        >{{ isFavorite(item.id) ? 'Unpin' : favorites.ids.length >= HOTBAR_SIZE ? 'Hotbar full' : 'Pin to hotbar' }}</McButton
+      >
       <p v-if="added || inCart" class="added" role="status">{{ added || `${inCart} in your cart` }}</p>
     </div>
   </section>
@@ -110,6 +119,10 @@ function add() {
 
 .buy p {
   margin: 0;
+}
+
+.pin {
+  margin-left: auto;
 }
 
 .soldout {

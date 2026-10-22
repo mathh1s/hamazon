@@ -6,7 +6,10 @@ import ItemIcon from '../components/ItemIcon.vue'
 import PriceTag from '../components/PriceTag.vue'
 import McButton from '../components/McButton.vue'
 import { api, ApiError, errorMessage, type Receipt } from '../api'
-import { loadCatalog } from '../stores/catalog'
+import { catalog, itemsById, loadCatalog } from '../stores/catalog'
+import { addToCart } from '../stores/cart'
+import { playPop } from '../stores/sound'
+import { useRouter } from 'vue-router'
 import { rememberReceipt } from '../stores/receipts'
 import { formatDate, statusLabel } from '../lib/format'
 import { scalePrice } from '../lib/price'
@@ -42,6 +45,33 @@ async function load() {
 }
 
 onMounted(load)
+
+const router = useRouter()
+const reorderNote = ref('')
+
+// Order again uses today's prices and limits; anything no longer sold or
+// out of stock is left out and named.
+async function orderAgain() {
+  if (!receipt.value) return
+  await loadCatalog(true)
+  const skipped: string[] = []
+  let added = 0
+  for (const line of receipt.value.lines) {
+    const item = line.itemId !== null ? itemsById.value.get(line.itemId) : undefined
+    if (!item || !item.inStock) {
+      skipped.push(line.name)
+      continue
+    }
+    addToCart(item, Math.min(line.quantity, item.maxPerOrder))
+    added++
+  }
+  if (added === 0) {
+    reorderNote.value = catalog.error || 'None of these items can be ordered right now.'
+    return
+  }
+  playPop()
+  router.push({ path: '/cart', query: skipped.length ? { skipped: skipped.join(', ') } : {} })
+}
 
 function print() {
   window.print()
@@ -110,8 +140,10 @@ async function copyLink() {
         <div class="actions">
           <McButton @click="print">Print or save as PDF</McButton>
           <McButton @click="copyLink">{{ copied ? 'Link copied' : 'Copy link' }}</McButton>
+          <McButton @click="orderAgain">Order again</McButton>
           <McButton to="/">Back to shop</McButton>
         </div>
+        <p v-if="reorderNote" class="private shadow" role="alert">{{ reorderNote }}</p>
         <p class="private shadow">Anyone with this link can see the receipt, so only share it with admins.</p>
       </template>
     </div>

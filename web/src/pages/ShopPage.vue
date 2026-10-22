@@ -6,6 +6,7 @@ import CategoryTabs, { type Tab } from '../components/CategoryTabs.vue'
 import ItemSlot from '../components/ItemSlot.vue'
 import ItemDetail from '../components/ItemDetail.vue'
 import CartChest from '../components/CartChest.vue'
+import FavoritesHotbar from '../components/FavoritesHotbar.vue'
 import McButton from '../components/McButton.vue'
 import McTextField from '../components/McTextField.vue'
 import type { Item } from '../api'
@@ -169,6 +170,7 @@ function hover(e: PointerEvent, item: Item) {
           </template>
         </div>
         <CategoryTabs :tabs="tabs.slice(half)" :selected="tab" position="bottom" @select="(id) => ((tab = id), (selectedId = null))" />
+        <FavoritesHotbar :selected-id="selectedId" @select="(item) => selectFromCart(item.id)" />
       </section>
 
       <CartChest class="chest" @select="selectFromCart" />

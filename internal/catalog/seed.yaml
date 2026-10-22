@@ -175,9 +175,9 @@ items:
   - { name: Ender Pearl, texture: ender_pearl, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: Blaze Rod, texture: blaze_rod, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 5 } }
   - { name: Breeze Rod, texture: breeze_rod, category: resources, count: 16, maxPerOrder: 2, price: { emerald: 6 } }
-  - { name: Echo Shard, texture: echo_shard, category: resources, count: 1, maxPerOrder: 8, playerLimit: 16, playerLimitDays: 7, price: { diamond: 2 } }
-  - { name: Netherite Scrap, texture: netherite_scrap, category: resources, count: 1, maxPerOrder: 4, playerLimit: 8, playerLimitDays: 7, price: { diamond: 3 } }
-  - { name: Netherite Ingot, texture: netherite_ingot, category: resources, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 12, gold_ingot: 4 } }
+  - { name: Echo Shard, texture: echo_shard, category: resources, count: 1, maxPerOrder: 8, playerLimit: 16, playerLimitDays: 7, price: { diamond: 3 } }
+  - { name: Netherite Scrap, texture: netherite_scrap, category: resources, count: 1, maxPerOrder: 4, playerLimit: 8, playerLimitDays: 7, price: { diamond: 4 } }
+  - { name: Netherite Ingot, texture: netherite_ingot, category: resources, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 18 } }
 
   - { name: Raw Iron, texture: raw_iron, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 7 } }
   - { name: Raw Copper, texture: raw_copper, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
@@ -193,7 +193,7 @@ items:
   - { name: Feather, texture: feather, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 3 } }
   - { name: Flint, texture: flint, category: resources, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: Rabbit Hide, texture: rabbit_hide, category: resources, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
-  - { name: Ghast Tear, texture: ghast_tear, category: resources, count: 4, maxPerOrder: 4, price: { emerald: 6 } }
+  - { name: Ghast Tear, texture: ghast_tear, category: resources, count: 4, maxPerOrder: 4, price: { emerald: 8 } }
   - { name: Nautilus Shell, texture: nautilus_shell, category: resources, count: 1, maxPerOrder: 8, price: { emerald: 3 } }
   - { name: Wind Charge, texture: wind_charge, category: resources, count: 16, maxPerOrder: 4, price: { emerald: 3 } }
   # ==== tools ====
@@ -212,10 +212,10 @@ items:
   - { name: Brush, texture: brush, category: tools, count: 1, maxPerOrder: 4, price: { gold_ingot: 2 } }
   - { name: Spyglass, texture: spyglass, category: tools, count: 1, maxPerOrder: 2, price: { emerald: 2 } }
 
-  - { name: Netherite Pickaxe, texture: netherite_pickaxe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 14, gold_ingot: 4 } }
-  - { name: Netherite Sword, texture: netherite_sword, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 13, gold_ingot: 4 } }
-  - { name: Netherite Axe, texture: netherite_axe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 14, gold_ingot: 4 } }
-  - { name: Netherite Shovel, texture: netherite_shovel, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 12, gold_ingot: 4 } }
+  - { name: Netherite Pickaxe, texture: netherite_pickaxe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 22 } }
+  - { name: Netherite Sword, texture: netherite_sword, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 22 } }
+  - { name: Netherite Axe, texture: netherite_axe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 22 } }
+  - { name: Netherite Shovel, texture: netherite_shovel, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 20 } }
   - { name: Diamond Hoe, texture: diamond_hoe, category: tools, count: 1, maxPerOrder: 2, price: { diamond: 2 } }
   - { name: Stone Pickaxe, texture: stone_pickaxe, category: tools, count: 1, maxPerOrder: 8, price: { gold_ingot: 1 } }
   - { name: Stone Axe, texture: stone_axe, category: tools, count: 1, maxPerOrder: 8, price: { gold_ingot: 1 } }
@@ -233,10 +233,10 @@ items:
   - { name: Leather Tunic, texture: leather_chestplate, category: armor, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
   - { name: Turtle Shell, texture: turtle_helmet, category: armor, count: 1, maxPerOrder: 1, price: { emerald: 8 } }
 
-  - { name: Netherite Helmet, texture: netherite_helmet, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 16, emerald: 8 } }
-  - { name: Netherite Chestplate, texture: netherite_chestplate, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 20, emerald: 8 } }
-  - { name: Netherite Leggings, texture: netherite_leggings, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 19, emerald: 8 } }
-  - { name: Netherite Boots, texture: netherite_boots, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 16, emerald: 8 } }
+  - { name: Netherite Helmet, texture: netherite_helmet, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 23 } }
+  - { name: Netherite Chestplate, texture: netherite_chestplate, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 26 } }
+  - { name: Netherite Leggings, texture: netherite_leggings, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 25 } }
+  - { name: Netherite Boots, texture: netherite_boots, category: armor, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 22 } }
   - { name: Chainmail Helmet, texture: chainmail_helmet, category: armor, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
   - { name: Chainmail Chestplate, texture: chainmail_chestplate, category: armor, count: 1, maxPerOrder: 2, price: { emerald: 6 } }
   - { name: Chainmail Leggings, texture: chainmail_leggings, category: armor, count: 1, maxPerOrder: 2, price: { emerald: 5 } }
@@ -337,36 +337,36 @@ items:
   - { name: Iron Horse Armor, texture: iron_horse_armor, category: transport, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
   - { name: Golden Horse Armor, texture: golden_horse_armor, category: transport, count: 1, maxPerOrder: 2, price: { emerald: 6 } }
   # ==== rare ====
-  - { name: Elytra, texture: elytra, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 16 } }
-  - { name: Mace, texture: mace, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 12, emerald: 16 } }
-  - { name: Trident, texture: trident, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 6, emerald: 8 } }
-  - { name: Totem of Undying, texture: totem_of_undying, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 1, emerald: 8 } }
-  - { name: Enchanted Golden Apple, texture: enchanted_golden_apple, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
-  - { name: Nether Star, texture: nether_star, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
-  - { name: Beacon, texture: beacon, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 10 } }
-  - { name: Heart of the Sea, texture: heart_of_the_sea, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 4 } }
-  - { name: Netherite Upgrade, texture: netherite_upgrade_smithing_template, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 14, price: { diamond: 6 } }
-  - { name: Shulker Shell, texture: shulker_shell, category: rare, count: 2, maxPerOrder: 4, playerLimit: 8, playerLimitDays: 7, price: { diamond: 3 } }
-  - { name: Music Disc (Pigstep), texture: music_disc_pigstep, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - Pigstep, price: { emerald: 8 } }
+  - { name: Elytra, texture: elytra, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 40 } }
+  - { name: Mace, texture: mace, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 28 } }
+  - { name: Trident, texture: trident, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 16 } }
+  - { name: Totem of Undying, texture: totem_of_undying, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6 } }
+  - { name: Enchanted Golden Apple, texture: enchanted_golden_apple, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 16 } }
+  - { name: Nether Star, texture: nether_star, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 24 } }
+  - { name: Beacon, texture: beacon, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 28 } }
+  - { name: Heart of the Sea, texture: heart_of_the_sea, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 10 } }
+  - { name: Netherite Upgrade, texture: netherite_upgrade_smithing_template, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 14, price: { diamond: 12 } }
+  - { name: Shulker Shell, texture: shulker_shell, category: rare, count: 2, maxPerOrder: 4, playerLimit: 8, playerLimitDays: 7, price: { diamond: 4 } }
+  - { name: Music Disc (Pigstep), texture: music_disc_pigstep, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - Pigstep, price: { diamond: 4 } }
 
-  - { name: Shulker Box, texture: shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
+  - { name: Shulker Box, texture: shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
   - { name: Ender Chest, texture: ender_chest, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 2, emerald: 8 } }
-  - { name: Conduit, texture: conduit, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 10 } }
-  - { name: Heavy Core, texture: heavy_core, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 8 } }
-  - { name: Sponge, texture: sponge, category: rare, count: 8, maxPerOrder: 2, price: { emerald: 8 } }
-  - { name: Wither Skeleton Skull, texture: wither_skeleton_skull, category: rare, count: 1, maxPerOrder: 3, playerLimit: 6, playerLimitDays: 14, price: { diamond: 3 } }
-  - { name: Creeper Head, texture: creeper_head, category: rare, count: 1, maxPerOrder: 1, price: { emerald: 12 } }
-  - { name: Dragon Head, texture: dragon_head, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 12 } }
-  - { name: Recovery Compass, texture: recovery_compass, category: rare, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
-  - { name: Sniffer Egg, texture: sniffer_egg, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 4 } }
-  - { name: Trial Key, texture: trial_key, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 4 } }
-  - { name: Ominous Trial Key, texture: ominous_trial_key, category: rare, count: 1, maxPerOrder: 2, playerLimit: 2, playerLimitDays: 7, price: { diamond: 2 } }
-  - { name: Silence Armor Trim, texture: silence_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 10 } }
+  - { name: Conduit, texture: conduit, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 20 } }
+  - { name: Heavy Core, texture: heavy_core, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 24 } }
+  - { name: Sponge, texture: sponge, category: rare, count: 8, maxPerOrder: 2, price: { emerald: 24 } }
+  - { name: Wither Skeleton Skull, texture: wither_skeleton_skull, category: rare, count: 1, maxPerOrder: 3, playerLimit: 6, playerLimitDays: 14, price: { diamond: 5 } }
+  - { name: Creeper Head, texture: creeper_head, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: Dragon Head, texture: dragon_head, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 32 } }
+  - { name: Recovery Compass, texture: recovery_compass, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 20 } }
+  - { name: Sniffer Egg, texture: sniffer_egg, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: Trial Key, texture: trial_key, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: Ominous Trial Key, texture: ominous_trial_key, category: rare, count: 1, maxPerOrder: 2, playerLimit: 2, playerLimitDays: 7, price: { diamond: 4 } }
+  - { name: Silence Armor Trim, texture: silence_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 40 } }
   - { name: Goat Horn, texture: goat_horn, category: rare, count: 1, maxPerOrder: 1, price: { emerald: 6 } }
-  - { name: Music Disc (otherside), texture: music_disc_otherside, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - otherside, price: { emerald: 8 } }
-  - { name: Music Disc (cat), texture: music_disc_cat, category: rare, count: 1, maxPerOrder: 1, description: C418 - cat, price: { emerald: 6 } }
-  - { name: Music Disc (Relic), texture: music_disc_relic, category: rare, count: 1, maxPerOrder: 1, description: Aaron Cherof - Relic, price: { emerald: 10 } }
-  - { name: Music Disc (Creator), texture: music_disc_creator, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - Creator, price: { emerald: 12 } }
+  - { name: Music Disc (otherside), texture: music_disc_otherside, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - otherside, price: { diamond: 4 } }
+  - { name: Music Disc (cat), texture: music_disc_cat, category: rare, count: 1, maxPerOrder: 2, description: C418 - cat, price: { emerald: 4 } }
+  - { name: Music Disc (Relic), texture: music_disc_relic, category: rare, count: 1, maxPerOrder: 1, description: Aaron Cherof - Relic, price: { diamond: 3 } }
+  - { name: Music Disc (Creator), texture: music_disc_creator, category: rare, count: 1, maxPerOrder: 1, description: Lena Raine - Creator, price: { diamond: 6 } }
   # ==== misc ====
   - { name: Torch, texture: torch, category: misc, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
   - { name: Bucket, texture: bucket, category: misc, count: 1, maxPerOrder: 4, price: { gold_ingot: 3 } }
@@ -374,7 +374,7 @@ items:
   - { name: Compass, texture: compass, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
   - { name: Clock, texture: clock, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
   - { name: Name Tag, texture: name_tag, category: misc, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
-  - { name: Bottle o' Enchanting, texture: experience_bottle, category: misc, count: 16, maxPerOrder: 4, playerLimit: 16, playerLimitDays: 7, price: { emerald: 6 } }
+  - { name: Bottle o' Enchanting, texture: experience_bottle, category: misc, count: 16, maxPerOrder: 4, playerLimit: 16, playerLimitDays: 7, price: { emerald: 12 } }
   - { name: Anvil, texture: anvil, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
   - { name: Enchanting Table, texture: enchanting_table, category: misc, count: 1, maxPerOrder: 1, price: { diamond: 2, emerald: 4 } }
 
@@ -390,7 +390,7 @@ items:
   - { name: Lectern, texture: lectern, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
   - { name: Loom, texture: loom, category: misc, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
   - { name: Respawn Anchor, texture: respawn_anchor, category: misc, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 5 } }
-  - { name: Lodestone, texture: lodestone, category: misc, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
+  - { name: Lodestone, texture: lodestone, category: misc, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 20 } }
   - { name: Empty Map, texture: map, category: misc, count: 1, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: Book and Quill, texture: writable_book, category: misc, count: 1, maxPerOrder: 4, price: { gold_ingot: 2 } }
   - { name: Book, texture: book, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 4 } }
@@ -402,20 +402,20 @@ items:
   - { name: Bucket of Axolotl, texture: axolotl_bucket, category: misc, count: 1, maxPerOrder: 2, price: { emerald: 6 } }
   - { name: Copper Torch, texture: copper_torch, category: misc, count: 64, maxPerOrder: 8, price: { gold_ingot: 2 } }
   # ==== enchanting ====
-  - { name: Enchanted Book (Mending), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Repairs gear with experience orbs, playerLimit: 2, playerLimitDays: 14, price: { diamond: 6, emerald: 8 } }
-  - { name: Enchanted Book (Unbreaking III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Gear lasts up to four times longer, price: { diamond: 3 } }
+  - { name: Enchanted Book (Mending), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, description: Repairs gear with experience orbs, price: { diamond: 10 } }
+  - { name: Enchanted Book (Unbreaking III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Gear lasts up to four times longer, price: { diamond: 4 } }
   - { name: Enchanted Book (Efficiency V), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Mines a lot faster, price: { diamond: 4 } }
-  - { name: Enchanted Book (Fortune III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: More drops from ores, playerLimit: 2, playerLimitDays: 14, price: { diamond: 5 } }
-  - { name: Enchanted Book (Silk Touch), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Mines blocks as they are, price: { diamond: 4 } }
-  - { name: Enchanted Book (Protection IV), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Less damage from everything, price: { diamond: 3 } }
-  - { name: Enchanted Book (Feather Falling IV), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Much less fall damage, price: { diamond: 2, emerald: 4 } }
+  - { name: Enchanted Book (Fortune III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, description: More drops from ores, price: { diamond: 6 } }
+  - { name: Enchanted Book (Silk Touch), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Mines blocks as they are, price: { diamond: 5 } }
+  - { name: Enchanted Book (Protection IV), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Less damage from everything, price: { diamond: 4 } }
+  - { name: Enchanted Book (Feather Falling IV), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Much less fall damage, price: { diamond: 3 } }
   - { name: Enchanted Book (Sharpness V), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: More melee damage, price: { diamond: 4 } }
-  - { name: Enchanted Book (Looting III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: More drops from mobs, playerLimit: 2, playerLimitDays: 14, price: { diamond: 5 } }
+  - { name: Enchanted Book (Looting III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, description: More drops from mobs, price: { diamond: 6 } }
   - { name: Enchanted Book (Power V), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: More arrow damage, price: { diamond: 3 } }
-  - { name: Enchanted Book (Infinity), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Endless arrows from a single one, price: { diamond: 4 } }
-  - { name: Enchanted Book (Respiration III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Breathe much longer underwater, price: { emerald: 12 } }
-  - { name: Enchanted Book (Depth Strider III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Walk fast underwater, price: { emerald: 12 } }
-  - { name: Enchanted Book (Swift Sneak III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Sneak almost at walking speed, playerLimit: 1, playerLimitDays: 14, price: { diamond: 6 } }
+  - { name: Enchanted Book (Infinity), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Endless arrows from a single one, price: { diamond: 5 } }
+  - { name: Enchanted Book (Respiration III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Breathe much longer underwater, price: { diamond: 3 } }
+  - { name: Enchanted Book (Depth Strider III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, description: Walk fast underwater, price: { diamond: 3 } }
+  - { name: Enchanted Book (Swift Sneak III), texture: enchanted_book, category: enchanting, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, description: Sneak almost at walking speed, price: { diamond: 12 } }
   - { name: Brewing Stand, texture: brewing_stand, category: enchanting, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
   - { name: Cauldron, texture: cauldron, category: enchanting, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
   - { name: Glass Bottle, texture: glass_bottle, category: enchanting, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
@@ -426,7 +426,7 @@ items:
   - { name: Rabbit Foot, texture: rabbit_foot, category: enchanting, count: 4, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: Turtle Scute, texture: turtle_scute, category: enchanting, count: 4, maxPerOrder: 2, price: { emerald: 6 } }
   - { name: Magma Cream, texture: magma_cream, category: enchanting, count: 16, maxPerOrder: 4, price: { emerald: 3 } }
-  - { name: Dragon's Breath, texture: dragon_breath, category: enchanting, count: 4, maxPerOrder: 2, price: { emerald: 8 } }
+  - { name: Dragon's Breath, texture: dragon_breath, category: enchanting, count: 4, maxPerOrder: 2, price: { diamond: 2 } }
 
   # ==== everything else obtainable in survival, generated from the 26.2 item list ====
   - { name: "Acacia Fence", texture: acacia_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
@@ -550,7 +550,7 @@ items:
   - { name: "Nether Brick Stairs", texture: nether_brick_stairs, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: "Nether Brick Wall", texture: nether_brick_wall, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: "Nether Sprouts", texture: nether_sprouts, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
-  - { name: "Block of Netherite", texture: netherite_block, category: building, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 118 } }
+  - { name: "Block of Netherite", texture: netherite_block, category: building, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 160 } }
   - { name: "Oak Fence", texture: oak_fence, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: "Oak Slab", texture: oak_slab, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
   - { name: "Oak Wood", texture: oak_wood, category: building, count: 64, maxPerOrder: 16, price: { gold_ingot: 6 } }
@@ -682,7 +682,7 @@ items:
   - { name: "Allium", texture: allium, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: "Block of Amethyst", texture: amethyst_block, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
   - { name: "Amethyst Cluster", texture: amethyst_cluster, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
-  - { name: "Ancient Debris", texture: ancient_debris, category: nature, count: 16, maxPerOrder: 2, playerLimit: 2, playerLimitDays: 14, price: { emerald: 32 } }
+  - { name: "Ancient Debris", texture: ancient_debris, category: nature, count: 1, maxPerOrder: 4, playerLimit: 8, playerLimitDays: 7, price: { diamond: 4 } }
   - { name: "Andesite", texture: andesite, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
   - { name: "Azalea", texture: azalea, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: "Azalea Leaves", texture: azalea_leaves, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
@@ -793,8 +793,8 @@ items:
   - { name: "Rose Bush", texture: rose_bush, category: nature, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: "Sand", texture: sand, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 1 } }
   - { name: "Sculk", texture: sculk, category: nature, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
-  - { name: "Sculk Catalyst", texture: sculk_catalyst, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
-  - { name: "Sculk Shrieker", texture: sculk_shrieker, category: nature, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Sculk Catalyst", texture: sculk_catalyst, category: nature, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Sculk Shrieker", texture: sculk_shrieker, category: nature, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: "Sculk Vein", texture: sculk_vein, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: "Seagrass", texture: seagrass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
   - { name: "Short Dry Grass", texture: short_dry_grass, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
@@ -823,7 +823,7 @@ items:
   - { name: "Warped Wart Block", texture: warped_wart_block, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 4 } }
   - { name: "Weeping Vines", texture: weeping_vines, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
   - { name: "Wildflowers", texture: wildflowers, category: nature, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
-  - { name: "Wither Rose", texture: wither_rose, category: nature, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
+  - { name: "Wither Rose", texture: wither_rose, category: nature, count: 16, maxPerOrder: 2, price: { emerald: 8 } }
   - { name: "Acacia Hanging Sign", texture: acacia_hanging_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
   - { name: "Acacia Shelf", texture: acacia_shelf, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }
   - { name: "Acacia Sign", texture: acacia_sign, category: decoration, count: 16, maxPerOrder: 8, price: { gold_ingot: 3 } }
@@ -1088,8 +1088,8 @@ items:
   - { name: "Iron Hoe", texture: iron_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
   - { name: "Iron Shovel", texture: iron_shovel, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
   - { name: "Iron Spear", texture: iron_spear, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 5 } }
-  - { name: "Netherite Hoe", texture: netherite_hoe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 14 } }
-  - { name: "Netherite Spear", texture: netherite_spear, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 14 } }
+  - { name: "Netherite Hoe", texture: netherite_hoe, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 20 } }
+  - { name: "Netherite Spear", texture: netherite_spear, category: tools, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 21 } }
   - { name: "Snowball", texture: snowball, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
   - { name: "Spectral Arrow", texture: spectral_arrow, category: tools, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
   - { name: "Stone Hoe", texture: stone_hoe, category: tools, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
@@ -1148,7 +1148,7 @@ items:
   - { name: "Torchflower Seeds", texture: torchflower_seeds, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 3 } }
   - { name: "Tropical Fish", texture: tropical_fish, category: food, count: 16, maxPerOrder: 8, price: { gold_ingot: 2 } }
   - { name: "Bucket of Tropical Fish", texture: tropical_fish_bucket, category: food, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
-  - { name: "Turtle Egg", texture: turtle_egg, category: food, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Turtle Egg", texture: turtle_egg, category: food, count: 4, maxPerOrder: 2, price: { emerald: 6 } }
   - { name: "Wheat", texture: wheat, category: food, count: 64, maxPerOrder: 16, price: { gold_ingot: 2 } }
   - { name: "Acacia Button", texture: acacia_button, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
   - { name: "Acacia Door", texture: acacia_door, category: redstone, count: 16, maxPerOrder: 8, price: { gold_ingot: 1 } }
@@ -1262,8 +1262,8 @@ items:
   - { name: "Magenta Harness", texture: magenta_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
   - { name: "Mangrove Boat", texture: mangrove_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
   - { name: "Mangrove Boat with Chest", texture: mangrove_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
-  - { name: "Netherite Horse Armor", texture: netherite_horse_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 15 } }
-  - { name: "Netherite Nautilus Armor", texture: netherite_nautilus_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 15 } }
+  - { name: "Netherite Horse Armor", texture: netherite_horse_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 20 } }
+  - { name: "Netherite Nautilus Armor", texture: netherite_nautilus_armor, category: transport, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 14, price: { diamond: 20 } }
   - { name: "Orange Harness", texture: orange_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
   - { name: "Pale Oak Boat", texture: pale_oak_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 2 } }
   - { name: "Pale Oak Boat with Chest", texture: pale_oak_chest_boat, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 3 } }
@@ -1275,98 +1275,98 @@ items:
   - { name: "Minecart with TNT", texture: tnt_minecart, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 8 } }
   - { name: "White Harness", texture: white_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
   - { name: "Yellow Harness", texture: yellow_harness, category: transport, count: 1, maxPerOrder: 2, price: { gold_ingot: 6 } }
-  - { name: "Angler Pottery Sherd", texture: angler_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Archer Pottery Sherd", texture: archer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Arms Up Pottery Sherd", texture: arms_up_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Black Shulker Box", texture: black_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Blade Pottery Sherd", texture: blade_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Blue Shulker Box", texture: blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Bolt Armor Trim", texture: bolt_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Angler Pottery Sherd", texture: angler_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Archer Pottery Sherd", texture: archer_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Arms Up Pottery Sherd", texture: arms_up_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Black Shulker Box", texture: black_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Blade Pottery Sherd", texture: blade_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Blue Shulker Box", texture: blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Bolt Armor Trim", texture: bolt_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 5 } }
   - { name: "Bordure Indented Banner Pattern", texture: bordure_indented_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Brewer Pottery Sherd", texture: brewer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Brown Shulker Box", texture: brown_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Burn Pottery Sherd", texture: burn_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Coast Armor Trim", texture: coast_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Creaking Heart", texture: creaking_heart, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
-  - { name: "Creeper Charge Banner Pattern", texture: creeper_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Cyan Shulker Box", texture: cyan_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Danger Pottery Sherd", texture: danger_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Disc Fragment", texture: disc_fragment_5, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 8 } }
-  - { name: "Dried Ghast", texture: dried_ghast, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 16 } }
-  - { name: "Dune Armor Trim", texture: dune_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "End Crystal", texture: end_crystal, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 16 } }
-  - { name: "Explorer Pottery Sherd", texture: explorer_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Eye Armor Trim", texture: eye_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
+  - { name: "Brewer Pottery Sherd", texture: brewer_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Brown Shulker Box", texture: brown_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Burn Pottery Sherd", texture: burn_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Coast Armor Trim", texture: coast_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
+  - { name: "Creaking Heart", texture: creaking_heart, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 4 } }
+  - { name: "Creeper Charge Banner Pattern", texture: creeper_banner_pattern, category: rare, count: 1, maxPerOrder: 1, price: { diamond: 4 } }
+  - { name: "Cyan Shulker Box", texture: cyan_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Danger Pottery Sherd", texture: danger_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Disc Fragment", texture: disc_fragment_5, category: rare, count: 1, maxPerOrder: 9, price: { emerald: 5 } }
+  - { name: "Dried Ghast", texture: dried_ghast, category: rare, count: 1, maxPerOrder: 2, playerLimit: 2, playerLimitDays: 14, price: { diamond: 4 } }
+  - { name: "Dune Armor Trim", texture: dune_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
+  - { name: "End Crystal", texture: end_crystal, category: rare, count: 4, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Explorer Pottery Sherd", texture: explorer_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Eye Armor Trim", texture: eye_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
   - { name: "Field Masoned Banner Pattern", texture: field_masoned_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Flow Armor Trim", texture: flow_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Flow Banner Pattern", texture: flow_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Flow Pottery Sherd", texture: flow_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
+  - { name: "Flow Armor Trim", texture: flow_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 5 } }
+  - { name: "Flow Banner Pattern", texture: flow_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 3 } }
+  - { name: "Flow Pottery Sherd", texture: flow_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
   - { name: "Flower Charge Banner Pattern", texture: flower_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Friend Pottery Sherd", texture: friend_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Globe Banner Pattern", texture: globe_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Gray Shulker Box", texture: gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Green Shulker Box", texture: green_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Guster Banner Pattern", texture: guster_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Guster Pottery Sherd", texture: guster_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Heart Pottery Sherd", texture: heart_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Heartbreak Pottery Sherd", texture: heartbreak_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Host Armor Trim", texture: host_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Howl Pottery Sherd", texture: howl_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Light Blue Shulker Box", texture: light_blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Light Gray Shulker Box", texture: light_gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Lime Shulker Box", texture: lime_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Magenta Shulker Box", texture: magenta_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Miner Pottery Sherd", texture: miner_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Thing Banner Pattern", texture: mojang_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Mourner Pottery Sherd", texture: mourner_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Music Disc (11)", texture: music_disc_11, description: "C418 - 11", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (13)", texture: music_disc_13, description: "C418 - 13", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (5)", texture: music_disc_5, description: "Samuel \u00c5berg - 5", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (blocks)", texture: music_disc_blocks, description: "C418 - blocks", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
+  - { name: "Friend Pottery Sherd", texture: friend_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Globe Banner Pattern", texture: globe_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 3 } }
+  - { name: "Gray Shulker Box", texture: gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Green Shulker Box", texture: green_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Guster Banner Pattern", texture: guster_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 3 } }
+  - { name: "Guster Pottery Sherd", texture: guster_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Heart Pottery Sherd", texture: heart_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Heartbreak Pottery Sherd", texture: heartbreak_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Host Armor Trim", texture: host_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: "Howl Pottery Sherd", texture: howl_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Light Blue Shulker Box", texture: light_blue_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Light Gray Shulker Box", texture: light_gray_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Lime Shulker Box", texture: lime_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Magenta Shulker Box", texture: magenta_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Miner Pottery Sherd", texture: miner_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Thing Banner Pattern", texture: mojang_banner_pattern, category: rare, count: 1, maxPerOrder: 1, playerLimit: 1, playerLimitDays: 30, price: { diamond: 18 } }
+  - { name: "Mourner Pottery Sherd", texture: mourner_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Music Disc (11)", texture: music_disc_11, description: "C418 - 11", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (13)", texture: music_disc_13, description: "C418 - 13", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (5)", texture: music_disc_5, description: "Samuel \u00c5berg - 5", category: rare, count: 1, maxPerOrder: 1, price: { diamond: 6 } }
+  - { name: "Music Disc (blocks)", texture: music_disc_blocks, description: "C418 - blocks", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
   - { name: "Music Disc (Bounce)", texture: music_disc_bounce, description: "fingerspit - Bounce", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (chirp)", texture: music_disc_chirp, description: "C418 - chirp", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (Creator (Music Box))", texture: music_disc_creator_music_box, description: "Lena Raine - Creator (Music Box)", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (far)", texture: music_disc_far, description: "C418 - far", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (Lava Chicken)", texture: music_disc_lava_chicken, description: "Hyper Potions - Lava Chicken", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (mall)", texture: music_disc_mall, description: "C418 - mall", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (mellohi)", texture: music_disc_mellohi, description: "C418 - mellohi", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (Precipice)", texture: music_disc_precipice, description: "Aaron Cherof - Precipice", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (stal)", texture: music_disc_stal, description: "C418 - stal", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (strad)", texture: music_disc_strad, description: "C418 - strad", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (Tears)", texture: music_disc_tears, description: "Amos Roddy - Tears", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (wait)", texture: music_disc_wait, description: "C418 - wait", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Music Disc (ward)", texture: music_disc_ward, description: "C418 - ward", category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 16 } }
-  - { name: "Ominous Bottle", texture: ominous_bottle, category: rare, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
-  - { name: "Orange Shulker Box", texture: orange_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Snout Banner Pattern", texture: piglin_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Piglin Head", texture: piglin_head, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
-  - { name: "Pink Shulker Box", texture: pink_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Plenty Pottery Sherd", texture: plenty_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Prize Pottery Sherd", texture: prize_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Purple Shulker Box", texture: purple_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Raiser Armor Trim", texture: raiser_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Red Shulker Box", texture: red_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Rib Armor Trim", texture: rib_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Scrape Pottery Sherd", texture: scrape_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Sentry Armor Trim", texture: sentry_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Shaper Armor Trim", texture: shaper_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Sheaf Pottery Sherd", texture: sheaf_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Shelter Pottery Sherd", texture: shelter_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Skeleton Skull", texture: skeleton_skull, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
-  - { name: "Skull Charge Banner Pattern", texture: skull_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { gold_ingot: 4 } }
-  - { name: "Skull Pottery Sherd", texture: skull_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Snort Pottery Sherd", texture: snort_pottery_sherd, category: rare, count: 16, maxPerOrder: 8, price: { gold_ingot: 6 } }
-  - { name: "Snout Armor Trim", texture: snout_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Spire Armor Trim", texture: spire_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Tide Armor Trim", texture: tide_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Vex Armor Trim", texture: vex_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Ward Armor Trim", texture: ward_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Wayfinder Armor Trim", texture: wayfinder_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Wet Sponge", texture: wet_sponge, category: rare, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
-  - { name: "White Shulker Box", texture: white_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Wild Armor Trim", texture: wild_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 20 } }
-  - { name: "Yellow Shulker Box", texture: yellow_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 6, emerald: 4 } }
-  - { name: "Zombie Head", texture: zombie_head, category: rare, count: 16, maxPerOrder: 4, price: { emerald: 12 } }
+  - { name: "Music Disc (chirp)", texture: music_disc_chirp, description: "C418 - chirp", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (Creator (Music Box))", texture: music_disc_creator_music_box, description: "Lena Raine - Creator (Music Box)", category: rare, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
+  - { name: "Music Disc (far)", texture: music_disc_far, description: "C418 - far", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (Lava Chicken)", texture: music_disc_lava_chicken, description: "Hyper Potions - Lava Chicken", category: rare, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
+  - { name: "Music Disc (mall)", texture: music_disc_mall, description: "C418 - mall", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (mellohi)", texture: music_disc_mellohi, description: "C418 - mellohi", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (Precipice)", texture: music_disc_precipice, description: "Aaron Cherof - Precipice", category: rare, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
+  - { name: "Music Disc (stal)", texture: music_disc_stal, description: "C418 - stal", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (strad)", texture: music_disc_strad, description: "C418 - strad", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (Tears)", texture: music_disc_tears, description: "Amos Roddy - Tears", category: rare, count: 1, maxPerOrder: 1, price: { diamond: 3 } }
+  - { name: "Music Disc (wait)", texture: music_disc_wait, description: "C418 - wait", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Music Disc (ward)", texture: music_disc_ward, description: "C418 - ward", category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Ominous Bottle", texture: ominous_bottle, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Orange Shulker Box", texture: orange_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Snout Banner Pattern", texture: piglin_banner_pattern, category: rare, count: 1, maxPerOrder: 2, price: { emerald: 4 } }
+  - { name: "Piglin Head", texture: piglin_head, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: "Pink Shulker Box", texture: pink_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Plenty Pottery Sherd", texture: plenty_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Prize Pottery Sherd", texture: prize_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Purple Shulker Box", texture: purple_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Raiser Armor Trim", texture: raiser_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: "Red Shulker Box", texture: red_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Rib Armor Trim", texture: rib_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Scrape Pottery Sherd", texture: scrape_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Sentry Armor Trim", texture: sentry_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
+  - { name: "Shaper Armor Trim", texture: shaper_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: "Sheaf Pottery Sherd", texture: sheaf_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Shelter Pottery Sherd", texture: shelter_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Skeleton Skull", texture: skeleton_skull, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
+  - { name: "Skull Charge Banner Pattern", texture: skull_banner_pattern, category: rare, count: 1, maxPerOrder: 1, price: { diamond: 6 } }
+  - { name: "Skull Pottery Sherd", texture: skull_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Snort Pottery Sherd", texture: snort_pottery_sherd, category: rare, count: 1, maxPerOrder: 4, price: { emerald: 3 } }
+  - { name: "Snout Armor Trim", texture: snout_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Spire Armor Trim", texture: spire_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Tide Armor Trim", texture: tide_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Vex Armor Trim", texture: vex_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Ward Armor Trim", texture: ward_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 1, playerLimit: 2, playerLimitDays: 14, price: { diamond: 8 } }
+  - { name: "Wayfinder Armor Trim", texture: wayfinder_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 4 } }
+  - { name: "Wet Sponge", texture: wet_sponge, category: rare, count: 8, maxPerOrder: 2, price: { emerald: 24 } }
+  - { name: "White Shulker Box", texture: white_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Wild Armor Trim", texture: wild_armor_trim_smithing_template, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
+  - { name: "Yellow Shulker Box", texture: yellow_shulker_box, category: rare, count: 1, maxPerOrder: 2, playerLimit: 4, playerLimitDays: 7, price: { diamond: 8 } }
+  - { name: "Zombie Head", texture: zombie_head, category: rare, count: 1, maxPerOrder: 2, price: { diamond: 3 } }
   - { name: "Chiseled Bookshelf", texture: chiseled_bookshelf, category: enchanting, count: 64, maxPerOrder: 8, price: { gold_ingot: 8 } }
   - { name: "Bee Nest", texture: bee_nest, category: misc, count: 16, maxPerOrder: 4, price: { gold_ingot: 16 } }
   - { name: "Beehive", texture: beehive, category: misc, count: 16, maxPerOrder: 8, price: { gold_ingot: 4 } }

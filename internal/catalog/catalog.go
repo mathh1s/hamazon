@@ -45,6 +45,7 @@ type Item struct {
 	PlayerLimitDays *int   `json:"playerLimitDays"`
 	Enabled         bool   `json:"enabled"`
 	InStock         bool   `json:"inStock"`
+	PriceLocked     bool   `json:"priceLocked"`
 	Sort            int    `json:"sort"`
 	Price           Price  `json:"price"`
 }
@@ -105,13 +106,13 @@ func (s *Store) Categories(ctx context.Context) ([]Category, error) {
 	return out, rows.Err()
 }
 
-const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, sort`
+const itemColumns = `id, name, texture, category_id, count, description, max_per_order, player_limit, player_limit_days, enabled, in_stock, price_locked, sort`
 
 func scanItem(sc interface{ Scan(...any) error }) (Item, error) {
 	var it Item
 	var limit, days sql.NullInt64
 	err := sc.Scan(&it.ID, &it.Name, &it.Texture, &it.CategoryID, &it.Count, &it.Description,
-		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.Sort)
+		&it.MaxPerOrder, &limit, &days, &it.Enabled, &it.InStock, &it.PriceLocked, &it.Sort)
 	if limit.Valid && days.Valid {
 		l, d := int(limit.Int64), int(days.Int64)
 		it.PlayerLimit, it.PlayerLimitDays = &l, &d
@@ -232,11 +233,17 @@ func (s *Store) Update(ctx context.Context, id int64, in ItemInput) (Item, error
 	if err := s.Validate(ctx, &in); err != nil {
 		return Item{}, err
 	}
-	err := db.InTx(ctx, s.db, func(tx *sql.Tx) error {
+	before, err := s.Item(ctx, id)
+	if err != nil {
+		return Item{}, err
+	}
+	// A hand edited price is locked, so default price updates skip it.
+	locked := before.PriceLocked || !sameTerms(termsOf(before), termsOfInput(in))
+	err = db.InTx(ctx, s.db, func(tx *sql.Tx) error {
 		res, err := tx.ExecContext(ctx, `UPDATE items SET name = ?, texture = ?, category_id = ?, count = ?, description = ?,
-			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, sort = ?, updated_at = ? WHERE id = ?`,
+			max_per_order = ?, player_limit = ?, player_limit_days = ?, enabled = ?, in_stock = ?, price_locked = ?, sort = ?, updated_at = ? WHERE id = ?`,
 			in.Name, in.Texture, in.CategoryID, in.Count, in.Description, in.MaxPerOrder,
-			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, in.Sort, db.Now(), id)
+			in.PlayerLimit, in.PlayerLimitDays, *in.Enabled, *in.InStock, locked, in.Sort, db.Now(), id)
 		if err != nil {
 			return err
 		}

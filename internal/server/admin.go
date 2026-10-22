@@ -100,7 +100,19 @@ func (s *Server) handleAdminOverview(w http.ResponseWriter, r *http.Request) {
 		s.internalError(w, err)
 		return
 	}
+	updates, err := s.catalog.PriceUpdates(ctx, s.defaults)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	pending := 0
+	for _, u := range updates {
+		if !u.Locked {
+			pending++
+		}
+	}
 	writeJSON(w, http.StatusOK, map[string]any{
+		"priceUpdates":        pending,
 		"currencies":          currencies,
 		"categories":          categories,
 		"webhookConfigured":   s.cfg.WebhookURL != "",
@@ -365,4 +377,29 @@ func (s *Server) handleAdminOrdersSince(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	writeJSON(w, http.StatusOK, map[string]any{"latestId": latest, "orders": list})
+}
+
+func (s *Server) handleAdminPriceUpdates(w http.ResponseWriter, r *http.Request) {
+	ups, err := s.catalog.PriceUpdates(r.Context(), s.defaults)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"updates": ups})
+}
+
+func (s *Server) handleAdminApplyPriceUpdates(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		IDs []int64 `json:"ids"`
+	}
+	if !decodeJSON(w, r, &body) {
+		return
+	}
+	n, err := s.catalog.ApplyPriceUpdates(r.Context(), s.defaults, body.IDs)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	s.log.Info("default prices applied", "count", n, "admin", currentAdmin(r).Name)
+	writeJSON(w, http.StatusOK, map[string]any{"applied": n})
 }

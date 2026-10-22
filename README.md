@@ -70,7 +70,7 @@ It asks for a password (at least 10 characters). Other commands: `admin passwd <
 docker compose up -d
 ```
 
-The shop runs on `http://<host>:$HAMAZON_PORT`, the admin area on `/admin`. On first start the catalog is filled with about 1340 items, everything obtainable in survival and balanced prices. After that the catalog only changes through the admin area, restarts never overwrite it. When an update brings new default items, the admin item list offers "Add missing defaults": they are added hidden so you can check the prices first, and items you deleted are not added again.
+The shop runs on `http://<host>:$HAMAZON_PORT`, the admin area on `/admin`. On first start the catalog is filled with about 1340 items, everything obtainable in survival and balanced prices. After that the catalog only changes through the admin area, restarts never overwrite it. When an update changes default prices, Admin > Prices lists the affected items with old and new price and updates the ones you pick; prices you set yourself are left out unless you choose them. When an update brings new default items, the admin item list offers "Add missing defaults": they are added hidden so you can check the prices first, and items you deleted are not added again.
 
 ### Behind a reverse proxy
 

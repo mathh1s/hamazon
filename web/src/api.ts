@@ -26,6 +26,7 @@ export interface Item {
   playerLimitDays: number | null
   enabled: boolean
   inStock: boolean
+  priceLocked?: boolean
   sort: number
   price: Price
 }
@@ -180,4 +181,21 @@ export interface ItemInput {
   inStock: boolean
   sort: number
   price: Price
+}
+
+export interface PriceTerms {
+  count: number
+  maxPerOrder: number
+  playerLimit: number | null
+  playerLimitDays: number | null
+  price: Price
+}
+
+export interface PriceUpdate {
+  itemId: number
+  name: string
+  texture: string
+  locked: boolean
+  current: PriceTerms
+  default: PriceTerms
 }

@@ -8,6 +8,7 @@ export const admin = reactive({
   categories: [] as Category[],
   webhookConfigured: true,
   failedNotifications: 0,
+  priceUpdates: 0,
   assets: { state: 'ready', version: '', error: '' } as AssetStatus,
 })
 
@@ -23,6 +24,7 @@ export async function loadOverview() {
     categories: Category[]
     webhookConfigured: boolean
     failedNotifications: number
+    priceUpdates: number
     assets: AssetStatus
   }>(
     'GET',

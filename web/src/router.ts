@@ -15,6 +15,7 @@ export const router = createRouter({
     { path: '/admin', component: () => import('./pages/admin/AdminOrdersPage.vue'), meta: { admin: true } },
     { path: '/admin/orders/:id', component: () => import('./pages/admin/AdminOrderPage.vue'), meta: { admin: true } },
     { path: '/admin/items', component: () => import('./pages/admin/AdminItemsPage.vue'), meta: { admin: true } },
+    { path: '/admin/prices', component: () => import('./pages/admin/AdminPricesPage.vue'), meta: { admin: true } },
     { path: '/admin/items/new', component: () => import('./pages/admin/AdminItemPage.vue'), meta: { admin: true } },
     { path: '/admin/items/:id', component: () => import('./pages/admin/AdminItemPage.vue'), meta: { admin: true } },
     { path: '/:pathMatch(.*)*', component: () => import('./pages/NotFoundPage.vue') },

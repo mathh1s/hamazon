@@ -3,6 +3,7 @@ package catalog
 import (
 	"context"
 	"errors"
+	"maps"
 	"path/filepath"
 	"testing"
 
@@ -118,5 +119,49 @@ items:
 	}
 	if again, _ := s.MissingDefaults(ctx, DefaultSeed); len(again) != 0 {
 		t.Fatalf("deleted items must not come back, got %d", len(again))
+	}
+}
+
+func TestPriceUpdatesRespectLocks(t *testing.T) {
+	ctx := context.Background()
+	s := newStore(t)
+	if err := s.Seed(ctx, DefaultSeed); err != nil {
+		t.Fatal(err)
+	}
+	if ups, _ := s.PriceUpdates(ctx, DefaultSeed); len(ups) != 0 {
+		t.Fatalf("a fresh install matches the defaults, got %d updates", len(ups))
+	}
+	items, _ := s.Items(ctx, true)
+	a, b := items[0], items[1]
+
+	_, err := s.db.ExecContext(ctx, `UPDATE item_prices SET amount = amount + 5 WHERE item_id IN (?, ?)`, a.ID, b.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	edited := ItemInput{Name: b.Name, Texture: b.Texture, CategoryID: b.CategoryID, Count: b.Count, MaxPerOrder: b.MaxPerOrder,
+		PlayerLimit: b.PlayerLimit, PlayerLimitDays: b.PlayerLimitDays, Price: Price{"diamond": 99}}
+	if _, err := s.Update(ctx, b.ID, edited); err != nil {
+		t.Fatal(err)
+	}
+
+	ups, err := s.PriceUpdates(ctx, DefaultSeed)
+	if err != nil || len(ups) != 2 {
+		t.Fatalf("expected two updates, got %+v %v", ups, err)
+	}
+	for _, u := range ups {
+		if (u.ItemID == b.ID) != u.Locked {
+			t.Fatalf("only the hand edited item must be locked: %+v", u)
+		}
+	}
+	n, err := s.ApplyPriceUpdates(ctx, DefaultSeed, []int64{a.ID})
+	if err != nil || n != 1 {
+		t.Fatalf("applied %d: %v", n, err)
+	}
+	again, _ := s.Item(ctx, a.ID)
+	if !maps.Equal(again.Price, a.Price) {
+		t.Fatalf("price not restored: %v vs %v", again.Price, a.Price)
+	}
+	if ups, _ := s.PriceUpdates(ctx, DefaultSeed); len(ups) != 1 || ups[0].ItemID != b.ID {
+		t.Fatalf("the locked item should be the only update left, got %+v", ups)
 	}
 }

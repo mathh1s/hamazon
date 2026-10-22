@@ -29,6 +29,9 @@ async function logout() {
           >Orders{{ unseenOrders ? ` (${unseenOrders} new)` : '' }}</McButton
         >
         <McButton to="/admin/items" :active="route.path.startsWith('/admin/items')">Items</McButton>
+        <McButton to="/admin/prices" :active="route.path === '/admin/prices'"
+          >Prices{{ admin.priceUpdates ? ` (${admin.priceUpdates})` : '' }}</McButton
+        >
         <McButton to="/">Shop</McButton>
         <McButton @click="logout">Log out {{ session.admin?.name }}</McButton>
       </nav>

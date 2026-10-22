@@ -22,6 +22,7 @@ type Config struct {
 	SeedFile        string
 	MCVersion       string
 	AutoAssets      bool
+	WorldSeed       string
 }
 
 func (c Config) DatabasePath() string { return filepath.Join(c.DataDir, "hamazon.db") }
@@ -92,6 +93,7 @@ func LoadBase() Config {
 	if v := cleanEnv("HAMAZON_MC_VERSION"); v != "" {
 		c.MCVersion = v
 	}
+	c.WorldSeed = cleanEnv("HAMAZON_WORLD_SEED")
 	return c
 }
 

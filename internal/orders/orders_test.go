@@ -218,3 +218,28 @@ func TestDisabledDimensionBlocksOrder(t *testing.T) {
 		t.Fatalf("nether items stay orderable: %v", err)
 	}
 }
+
+func TestDeliveryIsStoredAndValidated(t *testing.T) {
+	f := setup(t)
+	ctx := context.Background()
+	y := 70
+	order, _, err := f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-delivery-ok-0001", Username: "Steve",
+		Delivery: &Delivery{Dimension: "nether", X: -120, Y: &y, Z: 455},
+		Lines:    []CreateLine{f.line("torch", 1)}}, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if order.Delivery == nil || order.Delivery.X != -120 || *order.Delivery.Y != 70 {
+		t.Fatalf("delivery not stored: %+v", order.Delivery)
+	}
+	if cmd := order.Delivery.TeleportCommand(); cmd != "/execute in minecraft:the_nether run tp @s -120 70 455" {
+		t.Fatalf("unexpected command %q", cmd)
+	}
+	_, _, err = f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-delivery-bad-001", Username: "Steve",
+		Delivery: &Delivery{Dimension: "moon", X: 40_000_000, Z: 0},
+		Lines:    []CreateLine{f.line("bread", 1)}}, "")
+	var fields validate.Errors
+	if !errors.As(err, &fields) || fields["delivery"] == "" {
+		t.Fatalf("bad delivery must be rejected, got %v", err)
+	}
+}

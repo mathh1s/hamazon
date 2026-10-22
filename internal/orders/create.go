@@ -56,7 +56,55 @@ type CreateInput struct {
 	IdempotencyKey string       `json:"idempotencyKey"`
 	Username       string       `json:"username"`
 	Note           string       `json:"note"`
+	Delivery       *Delivery    `json:"delivery"`
 	Lines          []CreateLine `json:"lines"`
+}
+
+// Delivery is where the player wants the items. Y is optional because
+// most players only know their X and Z by heart.
+type Delivery struct {
+	Dimension string `json:"dimension"`
+	X         int    `json:"x"`
+	Y         *int   `json:"y"`
+	Z         int    `json:"z"`
+}
+
+// TeleportCommand is what an admin pastes in chat to get to the spot.
+func (d Delivery) TeleportCommand() string {
+	y := "~"
+	if d.Y != nil {
+		y = strconv.Itoa(*d.Y)
+	}
+	return fmt.Sprintf("/execute in minecraft:%s run tp @s %d %s %d", dimensionID(d.Dimension), d.X, y, d.Z)
+}
+
+func dimensionID(d string) string {
+	switch d {
+	case "nether":
+		return "the_nether"
+	case "end":
+		return "the_end"
+	}
+	return "overworld"
+}
+
+const worldBorder = 29_999_984
+
+func checkDelivery(d *Delivery, errs validate.Errors) {
+	if d == nil {
+		return
+	}
+	switch d.Dimension {
+	case "overworld", "nether", "end":
+	default:
+		errs.Add("delivery", "Pick the Overworld, the Nether or the End")
+	}
+	if d.X < -worldBorder || d.X > worldBorder || d.Z < -worldBorder || d.Z > worldBorder {
+		errs.Add("delivery", "Coordinates are outside the world border")
+	}
+	if d.Y != nil && (*d.Y < -64 || *d.Y > 320) {
+		errs.Add("delivery", "Y must be between -64 and 320")
+	}
 }
 
 // PriceChangedError means the cart was built against older prices. The
@@ -144,7 +192,7 @@ func (s *Service) Create(ctx context.Context, in CreateInput, clientIP string) (
 			return ErrDuplicate
 		}
 
-		id, err := insertOrder(ctx, tx, username, note, tokenHash, in.IdempotencyKey, contentHash, clientIP, lines)
+		id, err := insertOrder(ctx, tx, username, note, in.Delivery, tokenHash, in.IdempotencyKey, contentHash, clientIP, lines)
 		if err != nil {
 			return err
 		}
@@ -174,6 +222,7 @@ func (s *Service) checkInput(in *CreateInput) (string, string, error) {
 			errs.Add("username", "That is not a valid Minecraft username")
 		}
 	}
+	checkDelivery(in.Delivery, errs)
 	note := cleanNote(in.Note)
 	if len([]rune(note)) > MaxNoteLength {
 		errs.Add("note", fmt.Sprintf("Keep the note under %d characters", MaxNoteLength))
@@ -271,13 +320,23 @@ func checkPlayerLimits(ctx context.Context, tx *sql.Tx, usernameKey string, line
 	return nil
 }
 
-func insertOrder(ctx context.Context, tx *sql.Tx, username, note string, tokenHash []byte, idemKey string, contentHash []byte, clientIP string, lines []Line) (int64, error) {
+func insertOrder(ctx context.Context, tx *sql.Tx, username, note string, delivery *Delivery, tokenHash []byte, idemKey string,
+	contentHash []byte, clientIP string, lines []Line) (int64, error) {
 	now := db.Now()
+	var dim string
+	var x, y, z any
+	if delivery != nil {
+		dim, x, z = delivery.Dimension, delivery.X, delivery.Z
+		if delivery.Y != nil {
+			y = *delivery.Y
+		}
+	}
 	var id int64
 	for attempt := 0; ; attempt++ {
 		res, err := tx.ExecContext(ctx, `INSERT INTO orders (code, username, username_key, note, status, receipt_hash, idempotency_key,
-			content_hash, client_ip, created_at, updated_at) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?)`,
-			newCode(), username, strings.ToLower(username), note, tokenHash, idemKey, contentHash, clientIP, now, now)
+			content_hash, client_ip, created_at, updated_at, delivery_dimension, delivery_x, delivery_y, delivery_z)
+			VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+			newCode(), username, strings.ToLower(username), note, tokenHash, idemKey, contentHash, clientIP, now, now, dim, x, y, z)
 		if err != nil {
 			if attempt < 5 && strings.Contains(err.Error(), "orders.code") {
 				continue

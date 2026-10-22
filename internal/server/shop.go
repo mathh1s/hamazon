@@ -91,19 +91,20 @@ func (s *Server) handleCatalog(w http.ResponseWriter, r *http.Request) {
 
 // receipt is what a player may see about their own order.
 type receipt struct {
-	Code      string        `json:"code"`
-	Username  string        `json:"username"`
-	Note      string        `json:"note"`
-	Status    orders.Status `json:"status"`
-	CreatedAt time.Time     `json:"createdAt"`
-	UpdatedAt time.Time     `json:"updatedAt"`
-	Lines     []orders.Line `json:"lines"`
-	Totals    catalog.Price `json:"totals"`
+	Code      string           `json:"code"`
+	Username  string           `json:"username"`
+	Note      string           `json:"note"`
+	Status    orders.Status    `json:"status"`
+	CreatedAt time.Time        `json:"createdAt"`
+	UpdatedAt time.Time        `json:"updatedAt"`
+	Lines     []orders.Line    `json:"lines"`
+	Totals    catalog.Price    `json:"totals"`
+	Delivery  *orders.Delivery `json:"delivery"`
 }
 
 func toReceipt(o orders.Order) receipt {
 	return receipt{Code: o.Code, Username: o.Username, Note: o.Note, Status: o.Status,
-		CreatedAt: o.CreatedAt, UpdatedAt: o.UpdatedAt, Lines: o.Lines, Totals: o.Totals}
+		CreatedAt: o.CreatedAt, UpdatedAt: o.UpdatedAt, Lines: o.Lines, Totals: o.Totals, Delivery: o.Delivery}
 }
 
 func (s *Server) handleCreateOrder(w http.ResponseWriter, r *http.Request) {

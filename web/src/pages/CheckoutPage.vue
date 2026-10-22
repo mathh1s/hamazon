@@ -6,7 +6,8 @@ import ItemSlot from '../components/ItemSlot.vue'
 import PriceTag from '../components/PriceTag.vue'
 import McButton from '../components/McButton.vue'
 import McTextField from '../components/McTextField.vue'
-import { api, ApiError, errorMessage, type Receipt } from '../api'
+import MapPicker from '../components/MapPicker.vue'
+import { api, ApiError, errorMessage, type Delivery, type DeliveryDimension, type MapInfo, type Receipt } from '../api'
 import { catalog, loadCatalog } from '../stores/catalog'
 import { cart, cartLines, cartProblems, cartTotals, clearCart } from '../stores/cart'
 import { session } from '../stores/session'
@@ -30,7 +31,62 @@ const placing = ref(false)
 // returns the same order instead of creating a second one.
 const checkoutId = randomId()
 
+// ==== delivery ====
+interface SavedDelivery {
+  mode: 'person' | 'coords'
+  dimension: DeliveryDimension
+  x: string
+  y: string
+  z: string
+}
+const saved = readJSON<SavedDelivery | null>('hamazon.delivery', null)
+const deliveryMode = ref<'person' | 'coords'>(saved?.mode ?? 'person')
+const dimension = ref<DeliveryDimension>(saved?.dimension ?? 'overworld')
+const coordX = ref(saved?.x ?? '')
+const coordY = ref(saved?.y ?? '')
+const coordZ = ref(saved?.z ?? '')
+const mapInfo = ref<MapInfo>({ enabled: false })
+
+const dimensions: { id: DeliveryDimension; label: string }[] = [
+  { id: 'overworld', label: 'Overworld' },
+  { id: 'nether', label: 'Nether' },
+  { id: 'end', label: 'The End' },
+]
+
+const intPattern = /^-?\d{1,8}$/
+const mapPoint = computed(() =>
+  intPattern.test(coordX.value.trim()) && intPattern.test(coordZ.value.trim())
+    ? { x: Number(coordX.value), z: Number(coordZ.value) }
+    : null,
+)
+
+function pick(p: { x: number; z: number }) {
+  coordX.value = String(p.x)
+  coordZ.value = String(p.z)
+  if (fieldErrors.value.delivery) fieldErrors.value = { ...fieldErrors.value, delivery: '' }
+}
+
+function checkDelivery(): { delivery: Delivery | null; error: string } {
+  if (deliveryMode.value === 'person') return { delivery: null, error: '' }
+  const x = coordX.value.trim()
+  const y = coordY.value.trim()
+  const z = coordZ.value.trim()
+  if (!intPattern.test(x) || !intPattern.test(z)) return { delivery: null, error: 'Enter whole numbers for X and Z, or pick a spot on the map' }
+  if (y && !intPattern.test(y)) return { delivery: null, error: 'Y must be a whole number, or leave it empty' }
+  const yn = y ? Number(y) : null
+  if (yn !== null && (yn < -64 || yn > 320)) return { delivery: null, error: 'Y must be between -64 and 320' }
+  const border = 29_999_984
+  if (Math.abs(Number(x)) > border || Math.abs(Number(z)) > border)
+    return { delivery: null, error: 'Coordinates are outside the world border' }
+  return { delivery: { dimension: dimension.value, x: Number(x), y: yn, z: Number(z) }, error: '' }
+}
+
+const showMap = computed(() => mapInfo.value.enabled && dimension.value !== 'end')
+
 onMounted(async () => {
+  api<MapInfo>('GET', '/api/map')
+    .then((info) => (mapInfo.value = info))
+    .catch(() => {})
   await loadCatalog(true)
   if (cart.entries.length === 0 || cartProblems.value.length) router.replace('/cart')
 })
@@ -61,8 +117,11 @@ async function place() {
   if (placing.value) return
   error.value = ''
   const usernameError = checkUsername()
-  fieldErrors.value = usernameError ? { username: usernameError } : {}
-  if (usernameError) return
+  const target = checkDelivery()
+  fieldErrors.value = {}
+  if (usernameError) fieldErrors.value.username = usernameError
+  if (target.error) fieldErrors.value.delivery = target.error
+  if (usernameError || target.error) return
 
   placing.value = true
   try {
@@ -70,9 +129,17 @@ async function place() {
       idempotencyKey: checkoutId,
       username: username.value.trim(),
       note: note.value,
+      delivery: target.delivery,
       lines: cart.entries.map((e) => ({ itemId: e.itemId, quantity: e.quantity, unitPrice: e.acceptedPrice })),
     })
     writeJSON('hamazon.username', username.value.trim())
+    writeJSON('hamazon.delivery', {
+      mode: deliveryMode.value,
+      dimension: dimension.value,
+      x: coordX.value,
+      y: coordY.value,
+      z: coordZ.value,
+    } satisfies SavedDelivery)
     rememberReceipt({
       token: res.receiptToken,
       code: res.receipt.code,
@@ -133,6 +200,51 @@ async function place() {
         <p v-if="fieldErrors.note" class="error">{{ fieldErrors.note }}</p>
       </div>
 
+      <fieldset class="field delivery">
+        <legend>Delivery</legend>
+        <div class="choices" role="radiogroup">
+          <label class="choice" :class="{ on: deliveryMode === 'person' }">
+            <input v-model="deliveryMode" type="radio" value="person" />
+            <span>Hand over in person</span>
+          </label>
+          <label class="choice" :class="{ on: deliveryMode === 'coords' }">
+            <input v-model="deliveryMode" type="radio" value="coords" />
+            <span>Deliver to coordinates</span>
+          </label>
+        </div>
+
+        <template v-if="deliveryMode === 'coords'">
+          <div class="choices dims" role="radiogroup" aria-label="Dimension">
+            <label v-for="d in dimensions" :key="d.id" class="choice" :class="{ on: dimension === d.id }">
+              <input v-model="dimension" type="radio" :value="d.id" />
+              <span>{{ d.label }}</span>
+            </label>
+          </div>
+          <div class="coords">
+            <label>
+              <span>X</span>
+              <McTextField v-model="coordX" inputmode="numeric" maxlength="9" placeholder="0" :invalid="!!fieldErrors.delivery" />
+            </label>
+            <label>
+              <span>Y</span>
+              <McTextField v-model="coordY" inputmode="numeric" maxlength="4" placeholder="any" />
+            </label>
+            <label>
+              <span>Z</span>
+              <McTextField v-model="coordZ" inputmode="numeric" maxlength="9" placeholder="0" :invalid="!!fieldErrors.delivery" />
+            </label>
+          </div>
+          <p v-if="fieldErrors.delivery" class="error">{{ fieldErrors.delivery }}</p>
+          <p v-else class="help">Press F3 in game to see your coordinates. Y is optional.</p>
+          <template v-if="showMap">
+            <MapPicker :info="mapInfo" :dimension="dimension" :point="mapPoint" @pick="pick" />
+            <p class="help">
+              Biome map of our world, drawn from the seed. Click to pick a spot, drag to move. Builds are not shown.
+            </p>
+          </template>
+        </template>
+      </fieldset>
+
       <section aria-labelledby="summary-title">
         <h3 id="summary-title" class="mc-title">Your order</h3>
         <ul class="lines">
@@ -189,8 +301,68 @@ async function place() {
   margin: 0;
 }
 
-label {
+label,
+legend {
   color: var(--title);
+}
+
+.delivery {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.delivery legend {
+  padding: 0;
+  margin-bottom: calc(var(--u) * 2);
+}
+
+.choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: calc(var(--u) * 2);
+}
+
+.choice {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+  padding: calc(var(--u) * 2) calc(var(--u) * 4);
+  background: var(--slot-dark);
+  border: var(--u) solid #000;
+  color: var(--gray);
+  text-shadow: var(--u) var(--u) 0 #2a2a2a;
+  cursor: pointer;
+}
+
+.choice.on {
+  color: var(--yellow);
+  border-color: #fff;
+}
+
+.choice input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.choice:focus-within {
+  outline: var(--u) solid #fff;
+  outline-offset: var(--u);
+}
+
+.coords {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(var(--u) * 3);
+}
+
+.coords label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--u);
+  min-width: 0;
 }
 
 .help {

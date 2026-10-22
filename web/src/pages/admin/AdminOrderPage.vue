@@ -10,7 +10,7 @@ import StatusText from '../../components/StatusText.vue'
 import { api, errorMessage, type AdminOrder, type OrderStatus } from '../../api'
 import { loadCatalog } from '../../stores/catalog'
 import { loadOverview } from '../../stores/admin'
-import { formatDate, statusLabel } from '../../lib/format'
+import { deliveryText, formatDate, statusLabel, teleportCommand } from '../../lib/format'
 import { scalePrice } from '../../lib/price'
 import { usePageTitle } from '../../lib/title'
 
@@ -21,6 +21,18 @@ const error = ref('')
 const actionError = ref('')
 const note = ref('')
 const busy = ref(false)
+const copied = ref(false)
+
+async function copyTp() {
+  if (!order.value?.delivery) return
+  try {
+    await navigator.clipboard.writeText(teleportCommand(order.value.delivery))
+    copied.value = true
+    setTimeout(() => (copied.value = false), 1500)
+  } catch {
+    // Clipboard can be blocked; the command is shown on the page anyway.
+  }
+}
 
 usePageTitle(() => (order.value ? `Order ${order.value.code}` : 'Order'))
 
@@ -101,6 +113,14 @@ load()
           <dd>{{ formatDate(order.createdAt) }}</dd>
           <dt>IP</dt>
           <dd>{{ order.clientIp || 'unknown' }}</dd>
+          <dt>Deliver to</dt>
+          <dd class="deliver">
+            <span>{{ deliveryText(order.delivery) }}</span>
+            <template v-if="order.delivery">
+              <code class="tp">{{ teleportCommand(order.delivery) }}</code>
+              <McButton small type="button" @click="copyTp">{{ copied ? 'Copied!' : 'Copy tp command' }}</McButton>
+            </template>
+          </dd>
           <template v-if="order.note">
             <dt>Note</dt>
             <dd>{{ order.note }}</dd>
@@ -290,5 +310,17 @@ load()
   .layout {
     grid-template-columns: 1fr;
   }
+}
+.deliver {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: calc(var(--u) * 2);
+}
+
+.tp {
+  font-family: inherit;
+  word-break: break-all;
+  color: var(--gray);
 }
 </style>

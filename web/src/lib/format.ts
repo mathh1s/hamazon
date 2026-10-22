@@ -32,3 +32,13 @@ export function needsText(dims: ('nether' | 'end')[]) {
   if (dims.length === 0) return ''
   return 'Needs the ' + dims.map((d) => dimensionLabel[d]).join(' and the ')
 }
+
+export function deliveryText(d: { dimension: 'overworld' | 'nether' | 'end'; x: number; y: number | null; z: number } | null): string {
+  if (!d) return 'Hand over in person'
+  return `${dimensionLabel[d.dimension]}: X ${d.x}${d.y === null ? "" : ` Y ${d.y}`} Z ${d.z}`
+}
+
+export function teleportCommand(d: { dimension: 'overworld' | 'nether' | 'end'; x: number; y: number | null; z: number }): string {
+  const id = d.dimension === 'nether' ? 'the_nether' : d.dimension === 'end' ? 'the_end' : 'overworld'
+  return `/execute in minecraft:${id} run tp @s ${d.x} ${d.y ?? '~'} ${d.z}`
+}

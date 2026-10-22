@@ -13,6 +13,7 @@ import (
 	"github.com/mathh1s/hamazon/internal/config"
 	"github.com/mathh1s/hamazon/internal/orders"
 	"github.com/mathh1s/hamazon/internal/ratelimit"
+	"github.com/mathh1s/hamazon/internal/worldmap"
 )
 
 type Deps struct {
@@ -22,6 +23,7 @@ type Deps struct {
 	Admins   *auth.Admins
 	Assets   *assets.Manager
 	Defaults []byte
+	WorldMap *worldmap.Map
 	Frontend fs.FS
 }
 
@@ -35,19 +37,22 @@ type Server struct {
 	admins   *auth.Admins
 	assets   *assets.Manager
 	defaults []byte
+	worldMap *worldmap.Map
 
 	loginLimit   *ratelimit.Limiter
 	orderLimit   *ratelimit.Limiter
 	receiptLimit *ratelimit.Limiter
+	mapLimit     *ratelimit.Limiter
 }
 
 func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s := &Server{
 		cfg: cfg, log: log, mux: http.NewServeMux(),
-		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins, assets: deps.Assets, defaults: deps.Defaults,
+		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins, assets: deps.Assets, defaults: deps.Defaults, worldMap: deps.WorldMap,
 		loginLimit:   ratelimit.New(12*time.Second, 5),
 		orderLimit:   ratelimit.New(2*time.Minute, 4),
 		receiptLimit: ratelimit.New(2*time.Second, 30),
+		mapLimit:     ratelimit.New(20*time.Millisecond, 200),
 	}
 
 	s.mux.HandleFunc("GET /healthz", func(w http.ResponseWriter, r *http.Request) {
@@ -60,6 +65,9 @@ func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s.mux.HandleFunc("POST /api/orders", s.requireAccess(s.handleCreateOrder))
 	s.mux.HandleFunc("GET /api/receipts/{token}", s.requireAccess(s.handleReceipt))
 	s.mux.HandleFunc("POST /api/receipts/status", s.requireAccess(s.handleReceiptStatuses))
+	s.mux.HandleFunc("GET /api/map", s.requireAccess(s.handleMapInfo))
+	s.mux.HandleFunc("GET /api/map/villages", s.requireAccess(s.handleMapVillages))
+	s.mux.HandleFunc("GET /api/map/{dim}/{scale}/{tile}", s.requireAccess(s.handleMapTile))
 	s.mux.HandleFunc("POST /api/admin/login", s.handleAdminLogin)
 	s.mux.HandleFunc("POST /api/admin/logout", s.handleAdminLogout)
 	s.mux.HandleFunc("GET /api/admin/overview", s.requireAdmin(s.handleAdminOverview))

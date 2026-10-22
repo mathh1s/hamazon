@@ -46,6 +46,8 @@ type embedImage struct {
 	URL string `json:"url"`
 }
 
+var dimensionNames = map[string]string{"overworld": "Overworld", "nether": "Nether", "end": "End"}
+
 // Status colors follow the Minecraft chat palette (gold, aqua, green, red).
 var statusStyle = map[orders.Status]struct {
 	label string
@@ -103,6 +105,16 @@ func buildPayload(in embedInput) payload {
 	}
 	e.Fields = append(e.Fields, field{Name: "Total", Value: strings.Join(totals, "\n")})
 
+	if d := o.Delivery; d != nil {
+		y := "?"
+		if d.Y != nil {
+			y = strconv.Itoa(*d.Y)
+		}
+		e.Fields = append(e.Fields, field{Name: "Deliver to",
+			Value: fmt.Sprintf("%s **%d / %s / %d**\n`%s`", dimensionNames[d.Dimension], d.X, y, d.Z, d.TeleportCommand())})
+	} else {
+		e.Fields = append(e.Fields, field{Name: "Deliver to", Value: "Hand over in person"})
+	}
 	if o.Note != "" {
 		e.Fields = append(e.Fields, field{Name: "Note from player", Value: escape(truncate(o.Note, 1000))})
 	}

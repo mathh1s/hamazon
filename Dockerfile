@@ -6,12 +6,14 @@ COPY web/ ./
 RUN npm run build
 
 FROM golang:1.26-alpine AS server
+# The delivery map links the cubiomes C library through cgo.
+RUN apk add --no-cache build-base
 WORKDIR /src
 COPY go.mod go.sum* ./
 RUN go mod download
 COPY . .
 COPY --from=web /src/web/dist ./web/dist
-RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/hamazon ./cmd/hamazon
+RUN CGO_ENABLED=1 go build -trimpath -tags netgo,osusergo -ldflags="-s -w -extldflags '-static'" -o /out/hamazon ./cmd/hamazon
 
 FROM alpine:3.22
 RUN apk add --no-cache ca-certificates tzdata \

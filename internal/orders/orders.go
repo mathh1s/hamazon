@@ -54,6 +54,7 @@ type Order struct {
 	UpdatedAt        time.Time     `json:"updatedAt"`
 	Lines            []Line        `json:"lines"`
 	Totals           catalog.Price `json:"totals"`
+	Delivery         *Delivery     `json:"delivery"`
 	ClientIP         string        `json:"-"`
 	DiscordMessageID string        `json:"-"`
 }
@@ -76,12 +77,15 @@ func Totals(lines []Line) catalog.Price {
 	return out
 }
 
-const orderColumns = `id, code, username, note, status, created_at, updated_at, client_ip, COALESCE(discord_message_id, '')`
+const orderColumns = `id, code, username, note, status, created_at, updated_at, client_ip, COALESCE(discord_message_id, ''),
+	delivery_dimension, delivery_x, delivery_y, delivery_z`
 
 func scanOrder(sc interface{ Scan(...any) error }) (Order, error) {
 	var o Order
-	var created, updated string
-	if err := sc.Scan(&o.ID, &o.Code, &o.Username, &o.Note, &o.Status, &created, &updated, &o.ClientIP, &o.DiscordMessageID); err != nil {
+	var created, updated, dim string
+	var x, y, z sql.NullInt64
+	if err := sc.Scan(&o.ID, &o.Code, &o.Username, &o.Note, &o.Status, &created, &updated, &o.ClientIP, &o.DiscordMessageID,
+		&dim, &x, &y, &z); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return o, ErrNotFound
 		}
@@ -89,6 +93,14 @@ func scanOrder(sc interface{ Scan(...any) error }) (Order, error) {
 	}
 	o.CreatedAt, _ = db.ParseTime(created)
 	o.UpdatedAt, _ = db.ParseTime(updated)
+	if dim != "" && x.Valid && z.Valid {
+		d := Delivery{Dimension: dim, X: int(x.Int64), Z: int(z.Int64)}
+		if y.Valid {
+			yy := int(y.Int64)
+			d.Y = &yy
+		}
+		o.Delivery = &d
+	}
 	return o, nil
 }
 

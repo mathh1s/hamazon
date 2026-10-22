@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strings"
 	"syscall"
 	"time"
@@ -25,6 +26,7 @@ import (
 	"github.com/mathh1s/hamazon/internal/discord"
 	"github.com/mathh1s/hamazon/internal/orders"
 	"github.com/mathh1s/hamazon/internal/server"
+	"github.com/mathh1s/hamazon/internal/worldmap"
 	"github.com/mathh1s/hamazon/web"
 )
 
@@ -105,6 +107,19 @@ func serve(log *slog.Logger) error {
 		assetManager.Disable()
 	}
 
+	var worldMap *worldmap.Map
+	if cfg.WorldSeed != "" {
+		seed, err := worldmap.ParseSeed(cfg.WorldSeed)
+		switch {
+		case err != nil:
+			return fmt.Errorf("HAMAZON_WORLD_SEED: %w", err)
+		case !worldmap.Available:
+			log.Warn("HAMAZON_WORLD_SEED is set but this build has no biome generator, the delivery map is off")
+		default:
+			worldMap = worldmap.New(seed, filepath.Join(cfg.DataDir, "maptiles"))
+		}
+	}
+
 	srv := server.New(cfg, log, server.Deps{
 		Catalog:  items,
 		Orders:   orderService,
@@ -112,6 +127,7 @@ func serve(log *slog.Logger) error {
 		Admins:   auth.NewAdmins(conn),
 		Assets:   assetManager,
 		Defaults: seed,
+		WorldMap: worldMap,
 		Frontend: web.Dist(),
 	})
 	httpServer := &http.Server{

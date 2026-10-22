@@ -28,6 +28,14 @@ var guiSprites = map[string]string{
 	"toast":                "minecraft:gui/sprites/toast/advancement",
 	"hotbar":               "minecraft:gui/sprites/hud/hotbar",
 	"hotbar_selection":     "minecraft:gui/sprites/hud/hotbar_selection",
+	"map_background":       "minecraft:map/map_background",
+	"map_red_x":            "minecraft:map/decorations/red_x",
+	"map_spawn":            "minecraft:map/decorations/white_banner",
+	"map_plains_village":   "minecraft:map/decorations/plains_village",
+	"map_desert_village":   "minecraft:map/decorations/desert_village",
+	"map_savanna_village":  "minecraft:map/decorations/savanna_village",
+	"map_snowy_village":    "minecraft:map/decorations/snowy_village",
+	"map_taiga_village":    "minecraft:map/decorations/taiga_village",
 }
 
 // guiCrops cut a region out of a larger GUI sheet.

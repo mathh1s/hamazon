@@ -11,7 +11,7 @@ import { addToCart } from '../stores/cart'
 import { playPop } from '../stores/sound'
 import { useRouter } from 'vue-router'
 import { rememberReceipt } from '../stores/receipts'
-import { formatDate, statusLabel } from '../lib/format'
+import { formatDate, statusLabel, deliveryText } from '../lib/format'
 import { scalePrice } from '../lib/price'
 import { usePageTitle } from '../lib/title'
 
@@ -115,6 +115,8 @@ async function copyLink() {
             <dd>{{ formatDate(receipt.createdAt) }}</dd>
             <dt>Status</dt>
             <dd :class="'status-' + receipt.status">{{ statusLabel[receipt.status] }}</dd>
+            <dt>Delivery</dt>
+            <dd>{{ deliveryText(receipt.delivery) }}</dd>
           </dl>
 
           <ul class="lines">

@@ -53,7 +53,17 @@ export interface OrderLine {
   unitPrice: Price
 }
 
+export type DeliveryDimension = 'overworld' | 'nether' | 'end'
+
+export interface Delivery {
+  dimension: DeliveryDimension
+  x: number
+  y: number | null
+  z: number
+}
+
 export interface Receipt {
+  delivery: Delivery | null
   code: string
   username: string
   note: string
@@ -205,4 +215,12 @@ export interface PriceUpdate {
   locked: boolean
   current: PriceTerms
   default: PriceTerms
+}
+
+export interface MapInfo {
+  enabled: boolean
+  version?: string
+  tileSize?: number
+  scales?: number[]
+  spawn?: { x: number; z: number }
 }

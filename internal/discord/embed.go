@@ -111,7 +111,7 @@ func buildPayload(in embedInput) payload {
 			y = strconv.Itoa(*d.Y)
 		}
 		e.Fields = append(e.Fields, field{Name: "Deliver to",
-			Value: fmt.Sprintf("%s **%d / %s / %d**\n`%s`", dimensionNames[d.Dimension], d.X, y, d.Z, d.TeleportCommand())})
+			Value: fmt.Sprintf("%s **%d / %s / %d**", dimensionNames[d.Dimension], d.X, y, d.Z)})
 	} else {
 		e.Fields = append(e.Fields, field{Name: "Deliver to", Value: "Hand over in person"})
 	}

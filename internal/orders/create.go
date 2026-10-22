@@ -69,25 +69,6 @@ type Delivery struct {
 	Z         int    `json:"z"`
 }
 
-// TeleportCommand is what an admin pastes in chat to get to the spot.
-func (d Delivery) TeleportCommand() string {
-	y := "~"
-	if d.Y != nil {
-		y = strconv.Itoa(*d.Y)
-	}
-	return fmt.Sprintf("/execute in minecraft:%s run tp @s %d %s %d", dimensionID(d.Dimension), d.X, y, d.Z)
-}
-
-func dimensionID(d string) string {
-	switch d {
-	case "nether":
-		return "the_nether"
-	case "end":
-		return "the_end"
-	}
-	return "overworld"
-}
-
 const worldBorder = 29_999_984
 
 func checkDelivery(d *Delivery, errs validate.Errors) {

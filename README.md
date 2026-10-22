@@ -49,7 +49,7 @@ Fill in `.env`:
 
 ### Delivery map
 
-At checkout players choose between handing over in person and delivery to coordinates (dimension plus X, optional Y, Z). The Discord message and the admin order page show the spot with a ready `/execute in ... run tp` command.
+At checkout players choose between handing over in person and delivery to coordinates (dimension plus X, optional Y, Z). The Discord message, the receipt and the admin order page show the spot.
 
 With `HAMAZON_WORLD_SEED` set, the checkout also shows a top-down biome map of the Overworld and the Nether, generated from the seed with [cubiomes](https://github.com/Cubitrix/cubiomes) (MIT, vendored). Spawn and villages are marked. It is the 1.21 world generator, so terrain from older versions of your world and anything players built is not on it. Tiles are rendered on demand and cached in the data volume. Keep in mind that the map gives away biome layout, so players who can open the shop can work out the seed.
 

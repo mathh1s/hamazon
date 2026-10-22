@@ -232,9 +232,6 @@ func TestDeliveryIsStoredAndValidated(t *testing.T) {
 	if order.Delivery == nil || order.Delivery.X != -120 || *order.Delivery.Y != 70 {
 		t.Fatalf("delivery not stored: %+v", order.Delivery)
 	}
-	if cmd := order.Delivery.TeleportCommand(); cmd != "/execute in minecraft:the_nether run tp @s -120 70 455" {
-		t.Fatalf("unexpected command %q", cmd)
-	}
 	_, _, err = f.svc.Create(ctx, CreateInput{IdempotencyKey: "key-delivery-bad-001", Username: "Steve",
 		Delivery: &Delivery{Dimension: "moon", X: 40_000_000, Z: 0},
 		Lines:    []CreateLine{f.line("bread", 1)}}, "")

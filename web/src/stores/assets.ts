@@ -11,12 +11,14 @@ export const assets = reactive<{
   missing: boolean
   version: string
   stamp: string
+  sounds: string[]
   items: Map<string, ManifestItem>
 }>({
   loaded: false,
   missing: false,
   version: '',
   stamp: '',
+  sounds: [],
   items: new Map(),
 })
 
@@ -25,7 +27,8 @@ let polling = false
 async function fetchManifest() {
   const res = await fetch('/mc/manifest.json', { cache: 'no-store' })
   if (!res.ok) throw new Error()
-  const m = (await res.json()) as { version: string; generatedAt: string; items: ManifestItem[] }
+  const m = (await res.json()) as { version: string; generatedAt: string; sounds?: string[]; items: ManifestItem[] }
+  assets.sounds = m.sounds ?? []
   assets.version = m.version
   assets.stamp = m.generatedAt
   assets.items = new Map(m.items.map((i) => [i.id, i]))

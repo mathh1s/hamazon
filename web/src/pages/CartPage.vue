@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import SiteFrame from '../components/SiteFrame.vue'
 import ItemSlot from '../components/ItemSlot.vue'
 import PriceTag from '../components/PriceTag.vue'
@@ -9,9 +9,19 @@ import { catalog, loadCatalog } from '../stores/catalog'
 import { acceptCurrentPrices, cart, cartLines, cartProblems, cartTotals, removeFromCart, setQuantity } from '../stores/cart'
 import { scalePrice } from '../lib/price'
 import { usePageTitle } from '../lib/title'
+import { playChestClose, playChestOpen, playPop } from '../stores/sound'
 
 usePageTitle(() => 'Cart')
-onMounted(() => loadCatalog(true))
+onMounted(() => {
+  playChestOpen()
+  loadCatalog(true)
+})
+onUnmounted(playChestClose)
+
+function remove(id: number) {
+  playPop()
+  removeFromCart(id)
+}
 
 const canCheckout = computed(() => catalog.loaded && cart.entries.length > 0 && cartProblems.value.length === 0)
 </script>
@@ -57,7 +67,7 @@ const canCheckout = computed(() => catalog.loaded && cart.entries.length > 0 && 
               @update:model-value="(n) => setQuantity(line.entry.itemId, n)"
             />
             <PriceTag v-if="line.item" class="total" :price="scalePrice(line.entry.acceptedPrice, line.entry.quantity)" />
-            <McButton small :aria-label="`Remove ${line.item?.name ?? 'item'}`" @click="removeFromCart(line.entry.itemId)">Remove</McButton>
+            <McButton small :aria-label="`Remove ${line.item?.name ?? 'item'}`" @click="remove(line.entry.itemId)">Remove</McButton>
           </li>
         </ul>
 

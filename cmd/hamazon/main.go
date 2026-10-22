@@ -186,7 +186,11 @@ func extract(log *slog.Logger, args []string) error {
 		*jar = path
 	}
 
-	report, err := assets.Extract(*jar, *out)
+	sounds, err := assets.DownloadSounds(context.Background(), &http.Client{Timeout: time.Minute}, *version)
+	if err != nil {
+		log.Warn("could not download sounds, continuing without", "err", err)
+	}
+	report, err := assets.Extract(*jar, *out, sounds)
 	if err != nil {
 		return err
 	}

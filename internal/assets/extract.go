@@ -27,6 +27,7 @@ type Manifest struct {
 	GeneratedAt time.Time      `json:"generatedAt"`
 	Items       []ManifestItem `json:"items"`
 	Font        bool           `json:"font"`
+	Sounds      []string       `json:"sounds"`
 }
 
 type Report struct {
@@ -37,7 +38,7 @@ type Report struct {
 // Extract renders every item icon, the GUI sprites and the game font from a
 // client jar into dir. It builds into a sibling directory and swaps it in at
 // the end, so a running server never serves a half written set.
-func Extract(jarPath, dir string) (Report, error) {
+func Extract(jarPath, dir string, sounds map[string][]byte) (Report, error) {
 	zr, err := zip.OpenReader(jarPath)
 	if err != nil {
 		return Report{}, fmt.Errorf("open jar: %w", err)
@@ -52,7 +53,7 @@ func Extract(jarPath, dir string) (Report, error) {
 	if err := os.RemoveAll(staging); err != nil {
 		return Report{}, err
 	}
-	for _, sub := range []string{"item", "gui", "font"} {
+	for _, sub := range []string{"item", "gui", "font", "sound"} {
 		if err := os.MkdirAll(filepath.Join(staging, sub), 0o755); err != nil {
 			return Report{}, err
 		}
@@ -121,6 +122,15 @@ func Extract(jarPath, dir string) (Report, error) {
 		}
 		report.Manifest.Font = true
 	}
+
+	report.Manifest.Sounds = []string{}
+	for name, data := range sounds {
+		if err := os.WriteFile(filepath.Join(staging, "sound", name+".ogg"), data, 0o644); err != nil {
+			return report, err
+		}
+		report.Manifest.Sounds = append(report.Manifest.Sounds, name)
+	}
+	sort.Strings(report.Manifest.Sounds)
 
 	manifest, err := json.Marshal(report.Manifest)
 	if err != nil {

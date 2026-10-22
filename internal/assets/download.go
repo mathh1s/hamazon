@@ -20,7 +20,7 @@ const versionManifestURL = "https://piston-meta.mojang.com/mc/game/version_manif
 
 // formatVersion is bumped whenever the extractor output changes, so existing
 // installs re-extract on the next start without anyone running a command.
-const formatVersion = 2
+const formatVersion = 3
 
 type State string
 
@@ -133,7 +133,12 @@ func (m *Manager) download(ctx context.Context) error {
 	}
 	defer os.Remove(jar)
 
-	report, err := Extract(jar, m.dir)
+	sounds, err := DownloadSounds(ctx, m.client, m.version)
+	if err != nil {
+		m.log.Warn("sounds unavailable, the shop falls back to synthesized ones", "err", err)
+	}
+
+	report, err := Extract(jar, m.dir, sounds)
 	if err != nil {
 		return err
 	}
@@ -142,9 +147,20 @@ func (m *Manager) download(ctx context.Context) error {
 	return nil
 }
 
-// DownloadClientJar fetches the client jar of a version from Mojang into
-// tmpDir and checks it against the published SHA-1.
-func DownloadClientJar(ctx context.Context, client *http.Client, version, tmpDir string) (string, error) {
+type versionMeta struct {
+	Downloads struct {
+		Client struct {
+			SHA1 string `json:"sha1"`
+			URL  string `json:"url"`
+		} `json:"client"`
+	} `json:"downloads"`
+	AssetIndex struct {
+		URL string `json:"url"`
+	} `json:"assetIndex"`
+}
+
+func fetchVersionMeta(ctx context.Context, client *http.Client, version string) (versionMeta, error) {
+	var meta versionMeta
 	var manifest struct {
 		Versions []struct {
 			ID  string `json:"id"`
@@ -152,7 +168,7 @@ func DownloadClientJar(ctx context.Context, client *http.Client, version, tmpDir
 		} `json:"versions"`
 	}
 	if err := getJSON(ctx, client, versionManifestURL, &manifest); err != nil {
-		return "", fmt.Errorf("version list: %w", err)
+		return meta, fmt.Errorf("version list: %w", err)
 	}
 	var versionURL string
 	for _, v := range manifest.Versions {
@@ -162,19 +178,20 @@ func DownloadClientJar(ctx context.Context, client *http.Client, version, tmpDir
 		}
 	}
 	if versionURL == "" {
-		return "", fmt.Errorf("minecraft version %q does not exist, check HAMAZON_MC_VERSION", version)
-	}
-
-	var meta struct {
-		Downloads struct {
-			Client struct {
-				SHA1 string `json:"sha1"`
-				URL  string `json:"url"`
-			} `json:"client"`
-		} `json:"downloads"`
+		return meta, fmt.Errorf("minecraft version %q does not exist, check HAMAZON_MC_VERSION", version)
 	}
 	if err := getJSON(ctx, client, versionURL, &meta); err != nil {
-		return "", fmt.Errorf("version details: %w", err)
+		return meta, fmt.Errorf("version details: %w", err)
+	}
+	return meta, nil
+}
+
+// DownloadClientJar fetches the client jar of a version from Mojang into
+// tmpDir and checks it against the published SHA-1.
+func DownloadClientJar(ctx context.Context, client *http.Client, version, tmpDir string) (string, error) {
+	meta, err := fetchVersionMeta(ctx, client, version)
+	if err != nil {
+		return "", err
 	}
 	if meta.Downloads.Client.URL == "" {
 		return "", fmt.Errorf("version %s has no client download", version)
@@ -211,6 +228,56 @@ func DownloadClientJar(ctx context.Context, client *http.Client, version, tmpDir
 		return "", err
 	}
 	return path, nil
+}
+
+// uiSounds maps the names the frontend plays to files in the asset index.
+// Sounds are not part of the client jar, the launcher fetches them by hash.
+var uiSounds = map[string]string{
+	"click":       "minecraft/sounds/random/click.ogg",
+	"pop":         "minecraft/sounds/random/pop.ogg",
+	"levelup":     "minecraft/sounds/random/levelup.ogg",
+	"orb":         "minecraft/sounds/random/orb.ogg",
+	"chestopen":   "minecraft/sounds/random/chestopen.ogg",
+	"chestclosed": "minecraft/sounds/random/chestclosed.ogg",
+}
+
+// DownloadSounds fetches the UI sounds of a version and checks each one
+// against the SHA-1 it is stored under.
+func DownloadSounds(ctx context.Context, client *http.Client, version string) (map[string][]byte, error) {
+	meta, err := fetchVersionMeta(ctx, client, version)
+	if err != nil {
+		return nil, err
+	}
+	var index struct {
+		Objects map[string]struct {
+			Hash string `json:"hash"`
+		} `json:"objects"`
+	}
+	if err := getJSON(ctx, client, meta.AssetIndex.URL, &index); err != nil {
+		return nil, fmt.Errorf("asset index: %w", err)
+	}
+	out := map[string][]byte{}
+	for name, path := range uiSounds {
+		obj, ok := index.Objects[path]
+		if !ok || len(obj.Hash) < 2 {
+			continue
+		}
+		resp, err := get(ctx, client, "https://resources.download.minecraft.net/"+obj.Hash[:2]+"/"+obj.Hash)
+		if err != nil {
+			return out, err
+		}
+		data, err := io.ReadAll(io.LimitReader(resp.Body, 1<<20))
+		resp.Body.Close()
+		if err != nil {
+			return out, err
+		}
+		sum := sha1.Sum(data)
+		if hex.EncodeToString(sum[:]) != obj.Hash {
+			return out, fmt.Errorf("sound %s checksum does not match", name)
+		}
+		out[name] = data
+	}
+	return out, nil
 }
 
 func get(ctx context.Context, client *http.Client, url string) (*http.Response, error) {

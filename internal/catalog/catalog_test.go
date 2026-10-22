@@ -88,3 +88,35 @@ func TestValidationCollectsAllErrors(t *testing.T) {
 		}
 	}
 }
+
+func TestMissingDefaultsSkipsDeletedItems(t *testing.T) {
+	ctx := context.Background()
+	s := newStore(t)
+	small := []byte(`
+currencies: [{ id: diamond, name: Diamond, texture: diamond }]
+categories: [{ id: misc, name: Misc, icon: stick }]
+items:
+  - { name: Stick, texture: stick, category: misc, count: 1, maxPerOrder: 1, price: { diamond: 1 } }
+`)
+	if err := s.Seed(ctx, small); err != nil {
+		t.Fatal(err)
+	}
+	missing, err := s.MissingDefaults(ctx, DefaultSeed)
+	if err != nil || len(missing) < 300 {
+		t.Fatalf("expected the full default list to be missing, got %d %v", len(missing), err)
+	}
+	ids, err := s.AddMissingDefaults(ctx, DefaultSeed)
+	if err != nil || len(ids) != len(missing) {
+		t.Fatalf("added %d of %d: %v", len(ids), len(missing), err)
+	}
+	added, _ := s.Item(ctx, ids[0])
+	if added.Enabled {
+		t.Fatal("new defaults must start hidden")
+	}
+	if err := s.Delete(ctx, ids[0]); err != nil {
+		t.Fatal(err)
+	}
+	if again, _ := s.MissingDefaults(ctx, DefaultSeed); len(again) != 0 {
+		t.Fatalf("deleted items must not come back, got %d", len(again))
+	}
+}

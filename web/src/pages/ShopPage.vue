@@ -27,17 +27,20 @@ const selectedId = ref<number | null>(null)
 
 onMounted(() => loadCatalog())
 
+// Categories without any items for sale are left out of the tabs.
 const tabs = computed<Tab[]>(() => [
-  ...catalog.categories.map((c) => ({ id: c.id, name: c.name, icon: c.icon })),
+  ...catalog.categories
+    .filter((c) => catalog.items.some((i) => i.categoryId === c.id))
+    .map((c) => ({ id: c.id, name: c.name, icon: c.icon })),
   { id: SEARCH, name: 'Search Items', icon: 'compass' },
 ])
 const half = computed(() => Math.ceil(tabs.value.length / 2))
 
 watch(
-  () => catalog.categories,
-  (cats) => {
-    if (cats.length === 0) return
-    if (!tab.value || (tab.value !== SEARCH && !cats.some((c) => c.id === tab.value))) tab.value = cats[0]!.id
+  tabs,
+  (list) => {
+    if (list.length <= 1) return
+    if (!tab.value || !list.some((t) => t.id === tab.value)) tab.value = list[0]!.id
   },
   { immediate: true },
 )

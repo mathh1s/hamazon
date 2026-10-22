@@ -267,15 +267,38 @@ func (s *Store) SetInStock(ctx context.Context, id int64, inStock bool) (Item, e
 	return s.Item(ctx, id)
 }
 
+// Delete also remembers the item, so "add missing defaults" does not bring
+// back something that was removed on purpose.
 func (s *Store) Delete(ctx context.Context, id int64) error {
-	res, err := s.db.ExecContext(ctx, `DELETE FROM items WHERE id = ?`, id)
-	if err != nil {
+	return db.InTx(ctx, s.db, func(tx *sql.Tx) error {
+		var texture, description string
+		err := tx.QueryRowContext(ctx, `SELECT texture, description FROM items WHERE id = ?`, id).Scan(&texture, &description)
+		if errors.Is(err, sql.ErrNoRows) {
+			return ErrNotFound
+		}
+		if err != nil {
+			return err
+		}
+		if _, err := tx.ExecContext(ctx, `DELETE FROM items WHERE id = ?`, id); err != nil {
+			return err
+		}
+		_, err = tx.ExecContext(ctx, `INSERT OR IGNORE INTO dismissed_defaults (key, created_at) VALUES (?, ?)`,
+			defaultKey(texture, description), db.Now())
 		return err
+	})
+}
+
+// SetEnabled shows or hides several items at once.
+func (s *Store) SetEnabled(ctx context.Context, ids []int64, enabled bool) error {
+	if len(ids) == 0 {
+		return nil
 	}
-	if n, _ := res.RowsAffected(); n == 0 {
-		return ErrNotFound
+	args := []any{enabled, db.Now()}
+	for _, id := range ids {
+		args = append(args, id)
 	}
-	return nil
+	_, err := s.db.ExecContext(ctx, `UPDATE items SET enabled = ?, updated_at = ? WHERE id IN (`+placeholders(len(ids))+`)`, args...)
+	return err
 }
 
 func insertItem(ctx context.Context, q db.Querier, in ItemInput) (int64, error) {

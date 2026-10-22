@@ -21,18 +21,20 @@ type Deps struct {
 	Access   *auth.Access
 	Admins   *auth.Admins
 	Assets   *assets.Manager
+	Defaults []byte
 	Frontend fs.FS
 }
 
 type Server struct {
-	cfg     config.Config
-	log     *slog.Logger
-	mux     *http.ServeMux
-	catalog *catalog.Store
-	orders  *orders.Service
-	access  *auth.Access
-	admins  *auth.Admins
-	assets  *assets.Manager
+	cfg      config.Config
+	log      *slog.Logger
+	mux      *http.ServeMux
+	catalog  *catalog.Store
+	orders   *orders.Service
+	access   *auth.Access
+	admins   *auth.Admins
+	assets   *assets.Manager
+	defaults []byte
 
 	loginLimit   *ratelimit.Limiter
 	orderLimit   *ratelimit.Limiter
@@ -42,7 +44,7 @@ type Server struct {
 func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s := &Server{
 		cfg: cfg, log: log, mux: http.NewServeMux(),
-		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins, assets: deps.Assets,
+		catalog: deps.Catalog, orders: deps.Orders, access: deps.Access, admins: deps.Admins, assets: deps.Assets, defaults: deps.Defaults,
 		loginLimit:   ratelimit.New(12*time.Second, 5),
 		orderLimit:   ratelimit.New(2*time.Minute, 4),
 		receiptLimit: ratelimit.New(2*time.Second, 30),
@@ -69,6 +71,9 @@ func New(cfg config.Config, log *slog.Logger, deps Deps) *Server {
 	s.mux.HandleFunc("PUT /api/admin/items/{id}", s.requireAdmin(s.handleAdminUpdateItem))
 	s.mux.HandleFunc("DELETE /api/admin/items/{id}", s.requireAdmin(s.handleAdminDeleteItem))
 	s.mux.HandleFunc("PUT /api/admin/items/{id}/stock", s.requireAdmin(s.handleAdminItemStock))
+	s.mux.HandleFunc("POST /api/admin/items/visibility", s.requireAdmin(s.handleAdminItemVisibility))
+	s.mux.HandleFunc("GET /api/admin/defaults", s.requireAdmin(s.handleAdminMissingDefaults))
+	s.mux.HandleFunc("POST /api/admin/defaults", s.requireAdmin(s.handleAdminAddDefaults))
 
 	s.mux.HandleFunc("/api/", func(w http.ResponseWriter, r *http.Request) {
 		writeError(w, http.StatusNotFound, "not_found", "Unknown API endpoint")

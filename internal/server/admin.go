@@ -280,6 +280,51 @@ func (s *Server) handleAdminItemStock(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, item)
 }
 
+func (s *Server) handleAdminItemVisibility(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		IDs     []int64 `json:"ids"`
+		Enabled bool    `json:"enabled"`
+	}
+	if !decodeJSON(w, r, &body) {
+		return
+	}
+	if len(body.IDs) > 1000 {
+		writeError(w, http.StatusBadRequest, "bad_request", "Too many items at once")
+		return
+	}
+	if err := s.catalog.SetEnabled(r.Context(), body.IDs, body.Enabled); err != nil {
+		s.internalError(w, err)
+		return
+	}
+	s.log.Info("item visibility changed", "count", len(body.IDs), "enabled", body.Enabled, "admin", currentAdmin(r).Name)
+	w.WriteHeader(http.StatusNoContent)
+}
+
+func (s *Server) handleAdminMissingDefaults(w http.ResponseWriter, r *http.Request) {
+	missing, err := s.catalog.MissingDefaults(r.Context(), s.defaults)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	if missing == nil {
+		missing = []catalog.ItemInput{}
+	}
+	writeJSON(w, http.StatusOK, map[string]any{"missing": missing})
+}
+
+func (s *Server) handleAdminAddDefaults(w http.ResponseWriter, r *http.Request) {
+	ids, err := s.catalog.AddMissingDefaults(r.Context(), s.defaults)
+	if err != nil {
+		s.internalError(w, err)
+		return
+	}
+	if ids == nil {
+		ids = []int64{}
+	}
+	s.log.Info("default items added", "count", len(ids), "admin", currentAdmin(r).Name)
+	writeJSON(w, http.StatusOK, map[string]any{"added": ids})
+}
+
 func (s *Server) handleAdminDeleteItem(w http.ResponseWriter, r *http.Request) {
 	id, ok := pathID(r)
 	if !ok {

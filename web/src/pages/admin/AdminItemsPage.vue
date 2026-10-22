@@ -12,6 +12,9 @@ import { usePageTitle } from '../../lib/title'
 
 usePageTitle(() => 'Items')
 const items = ref<Item[]>([])
+const missingDefaults = ref(0)
+const justAdded = ref<number[]>([])
+const adding = ref(false)
 const error = ref('')
 const loading = ref(true)
 const search = ref('')
@@ -20,13 +23,46 @@ onMounted(async () => {
   loadCatalog()
   try {
     if (!admin.loaded) await loadOverview()
-    items.value = (await api<{ items: Item[] }>('GET', '/api/admin/items')).items
+    await reload()
+    missingDefaults.value = (await api<{ missing: unknown[] }>('GET', '/api/admin/defaults')).missing.length
   } catch (e) {
     error.value = errorMessage(e)
   } finally {
     loading.value = false
   }
 })
+
+async function reload() {
+  items.value = (await api<{ items: Item[] }>('GET', '/api/admin/items')).items
+}
+
+async function addDefaults() {
+  adding.value = true
+  error.value = ''
+  try {
+    const res = await api<{ added: number[] }>('POST', '/api/admin/defaults')
+    justAdded.value = res.added
+    missingDefaults.value = 0
+    await loadOverview()
+    await reload()
+  } catch (e) {
+    error.value = errorMessage(e)
+  } finally {
+    adding.value = false
+  }
+}
+
+async function showAdded() {
+  if (!confirm(`Show all ${justAdded.value.length} new items in the shop with their default prices?`)) return
+  try {
+    await api('POST', '/api/admin/items/visibility', { ids: justAdded.value, enabled: true })
+    justAdded.value = []
+    await reload()
+    loadCatalog(true)
+  } catch (e) {
+    error.value = errorMessage(e)
+  }
+}
 
 const toggling = ref<number | null>(null)
 
@@ -61,6 +97,17 @@ const groups = computed(() => {
         <h2 id="items-title" class="mc-title">Items</h2>
         <McButton to="/admin/items/new">Add item</McButton>
       </div>
+      <div v-if="missingDefaults > 0" class="notice">
+        <p>
+          {{ missingDefaults }} default {{ missingDefaults === 1 ? 'item is' : 'items are' }} not in your shop yet. They are added
+          hidden so you can check the prices first.
+        </p>
+        <McButton :disabled="adding" @click="addDefaults">{{ adding ? 'Adding...' : 'Add missing defaults' }}</McButton>
+      </div>
+      <div v-if="justAdded.length" class="notice" role="status">
+        <p>Added {{ justAdded.length }} hidden items. Edit their prices, or show them all at once.</p>
+        <McButton @click="showAdded">Show all {{ justAdded.length }} in the shop</McButton>
+      </div>
       <McTextField v-model="search" type="search" placeholder="Filter items" aria-label="Filter items" />
       <p v-if="loading" class="hint">Loading items...</p>
       <p v-else-if="error" class="error" role="alert">{{ error }}</p>
@@ -86,8 +133,9 @@ const groups = computed(() => {
               class="stock"
               :disabled="toggling === item.id"
               :aria-label="`${item.inStock ? 'Mark out of stock' : 'Mark in stock'}: ${item.name}`"
+              :aria-pressed="item.inStock"
               @click="toggleStock(item)"
-              >{{ item.inStock ? 'Sold out' : 'Restock' }}</McButton
+              >Stock: {{ item.inStock ? 'ON' : 'OFF' }}</McButton
             >
           </li>
         </ul>
@@ -107,6 +155,23 @@ const groups = computed(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 3);
+  background: var(--slot-dark);
+  color: var(--text);
+  text-shadow: var(--u) var(--u) 0 var(--text-shadow);
+}
+
+.notice p {
+  margin: 0;
+  flex: 1 1 calc(var(--u) * 140);
 }
 
 .hint {
@@ -146,7 +211,7 @@ const groups = computed(() => {
 
 .stock {
   align-self: stretch;
-  min-width: calc(var(--u) * 44);
+  min-width: calc(var(--u) * 58);
 }
 
 .soldout {

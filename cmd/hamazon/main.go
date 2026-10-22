@@ -85,7 +85,8 @@ func serve(log *slog.Logger) error {
 	defer conn.Close()
 
 	items := catalog.NewStore(conn)
-	if err := seedCatalog(ctx, cfg, items); err != nil {
+	seed, err := seedCatalog(ctx, cfg, items)
+	if err != nil {
 		return err
 	}
 
@@ -110,6 +111,7 @@ func serve(log *slog.Logger) error {
 		Access:   auth.NewAccess(cfg.ShopPassword, cfg.SessionSecret),
 		Admins:   auth.NewAdmins(conn),
 		Assets:   assetManager,
+		Defaults: seed,
 		Frontend: web.Dist(),
 	})
 	httpServer := &http.Server{
@@ -153,16 +155,16 @@ func openDatabase(ctx context.Context, cfg config.Config) (*sql.DB, error) {
 	return conn, nil
 }
 
-func seedCatalog(ctx context.Context, cfg config.Config, items *catalog.Store) error {
+func seedCatalog(ctx context.Context, cfg config.Config, items *catalog.Store) ([]byte, error) {
 	seed := catalog.DefaultSeed
 	if cfg.SeedFile != "" {
 		custom, err := os.ReadFile(cfg.SeedFile)
 		if err != nil {
-			return fmt.Errorf("read seed file: %w", err)
+			return nil, fmt.Errorf("read seed file: %w", err)
 		}
 		seed = custom
 	}
-	return items.Seed(ctx, seed)
+	return seed, items.Seed(ctx, seed)
 }
 
 func extract(log *slog.Logger, args []string) error {
